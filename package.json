@@ -1,0 +1,31 @@
+{
+  "name": "newworldpathway-portal",
+  "version": "1.0.0",
+  "private": true,
+  "description": "NewworldPathway website and student portal API",
+  "main": "server.js",
+  "scripts": {
+    "start:frontend": "node frontend-server.cjs",
+    "seed-owner": "node seed-owner.cjs",
+    "build": "tsc -p journey/tsconfig.json && node journey/build-icons.cjs && node --check server.js",
+    "start": "node server.js",
+    "create-student": "node create-student.js",
+    "create-admin": "node create-admin.js"
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "better-sqlite3": "^13.0.3",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "express-rate-limit": "^7.5.0",
+    "helmet": "^8.0.0"
+  },
+  "devDependencies": {
+    "lucide-static": "^1.59.0",
+    "playwright": "^1.64.1",
+    "typescript": "^7.0.2"
+  }
+}

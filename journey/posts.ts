@@ -1,0 +1,8 @@
+import {esc,safeUrl,badge,empty} from './components.js';
+import {access} from './access-service.js';
+import type {Post} from './access-types.js';
+// BACKEND REQUIRED: sanitize using a maintained server-side allowlist sanitizer too.
+export {sanitizeRichText} from './rich-text.js';
+import {sanitizeRichText} from './rich-text.js';
+export function postCard(p:Post,studentId=''){return `<article class="j-card j-information-post"><div class="j-row j-between"><span class="j-kicker">${esc(p.category)}${p.pinned?' · PINNED':''}</span>${studentId?badge(p.readBy.includes(studentId)?'Read':'Unread'):''}</div><h2>${esc(p.title)}</h2><div class="j-rich-content">${sanitizeRichText(p.body)}</div><div class="j-row">${p.attachments.map(a=>`<a class="j-button" href="${safeUrl(a.url)}" download="${esc(a.name)}">${esc(a.name)}</a>`).join('')}</div>${studentId&&!p.readBy.includes(studentId)?`<button class="j-button" data-read-post="${p.id}" style="margin-top:16px">Mark as read</button>`:''}</article>`;}
+export async function insertPosts(target:HTMLElement,placement:string){const posts=await access.visiblePosts(placement);if(!posts.length)return;const session=access.authenticated('student');const container=document.createElement('section');container.className='j-stack';container.style.marginBottom='24px';container.innerHTML=posts.map(p=>postCard(p,session?.userId||'')).join('');target.prepend(container);container.querySelectorAll<HTMLElement>('[data-read-post]').forEach(b=>b.onclick=async()=>{await access.markPostRead(b.dataset.readPost!);container.remove();await insertPosts(target,placement);});}

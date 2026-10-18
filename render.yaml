@@ -1,0 +1,15 @@
+services:
+  - type: web
+    name: pathway-frontend
+    runtime: docker
+    plan: free
+    dockerfilePath: ./Dockerfile
+    dockerContext: .
+    healthCheckPath: /health/live
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: TRUST_PROXY_HOPS
+        value: "1"
+      - key: PATHWAY_BACKEND_ORIGIN
+        value: https://pathway-backend-892m.onrender.com
