@@ -29,6 +29,11 @@ const columns:Record<string,[string,string][]>={
 function field(row:any,path:string){return path.split('.').reduce((value,key)=>value?.[key],row);}
 function table(rows:any[],key:string){const fields=columns[key]||[['name','Name'],['status','Status']];return rows.length?`<div class="j-table-wrap"><table class="j-table"><thead><tr>${fields.map(([,label])=>`<th scope="col">${esc(label)}</th>`).join('')}</tr></thead><tbody>${rows.map(row=>`<tr>${fields.map(([name])=>`<td>${esc(field(row,name)??'—')}</td>`).join('')}</tr>`).join('')}</tbody></table></div>`:'<p class="j-muted">No records yet.</p>';}
 let pageVersion=0;
+function studentCreation(content:HTMLElement,identity:Identity){
+ if(identity.adminRole!=='SUPER_ADMIN')return;
+ content.insertAdjacentHTML('afterbegin',`<details class="j-card" style="margin-bottom:24px"><summary>Create student for an approved exception</summary><p>Use this for an authorised test or special case. Normal registration requires verified payment. A password-setup email is queued; delivery requires a running email worker.</p>${form(`${input('firstName','First name','text','maxlength="80"')}${input('lastName','Last name','text','maxlength="80"')}${input('email','Student email','email','autocomplete="email"')}${input('phone','Phone','tel','minlength="7" maxlength="30"')}${input('reason','Reason for creating without online payment','text','minlength="10" maxlength="1000"')}<p class="j-muted">For the Resend test sender, use the email address registered to your Resend account. If your staff login is older than 15 minutes, sign out and sign in again first.</p><button type="submit" class="j-button primary">Create student and queue setup email</button>`)}</details>`);
+ submit(async data=>{const student=await api('/admin/students/manual','POST',{firstName:data.firstName.trim(),lastName:data.lastName.trim(),email:data.email.trim(),phone:data.phone.trim(),reason:data.reason.trim()});content.innerHTML=`<section class="j-card j-stack"><h2>Student account created</h2><p>Student ID: <strong style="user-select:all">${esc(student.studentId)}</strong></p><p>The password-setup email is queued. This does not confirm inbox delivery. Check the recipient inbox and spam folder, then use the email link to set a password.</p>${button('Back to overview','/admin')}${button('Open student sign-in','/student/login')}</section>`;});
+}
 async function workspace(){
  const version=++pageVersion;const admin=location.pathname==='/admin';let identity:Identity;
  try{identity=await api('/auth/session');}catch(error){if(error instanceof ApiError&&error.status===401){location.replace(admin?'/admin/login':'/student/login');return;}throw error;}
@@ -56,6 +61,7 @@ async function workspace(){
   }else{
    const page=Math.max(0,Number(new URLSearchParams(location.search).get('page'))||0);const rows=await api<any[]>(scope+'/'+key+'?skip='+page*25+'&take=25');if(version!==pageVersion)return;content.innerHTML=`<section class="j-card">${table(rows,key)}<nav class="j-row" aria-label="Record pages">${page?button('Previous',`?page=${page-1}#${key}`):''}${rows.length===25?button('Next',`?page=${page+1}#${key}`):''}</nav></section>`;
   }
+  if(admin&&key==='students'&&version===pageVersion)studentCreation(content,identity);
  }catch(error){if(version===pageVersion)showError(error,content);}
 }
 function showError(error:unknown,target:HTMLElement=root.querySelector('#live-content')||root){target.innerHTML=`<div class="j-error" role="alert">${esc(error instanceof Error?error.message:'Unable to load this page.')}</div><p>${button('Try again',location.pathname+location.search+location.hash)}</p>`;}
