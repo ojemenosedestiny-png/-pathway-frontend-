@@ -8,7 +8,7 @@ function createFrontend() {
  const uploadOrigins=approvedOrigin(process.env.PATHWAY_UPLOAD_ORIGIN);
  const app=express();app.disable('x-powered-by');
  app.set('trust proxy',Number(process.env.TRUST_PROXY_HOPS||0));
- app.use(helmet({contentSecurityPolicy:{directives:{defaultSrc:["'self'"],scriptSrc:["'self'"],styleSrc:["'self'","'unsafe-inline'"],imgSrc:["'self'",'https://newworldemeraldprivateschool.com','data:','blob:',...mediaOrigins],connectSrc:["'self'",...uploadOrigins],objectSrc:["'none'"],upgradeInsecureRequests:process.env.NODE_ENV==='production'?[]:null}}}));
+ app.use(helmet({contentSecurityPolicy:{directives:{defaultSrc:["'self'"],scriptSrc:["'self'"],styleSrc:["'self'","'unsafe-inline'"],imgSrc:["'self'",'https://newworldemeraldprivateschool.com','data:','blob:',...mediaOrigins],mediaSrc:["'self'",'blob:',...mediaOrigins],connectSrc:["'self'",...uploadOrigins],objectSrc:["'none'"],upgradeInsecureRequests:process.env.NODE_ENV==='production'?[]:null}}}));
  app.get('/health/live',(_req,res)=>res.json({status:'ok'}));
  app.use('/backend-api',liveApiProxy());
  const send=file=>(_req,res)=>res.sendFile(path.join(__dirname,file));
