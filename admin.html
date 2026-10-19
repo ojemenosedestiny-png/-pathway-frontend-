@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Private NewworldPathway administration panel." />
+    <title>Administration | NewworldPathway</title>
+    <link rel="stylesheet" href="portal.css" />
+    <link rel="stylesheet" href="admin.css" />
+    <meta name="theme-color" content="#133e35" />
+    <link rel="stylesheet" href="redesign.css" />
+    <link rel="stylesheet" href="admin-polish.css" />
+  </head>
+  <body class="admin-view">
+    <div class="topbar">
+      <div class="container topbar-inner">
+        <div class="topbar-links"><span>NewworldPathway administration</span></div>
+        <span class="topbar-note">Private staff area</span>
+      </div>
+    </div>
+
+    <header class="site-header">
+      <div class="container nav-wrap">
+        <a class="brand" href="index.html">
+          <img src="https://newworldemeraldprivateschool.com/wp-content/uploads/2024/05/logo.png" alt="New World Emerald logo" />
+          <span><strong>NewworldPathway</strong><small>Administration</small></span>
+        </a>
+        
+        <div class="nav-actions">
+          <a class="btn btn-secondary" href="index.html">View site</a>
+          <button class="btn btn-primary" id="adminLogout" type="button" hidden>Log out</button>
+        </div>
+      </div>
+    </header>
+
+    <main class="admin-page">
+      <div class="container">
+        <div class="admin-login-layout"><div class="admin-login-intro"><p class="eyebrow">New World Emerald Pathway</p><h2>Everything you need.<br />One clear workspace.</h2><p>Manage your students, preparation enquiries, and assessments with confidence.</p><ul><li>Student account management</li><li>Exam and question administration</li><li>Results and preparation enquiries</li></ul></div><section class="admin-login panel" id="adminLoginPanel">
+          <p class="eyebrow">Restricted access</p>
+          <h1>Welcome back.</h1>
+          <p>Sign in with the administrator account created from the project terminal.</p>
+          <form id="adminLoginForm" class="admin-form">
+            <label>Username<input name="username" autocomplete="username" required maxlength="32" /></label>
+            <label>Password<input name="password" type="password" autocomplete="current-password" required /></label>
+            <button class="btn btn-primary" type="submit">Sign in</button>
+          </form>
+        </section>
+        </div>
+        <p id="adminMessage" class="form-message" role="status" aria-live="polite"></p>
+
+        <div id="adminApp" hidden><aside class="admin-sidebar" aria-label="Administration navigation"><p class="admin-sidebar-label">School workspace</p><nav><a href="#admin-overview" aria-current="location"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 3h7v7H3z M14 3h7v7h-7z M3 14h7v7H3z M14 14h7v7h-7z" /></svg><span>Overview</span></a><a href="#students" ><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2 M9 11a4 4 0 1 0 0-8a4 4 0 0 0 0 8 M20 21v-2a4 4 0 0 0-3-3.9 M16 3.1a4 4 0 0 1 0 7.8" /></svg><span>Students</span></a><a href="#enquiries" ><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 5h18v14H3z M3 5l9 7 9-7" /></svg><span>Exam enquiries</span></a><a href="#pathway-plans" ><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h16v16H4z M8 8h8 M8 12h8 M8 16h5" /></svg><span>Study pathways</span></a><a href="#exam" ><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 3h14v18H5z M9 7h6 M9 11h6 M9 15h4" /></svg><span>Assessments</span></a><a href="#results" ><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20h17 M7 16V9 M12 16V4 M17 16v-5" /></svg><span>Results</span></a><a href="#account-settings" ><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 8a4 4 0 1 0 0 8a4 4 0 0 0 0-8 M12 2v3 M12 19v3 M2 12h3 M19 12h3 M5 5l2 2 M17 17l2 2 M5 19l2-2 M17 7l2-2" /></svg><span>Account settings</span></a></nav><div class="admin-sidebar-footer"><strong>New World Emerald</strong><p>Exam preparation &amp;<br />international study pathways.</p></div></aside><div class="admin-workspace">
+          <div class="admin-heading" id="admin-overview"><div class="admin-heading-copy"><p class="eyebrow">Administration / Overview</p><h1>Your school at a glance.</h1><p>Manage accounts, enquiries, and exam preparation.</p></div><div class="admin-heading-actions"><p>Signed in as <strong id="adminIdentity"></strong></p><a class="btn btn-primary" href="#students">+ Add student</a></div></div>
+
+          <section class="admin-metrics" aria-label="Site overview">
+            <article class="panel"><span>Students</span><strong id="metricStudents">0</strong><small id="metricStudentsActive">0 active</small></article>
+            <article class="panel"><span>New pathway plans</span><strong id="metricPathwayPlans">0</strong><small id="metricPathwayPlansTotal">0 total</small></article>
+            <article class="panel"><span>New enquiries</span><strong id="metricEnquiries">0</strong><small id="metricEnquiriesTotal">0 total</small></article>
+            <article class="panel"><span>Exam submissions</span><strong id="metricSubmissions">0</strong><small>All recorded results</small></article>
+            <article class="panel"><span>Active questions</span><strong id="metricQuestions">0</strong><small>In the live exam</small></article>
+          </section>
+
+          <section class="panel admin-section" id="students">
+            <div class="section-title"><div><p class="eyebrow">Accounts</p><h2>Student accounts</h2></div></div>
+            <form id="createStudentForm" class="admin-form create-student-form">
+              <label>Student ID<input name="studentId" placeholder="e.g. NWE-20481" required maxlength="32" pattern="[A-Za-z0-9]+(?:-[A-Za-z0-9]+)*" /></label>
+              <label>Initial password (12–72 UTF-8 bytes)<input name="password" type="password" required minlength="12" maxlength="72" autocomplete="new-password" /></label>
+              <button class="btn btn-primary" type="submit">Create student</button>
+            </form>
+            <p class="admin-hint">Student IDs can contain letters, numbers, and hyphens. Passwords must be 12–72 UTF-8 bytes; share the initial password privately with the student.</p>
+            <div class="record-toolbar"><label>Search by student ID<input type="search" data-table-search="studentsTable" placeholder="Type to filter records" /></label><p class="record-count" id="studentsTableCount" role="status" aria-live="polite"></p></div><div class="table-wrap"><table><thead><tr><th>Student ID</th><th>Created</th><th>Submissions</th><th>Status</th><th>Actions</th></tr></thead><tbody id="studentsTable"></tbody></table></div>
+          </section>
+
+          <section class="panel admin-section" id="enquiries">
+            <div class="section-title"><div><p class="eyebrow">Admissions</p><h2>Exam preparation enquiries</h2></div></div>
+            <div class="record-toolbar"><label>Search by name, email, or examination<input type="search" data-table-search="enquiriesTable" placeholder="Type to filter records" /></label><label>Enquiry status<select data-table-status="enquiriesTable"><option value="">All statuses</option><option value="new">New</option><option value="contacted">Contacted</option><option value="closed">Closed</option></select></label><p class="record-count" id="enquiriesTableCount" role="status" aria-live="polite"></p></div><div class="table-wrap"><table><thead><tr><th>Applicant</th><th>Contact</th><th>Study interest</th><th>Message</th><th>Received</th><th>Status</th><th>Actions</th></tr></thead><tbody id="enquiriesTable"></tbody></table></div>
+          </section>
+
+          <section class="panel admin-section" id="pathway-plans">
+            <div class="section-title"><div><p class="eyebrow">Counselling</p><h2>Find My Pathway submissions</h2></div></div>
+            <p class="admin-hint">Applicants consented to share these answers for review. Recommendations are starting points, not admissions or visa decisions.</p>
+            <div id="pathwayPlansList" class="pathway-plan-list"></div>
+          </section>
+
+          <section class="panel admin-section" id="exam">
+            <div class="section-title"><div><p class="eyebrow">Assessments</p><h2>Exam settings and questions</h2></div></div>
+            <form id="examSettingsForm" class="admin-form exam-settings-form">
+              <label>Exam title<input name="title" required maxlength="120" /></label>
+              <label>Duration (minutes)<input name="durationMinutes" type="number" min="1" max="240" required /></label>
+              <button class="btn btn-primary" type="submit">Save exam settings</button>
+            </form>
+            <div id="examQuestions"></div>
+            <h3 class="admin-subheading">Add a question</h3>
+            <form id="createQuestionForm" class="admin-form question-editor">
+              <label class="wide-field">Question<textarea name="prompt" required maxlength="1000" rows="2"></textarea></label>
+              <label>Option A<input name="optionA" required maxlength="500" /></label>
+              <label>Option B<input name="optionB" required maxlength="500" /></label>
+              <label>Option C<input name="optionC" required maxlength="500" /></label>
+              <label>Option D<input name="optionD" required maxlength="500" /></label>
+              <label>Correct option<select name="correctAnswer" required><option value="A">A</option><option value="B">B</option><option value="C">C</option><option value="D">D</option></select></label>
+              <button class="btn btn-primary" type="submit">Add question</button>
+            </form>
+          </section>
+
+          <section class="panel admin-section" id="results">
+            <div class="section-title"><div><p class="eyebrow">Performance</p><h2>Exam results</h2></div></div>
+            <div class="record-toolbar"><label>Search by student ID or exam<input type="search" data-table-search="resultsTable" placeholder="Type to filter records" /></label><p class="record-count" id="resultsTableCount" role="status" aria-live="polite"></p></div><div class="table-wrap"><table><thead><tr><th>Student ID</th><th>Exam</th><th>Score</th><th>Questions</th><th>Submitted</th></tr></thead><tbody id="resultsTable"></tbody></table></div>
+            <p class="admin-hint">The results table shows the latest 500 submissions.</p>
+          </section>
+                  <details class="panel admin-password-panel" id="account-settings">
+            <summary>Change administrator password</summary>
+            <form id="changeAdminPasswordForm" class="admin-form">
+              <label>New password (12–72 UTF-8 bytes)<input name="password" type="password" minlength="12" maxlength="72" autocomplete="new-password" required /></label>
+              <label>Confirm new password<input name="confirmation" type="password" minlength="12" maxlength="72" autocomplete="new-password" required /></label>
+              <button class="btn btn-primary" type="submit">Change password</button>
+            </form>
+            <p class="admin-hint">Your current session will remain signed in; other administrator sessions will be signed out.</p>
+          </details>
+</div>
+</div>
+      </div>
+    </main>
+
+    <dialog id="passwordDialog">
+      <form method="dialog" id="resetPasswordForm" class="admin-form">
+        <h2>Reset student password</h2>
+        <p>Set a new password (12–72 UTF-8 bytes). The student's current sessions will be signed out.</p>
+        <input type="hidden" name="studentId" />
+        <label>New password<input name="password" type="password" minlength="12" maxlength="72" required autocomplete="new-password" /></label>
+        <div class="dialog-actions">
+          <button class="btn btn-secondary" id="cancelPassword" type="button">Cancel</button>
+          <button class="btn btn-primary" id="saveStudentPassword" type="submit" value="save">Save password</button>
+        </div>
+      </form>
+    </dialog>
+    <script src="admin.js"></script>
+    <script src="admin-design.js"></script>
+    <script src="ui-enhancements.js"></script>
+  </body>
+</html>

@@ -1,0 +1,92 @@
+[
+  {
+    "requested": "/",
+    "actual": "/",
+    "title": "Your Journey to University | NewworldPathway",
+    "horizontalOverflow": false
+  },
+  {
+    "requested": "/portal.html",
+    "actual": "/admin",
+    "title": "Your Journey | NewworldPathway",
+    "horizontalOverflow": false
+  },
+  {
+    "requested": "/student-dashboard",
+    "actual": "/admin",
+    "title": "Your Journey | NewworldPathway",
+    "horizontalOverflow": false
+  },
+  {
+    "requested": "/pay-fees",
+    "actual": "/pay-fees",
+    "title": "Clear fees. Considered next steps. | NewworldPathway",
+    "horizontalOverflow": false
+  },
+  {
+    "requested": "/hostel",
+    "actual": "/hostel",
+    "title": "A place for your next chapter. | NewworldPathway",
+    "horizontalOverflow": false
+  },
+  {
+    "requested": "/apply",
+    "actual": "/apply",
+    "title": "Your university journey starts here. | NewworldPathway",
+    "horizontalOverflow": false
+  },
+  {
+    "requested": "/book-consultation",
+    "actual": "/book-consultation",
+    "title": "A conversation can change your direction. | NewworldPathway",
+    "horizontalOverflow": false
+  },
+  {
+    "requested": "/admin.html",
+    "actual": "/admin/login",
+    "title": "Your school. A considered view. | NewworldPathway",
+    "horizontalOverflow": false
+  },
+  {
+    "requested": "/admin#dashboard",
+    "actual": "/admin#dashboard",
+    "title": "Overview | NewworldPathway",
+    "horizontalOverflow": false
+  },
+  {
+    "requested": "/admin#students",
+    "actual": "/admin#students",
+    "title": "Students | NewworldPathway",
+    "horizontalOverflow": false
+  },
+  {
+    "requested": "/admin#payments",
+    "actual": "/admin#payments",
+    "title": "Payments | NewworldPathway",
+    "horizontalOverflow": false
+  },
+  {
+    "requested": "/admin#fees",
+    "actual": "/admin#fees",
+    "title": "Fees manager | NewworldPathway",
+    "horizontalOverflow": false
+  },
+  {
+    "requested": "/admin#users",
+    "actual": "/admin#users",
+    "title": "Staff accounts | NewworldPathway",
+    "horizontalOverflow": false
+  },
+  {
+    "requested": "/admin#announcements",
+    "actual": "/admin#announcements",
+    "title": "Post information | NewworldPathway",
+    "horizontalOverflow": false
+  },
+  {
+    "requested": "/admin#audit",
+    "actual": "/admin#audit",
+    "title": "Audit log | NewworldPathway",
+    "horizontalOverflow": false
+  }
+]

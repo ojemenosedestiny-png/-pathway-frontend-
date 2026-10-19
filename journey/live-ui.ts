@@ -1,3 +1,5 @@
+import {renderPublicWorkspace} from './workspace-public.js';
+import {renderWorkspace} from './workspace-premium.js';
 import {api,ApiError,can,type Identity} from './live-api.js';
 import {esc,button,icon} from './components.js';
 const root=document.getElementById('live-root')!;
@@ -16,56 +18,9 @@ async function twoFactor(challenge:any){
  shell(setup?'Set up your authenticator.':'Verify your sign-in.',form(`${setup?`<p>Add an account in Google Authenticator, Microsoft Authenticator, or another TOTP app. Choose manual entry, account <strong>NewworldPathway</strong>, time-based, and enter this setup key:</p><code style="overflow-wrap:anywhere;user-select:all">${esc(setup.secret)}</code><p>Keep this key private. Enter the current six-digit code from your app below.</p>`:'<p>Enter the current code from your authenticator, or one unused recovery code.</p>'}${input('code','Authenticator or recovery code','text','autocomplete="one-time-code" maxlength="64" spellcheck="false"')}<button class="j-button primary" type="submit">Verify and sign in</button>${button('Start again','/admin/login')}`));
  submit(async data=>{const result=await api('/auth/admin/2fa/verify','POST',{challenge:challenge.challenge,code:data.code.trim()});if(setup)setup.secret='';challenge.challenge='';if(result.backupCodes?.length){shell('Save your recovery codes.',`<section class="j-card j-stack" style="max-width:600px"><p>Store these codes privately in a password manager or offline. Each works once. They will not be shown again.</p><pre style="white-space:pre-wrap;user-select:all">${esc(result.backupCodes.join('\n'))}</pre><button id="continue" class="j-button primary">I have saved my codes</button></section>`);result.backupCodes=[];root.querySelector<HTMLButtonElement>('#continue')!.onclick=()=>{root.textContent='';location.assign('/admin');};}else location.assign('/admin');});
 }
-const columns:Record<string,[string,string][]>={
- students:[['studentId','Student ID'],['firstName','First name'],['lastName','Last name'],['user.status','Status']],
- payments:[['reference','Reference'],['purpose','Purpose'],['amountMinor','Amount (minor units)'],['currency','Currency'],['status','Status']],
- users:[['name','Name'],['user.email','Email'],['roleType','Role'],['user.status','Status']],
- applications:[['university.name','University'],['course.name','Course'],['status','Status']],
- documents:[['filename','Document'],['status','Status'],['rejectionReason','Review note']],
- exams:[['exam.name','Exam'],['candidateNumber','Candidate number'],['status','Status']],
- audit:[['action','Action'],['entity','Record type'],['at','Date']],
- fees:[['name','Fee'],['amountMinor','Amount (minor units)'],['currency','Currency'],['active','Active']],
-};
-function field(row:any,path:string){return path.split('.').reduce((value,key)=>value?.[key],row);}
-function table(rows:any[],key:string){const fields=columns[key]||[['name','Name'],['status','Status']];return rows.length?`<div class="j-table-wrap"><table class="j-table"><thead><tr>${fields.map(([,label])=>`<th scope="col">${esc(label)}</th>`).join('')}</tr></thead><tbody>${rows.map(row=>`<tr>${fields.map(([name])=>`<td>${esc(field(row,name)??'—')}</td>`).join('')}</tr>`).join('')}</tbody></table></div>`:'<p class="j-muted">No records yet.</p>';}
-let pageVersion=0;
-function studentCreation(content:HTMLElement,identity:Identity){
- if(identity.adminRole!=='SUPER_ADMIN')return;
- content.insertAdjacentHTML('afterbegin',`<details class="j-card" style="margin-bottom:24px"><summary>Create student for an approved exception</summary><p>Use this for an authorised test or special case. Normal registration requires verified payment. A password-setup email is queued; delivery requires a running email worker.</p>${form(`${input('firstName','First name','text','maxlength="80"')}${input('lastName','Last name','text','maxlength="80"')}${input('email','Student email','email','autocomplete="email"')}${input('phone','Phone','tel','minlength="7" maxlength="30"')}${input('reason','Reason for creating without online payment','text','minlength="10" maxlength="1000"')}<p class="j-muted">For the Resend test sender, use the email address registered to your Resend account. If your staff login is older than 15 minutes, sign out and sign in again first.</p><button type="submit" class="j-button primary">Create student and queue setup email</button>`)}</details>`);
- submit(async data=>{const student=await api('/admin/students/manual','POST',{firstName:data.firstName.trim(),lastName:data.lastName.trim(),email:data.email.trim(),phone:data.phone.trim(),reason:data.reason.trim()});content.innerHTML=`<section class="j-card j-stack"><h2>Student account created</h2><p>Student ID: <strong style="user-select:all">${esc(student.studentId)}</strong></p><p>The password-setup email is queued. This does not confirm inbox delivery. Check the recipient inbox and spam folder, then use the email link to set a password.</p>${button('Back to overview','/admin')}${button('Open student sign-in','/student/login')}</section>`;});
-}
-async function workspace(){
- const version=++pageVersion;const admin=location.pathname==='/admin';let identity:Identity;
- try{identity=await api('/auth/session');}catch(error){if(error instanceof ApiError&&error.status===401){location.replace(admin?'/admin/login':'/student/login');return;}throw error;}
- if((identity.role==='ADMIN')!==admin){location.replace(identity.role==='ADMIN'?'/admin':'/portal');return;}
- const all=admin?['dashboard','students','payments','fees','users','announcements','audit']:['dashboard','profile','applications','documents','exams','payments','announcements'];
- const items=admin?all.filter(key=>can(identity,key)):all;const key=location.hash.slice(1)||items[0]||'dashboard';const title=(key==='users'?'Staff accounts':key==='dashboard'?'Overview':key==='announcements'?'Information & notices':key.charAt(0).toUpperCase()+key.slice(1));
- if(version!==pageVersion)return;
- root.innerHTML=`<div class="j-layout"><aside class="j-sidebar" id="live-sidebar"><button class="j-button" id="close-menu">Close menu</button><a class="j-brand" href="/"><img src="/assets/school-logo.png" alt=""><span>NewworldPathway<small style="display:block">${admin?'ADMIN WORKSPACE':'MY JOURNEY'}</small></span></a><nav aria-label="Workspace">${items.map(item=>`<a href="#${item}" ${item===key?'aria-current="page"':''}>${icon(item==='payments'?'card':item==='announcements'?'bell':'file')}${esc(item==='dashboard'?'Overview':item==='users'?'Staff accounts':item.charAt(0).toUpperCase()+item.slice(1))}</a>`).join('')}</nav><div class="j-stack" style="margin-top:24px">${button('Public website','/')}<button class="j-button" id="logout">Sign out</button><button class="j-button" id="logout-all">Sign out of all devices</button></div></aside><div class="j-workspace"><header class="j-topbar"><button class="j-button" id="open-menu" aria-controls="live-sidebar" aria-expanded="false">Menu</button><strong>${admin?'School workspace':'Your Journey'}</strong><span class="j-muted">${esc(identity.adminRole?.replaceAll('_',' ')||'Student')}</span></header><main class="j-content"><p class="j-kicker">THE JOURNEY</p><h1>${esc(title)}</h1><div id="live-content" aria-live="polite"><p role="status">Loading your records…</p></div></main></div></div>`;
- for(const [id,path]of [['logout','/auth/logout'],['logout-all','/auth/logout-all']])root.querySelector<HTMLButtonElement>('#'+id)!.onclick=async event=>{const button=event.currentTarget as HTMLButtonElement;button.disabled=true;try{await api(path,'POST',{});location.assign(admin?'/admin/login':'/student/login');}catch(error){button.disabled=false;showError(error);}};
- const menu=root.querySelector<HTMLButtonElement>('#open-menu')!;const toggleMenu=(open:boolean)=>{root.querySelector('.j-layout')!.classList.toggle('menu-open',open);menu.setAttribute('aria-expanded',String(open));};menu.onclick=()=>toggleMenu(!root.querySelector('.j-layout')!.classList.contains('menu-open'));root.querySelector<HTMLButtonElement>('#close-menu')!.onclick=()=>{toggleMenu(false);menu.focus();};
- const content=root.querySelector<HTMLElement>('#live-content')!;
- if(!items.includes(key)){content.textContent='Your account does not have access to this module.';return;}
- const scope=admin?'/admin':'/portal';
- try{
-  if(key==='dashboard'){
-   const data=await api(scope+(admin?'/dashboard':'/profile'));if(version!==pageVersion)return;
-   content.innerHTML=admin?`<div class="j-grid">${[['Applications',data.applicants],['Exam enrolments',data.enrolments],['Confirmed bookings',data.bookings]].map(([label,value])=>`<section class="j-card"><p class="j-kicker">${esc(label)}</p><h2>${esc(value??0)}</h2></section>`).join('')}</div><p class="j-muted">Figures reflect records in your school database.</p>`:`<section class="j-card j-stack"><h2>Welcome, ${esc(data.firstName)}.</h2><p>Your Student ID: <strong>${esc(data.studentId)}</strong></p><p>Journey stage: ${esc(data.journeyStage||'Registered')}</p><p>Use the menu to view your applications, examinations, payments and notices.</p></section>`;
-  }else if(key==='profile'){
-   const profile=await api('/portal/profile');if(version!==pageVersion)return;
-   content.innerHTML=form(`${input('firstName','First name','text',`value="${esc(profile.firstName)}" maxlength="80"`)}${input('lastName','Last name','text',`value="${esc(profile.lastName)}" maxlength="80"`)}<p>Student ID: <strong>${esc(profile.studentId)}</strong><br>Email: ${esc(profile.user?.email)}</p><button class="j-button primary" type="submit">Save profile</button>`);submit(async data=>{await api('/portal/profile','PATCH',{firstName:data.firstName.trim(),lastName:data.lastName.trim()});content.querySelector('.form-error')!.textContent='Profile saved.';});
-  }else if(key==='announcements'){
-   const rows=await api<any[]>(scope+'/announcements');if(version!==pageVersion)return;
-   content.innerHTML=rows.length?rows.map(post=>`<article class="j-card" style="margin-bottom:20px"><p class="j-kicker">${esc(post.category)} · ${esc(post.status||'Published')}</p><h2>${esc(post.title)}</h2><p style="white-space:pre-wrap">${esc(new DOMParser().parseFromString(post.body||'','text/html').body.textContent)}</p>${!admin?`<button class="j-button" data-read="${esc(post.id)}">Mark as read</button>`:''}</article>`).join(''):'<section class="j-card"><p>No notices yet.</p></section>';
-   content.querySelectorAll<HTMLButtonElement>('[data-read]').forEach(control=>control.onclick=async()=>{control.disabled=true;try{await api('/portal/announcements/'+encodeURIComponent(control.dataset.read!)+'/read','POST',{});control.textContent='Read';}catch(error){control.disabled=false;showError(error);}});
-  }else{
-   const page=Math.max(0,Number(new URLSearchParams(location.search).get('page'))||0);const rows=await api<any[]>(scope+'/'+key+'?skip='+page*25+'&take=25');if(version!==pageVersion)return;content.innerHTML=`<section class="j-card">${table(rows,key)}<nav class="j-row" aria-label="Record pages">${page?button('Previous',`?page=${page-1}#${key}`):''}${rows.length===25?button('Next',`?page=${page+1}#${key}`):''}</nav></section>`;
-  }
-  if(admin&&key==='students'&&version===pageVersion)studentCreation(content,identity);
- }catch(error){if(version===pageVersion)showError(error,content);}
-}
+async function workspace(){await renderWorkspace(root);}
 function showError(error:unknown,target:HTMLElement=root.querySelector('#live-content')||root){target.innerHTML=`<div class="j-error" role="alert">${esc(error instanceof Error?error.message:'Unable to load this page.')}</div><p>${button('Try again',location.pathname+location.search+location.hash)}</p>`;}
-async function start(){try{switch(location.pathname){case '/student/login':studentLogin();break;case '/admin/login':adminLogin();break;case '/set-password':passwordSetup();break;case '/forgot-password':case '/recover-student-id':recover();break;default:await workspace();}}catch(error){showError(error);}}
+async function start(){try{switch(location.pathname){case '/student/login':studentLogin();break;case '/admin/login':adminLogin();break;case '/set-password':passwordSetup();break;case '/forgot-password':case '/recover-student-id':recover();break;case '/hostel':case '/pay-fees':case '/apply':case '/book-consultation':await renderPublicWorkspace(root);break;default:await workspace();}}catch(error){showError(error);}}
 window.addEventListener('hashchange',()=>{if(['/admin','/portal'].includes(location.pathname))workspace().catch(error=>showError(error));});
 if(['/admin','/portal'].includes(location.pathname))setInterval(()=>{if(document.hidden)return;api('/auth/session').catch(error=>{if(error instanceof ApiError&&error.status===401)location.assign(location.pathname==='/admin'?'/admin/login':'/student/login');});},60000);
 start();

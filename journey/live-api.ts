@@ -5,8 +5,8 @@ async function csrfToken(){
  if(!csrfFlight)csrfFlight=fetch('/backend-api/auth/csrf',{credentials:'same-origin',cache:'no-store'}).then(async response=>{if(!response.ok)throw new ApiError('Unable to start a secure session. Please try again.',response.status);csrf=(await response.json()).csrfToken;return csrf;}).finally(()=>csrfFlight=undefined);
  return csrfFlight;
 }
-export async function api<T=any>(path:string,method='GET',body?:unknown,retry=true):Promise<T>{
- const headers:Record<string,string>={Accept:'application/json'};
+export async function api<T=any>(path:string,method='GET',body?:unknown,retry=true,extraHeaders:Record<string,string>={}):Promise<T>{
+ const headers:Record<string,string>={Accept:'application/json',...extraHeaders};
  if(method!=='GET'){headers['X-CSRF-Token']=await csrfToken();headers['Content-Type']='application/json';}
  let response:Response;
  try{response=await fetch('/backend-api'+path,{method,credentials:'same-origin',cache:'no-store',headers,body:body===undefined?undefined:JSON.stringify(body)});}catch{throw new ApiError('Unable to reach the school service. Check your connection and try again.',0);}
@@ -14,11 +14,11 @@ export async function api<T=any>(path:string,method='GET',body?:unknown,retry=tr
  if(!response.ok){
   if(response.status===401&&retry&&!path.startsWith('/auth/')&&['AUTH_REQUIRED','SESSION_EXPIRED'].includes(data?.error?.code)){
    if(!refreshFlight)refreshFlight=api('/auth/refresh','POST',{},false).finally(()=>refreshFlight=undefined);
-   await refreshFlight;return api(path,method,body,false);
+   await refreshFlight;return api(path,method,body,false,extraHeaders);
   }
   if(response.status===401&&retry&&path==='/auth/session'){
    if(!refreshFlight)refreshFlight=api('/auth/refresh','POST',{},false).finally(()=>refreshFlight=undefined);
-   await refreshFlight;return api(path,method,body,false);
+   await refreshFlight;return api(path,method,body,false,extraHeaders);
   }
   if(data?.error?.code==='CSRF')csrf='';
   throw new ApiError(data?.error?.message||'The request could not be completed.',response.status,data?.error?.code);

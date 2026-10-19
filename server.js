@@ -655,11 +655,15 @@ app.use('/api', (_request, response) => {
 });
 
 app.get('/', (_request, response) => response.sendFile(path.join(__dirname, 'index.html')));
+app.get(['/portal.html','/student-dashboard'], (_request,response)=>response.redirect('/portal'));
+app.get(['/hostel','/pay-fees','/apply','/book-consultation'], (_request,response)=>response.sendFile(path.join(__dirname,'journey/live.html')));
 app.get(['/enrol','/payment-status'],(_request,response)=>response.sendFile(path.join(__dirname,'journey/access.html')));
 app.get(['/student/login','/set-password','/forgot-password','/recover-student-id','/admin/login','/portal','/admin'],(_request,response)=>response.sendFile(path.join(__dirname,'journey/live.html')));
 app.get(['/pathways','/university/:id','/exams','/exams/:id','/about','/faq','/contact','/news','/login','/signup'], (_request, response) => response.sendFile(path.join(__dirname, 'index.html')));
 app.use('/journey/dist', express.static(path.join(__dirname, 'journey/dist'), { dotfiles: 'deny', index: false }));
 app.get('/journey/theme.css', (_request,response)=>response.sendFile(path.join(__dirname,'journey/theme.css')));
+app.get('/journey/workspace-tokens.css', (_request,response)=>response.sendFile(path.join(__dirname,'journey/workspace-tokens.css')));
+app.get('/journey/workspace.css', (_request,response)=>response.sendFile(path.join(__dirname,'journey/workspace.css')));
 app.get('/journey/icons/:name.svg', (request,response)=>{const allowed=new Set(['route','house','book-open','bell','user-round','menu','search','globe','credit-card','file-text','check','mail','calendar-days']);if(!allowed.has(request.params.name))return response.sendStatus(404);response.sendFile(path.join(__dirname,'journey/dist/icons',`${request.params.name}.svg`));});
 app.get(['/pay-fees', '/apply', '/application-status', '/book-consultation', '/hostel', '/my-bookings', '/student-dashboard'], (_request, response) => response.sendFile(path.join(__dirname, 'student-services.html')));
 app.use('/student-services', express.static(path.join(__dirname, 'student-services'), { dotfiles: 'deny', index: false }));

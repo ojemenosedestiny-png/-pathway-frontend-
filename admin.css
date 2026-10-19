@@ -1,0 +1,119 @@
+.admin-nav {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  color: var(--navy);
+  font-weight: 700;
+}
+
+.admin-page { padding: 52px 0 90px; }
+.admin-page [hidden] { display: none !important; }
+.admin-login { max-width: 560px; margin: 30px auto; padding: 34px; }
+.admin-login h1, .admin-heading h1 { color: var(--navy); }
+.admin-login > p:not(.eyebrow) { color: var(--muted); }
+.admin-form {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-items: end;
+  gap: 14px;
+}
+.admin-form label { display: grid; gap: 7px; color: var(--navy); font-weight: 700; }
+.admin-form input, .admin-form textarea, .admin-form select {
+  width: 100%;
+  min-height: 44px;
+  padding: 10px 12px;
+  color: var(--text);
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+}
+.admin-form textarea { resize: vertical; }
+.admin-form button { min-height: 44px; }
+.admin-login .admin-form { grid-template-columns: 1fr; margin-top: 24px; }
+.admin-heading, .section-title { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+.admin-heading { margin-bottom: 24px; }
+.admin-heading h1, .section-title h2 { margin: 0; }
+.admin-heading > p { color: var(--muted); }
+.admin-password-panel { margin-bottom: 24px; padding: 16px 20px; }
+.admin-password-panel summary { color: var(--navy); font-weight: 800; cursor: pointer; }
+.admin-password-panel[open] summary { margin-bottom: 16px; }
+.admin-password-panel .admin-hint { margin-bottom: 0; }
+.admin-metrics { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; margin-bottom: 24px; }
+.panel {
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  box-shadow: 0 12px 32px rgba(18, 34, 58, 0.08);
+}
+.admin-metrics .panel { display: grid; gap: 7px; padding: 20px; }
+.admin-metrics span { color: var(--muted); font-size: .86rem; font-weight: 700; }
+.admin-metrics strong { color: var(--navy); font-size: 2rem; }
+.admin-metrics small, .admin-hint { color: var(--muted); }
+.admin-section { margin-top: 24px; padding: 24px; scroll-margin-top: 110px; }
+.section-title { margin-bottom: 20px; }
+.section-title h2 { font-size: 1.65rem; }
+.section-title .eyebrow { margin-bottom: 5px; }
+.create-student-form { grid-template-columns: 1fr 1fr auto; }
+.admin-hint { margin: 12px 0 18px; font-size: .9rem; }
+.table-wrap { width: 100%; overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; text-align: left; }
+th, td { padding: 12px 10px; border-bottom: 1px solid var(--line); vertical-align: top; }
+th { color: var(--navy); font-size: .82rem; white-space: nowrap; }
+td { color: var(--text); font-size: .92rem; }
+td.message-cell { min-width: 220px; max-width: 360px; white-space: pre-wrap; overflow-wrap: anywhere; }
+td .admin-actions { display: flex; gap: 8px; flex-wrap: wrap; min-width: 140px; }
+.admin-action, .status-select {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 7px 9px;
+  background: white;
+  color: var(--navy);
+  font: inherit;
+}
+.admin-action { cursor: pointer; font-weight: 700; }
+.admin-action.danger { color: #a62d3b; }
+.status-select { min-width: 112px; }
+.exam-settings-form { grid-template-columns: 1fr 220px auto; margin-bottom: 26px; }
+.admin-subheading { margin: 26px 0 12px; color: var(--navy); }
+.question-editor { margin-top: 12px; }
+.question-editor .wide-field { grid-column: 1 / -1; }
+.question-editor textarea { min-height: 68px; }
+.question-admin-card { padding: 18px 0; border-top: 1px solid var(--line); }
+.question-admin-card h3 { margin: 0 0 12px; font-size: 1.08rem; }
+.question-admin-card .question-editor { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.question-admin-card .question-editor .wide-field { grid-column: 1 / -1; }
+.question-admin-card .question-editor .question-actions { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.question-admin-card .question-editor .question-actions label { display: flex; align-items: center; }
+.question-admin-card .question-editor .question-actions input { width: auto; min-height: auto; }
+.pathway-plan-card { padding: 20px 0; border-top: 1px solid var(--line); }
+.pathway-plan-card h3 { margin: 0 0 8px; color: var(--navy); font-size: 1.12rem; }
+.pathway-plan-profile { display: flex; flex-wrap: wrap; gap: 8px 18px; color: var(--muted); font-size: .9rem; }
+.pathway-plan-profile a { color: var(--emerald-deep); font-weight: 700; }
+.pathway-plan-card details { margin: 14px 0; }
+.pathway-plan-card summary { color: var(--navy); font-weight: 700; cursor: pointer; }
+.pathway-plan-card details ol, .pathway-plan-card details ul { padding-left: 22px; }
+.pathway-plan-card details li { margin: 6px 0; }
+.pathway-plan-review { display: grid; grid-template-columns: 180px minmax(200px, 1fr) auto; gap: 12px; align-items: end; }
+.pathway-plan-review label { display: grid; gap: 7px; color: var(--navy); font-weight: 700; }
+.pathway-plan-review textarea { min-height: 44px; resize: vertical; border: 1px solid var(--line); border-radius: 10px; padding: 10px 12px; font: inherit; }
+.form-message { margin-bottom: 16px; }
+#passwordDialog { width: min(460px, calc(100% - 32px)); border: 0; border-radius: 18px; padding: 26px; box-shadow: 0 20px 70px rgba(9,29,58,.25); }
+#passwordDialog::backdrop { background: rgba(9,29,58,.55); }
+#passwordDialog h2 { margin: 0; color: var(--navy); font-size: 1.4rem; }
+#passwordDialog p { margin: 0; color: var(--muted); }
+#passwordDialog .admin-form { grid-template-columns: 1fr; }
+.dialog-actions { display: flex; justify-content: flex-end; gap: 10px; }
+
+@media (max-width: 900px) {
+  .admin-metrics { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .admin-nav { display: none; }
+  .question-admin-card .question-editor { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .pathway-plan-review { grid-template-columns: 1fr; }
+}
+@media (max-width: 620px) {
+  .admin-page { padding-top: 28px; }
+  .admin-section, .admin-login { padding: 18px; }
+  .admin-metrics, .create-student-form, .exam-settings-form, .question-admin-card .question-editor { grid-template-columns: 1fr; }
+  .admin-heading { display: block; }
+  .question-editor .wide-field, .question-admin-card .question-editor .wide-field { grid-column: auto; }
+}

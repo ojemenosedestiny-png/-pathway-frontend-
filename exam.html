@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Exam Portal | NewworldPathway</title>
+    <link rel="stylesheet" href="portal.css" />
+    <meta name="theme-color" content="#133e35" />
+    <link rel="stylesheet" href="redesign.css" />
+  </head>
+  <body>
+    <div class="topbar">
+      <div class="container topbar-inner">
+        <div class="topbar-links">
+          <span>✉ info@newworldemeraldprivateschool.com</span>
+          <span>☎ 0813 603 7074</span>
+        </div>
+        <span class="topbar-note">Exam Session Active</span>
+      </div>
+    </div>
+
+    <header class="site-header">
+      <div class="container nav-wrap">
+        <a class="brand" href="portal.html" aria-label="Back to portal">
+          <img src="https://newworldemeraldprivateschool.com/wp-content/uploads/2024/05/logo.png" alt="NWE logo" />
+          <span>
+            <strong>NewworldPathway</strong>
+            <small>to University</small>
+          </span>
+        </a>
+
+        <nav class="nav" aria-label="Exam navigation">
+          <a href="portal.html">Dashboard</a>
+          <a href="exam.html">Current Exam</a>
+          <a href="#questionCards">Questions</a>
+          <a href="https://wa.me/2348136037074" target="_blank" rel="noreferrer">Support</a>
+        </nav>
+
+        <div class="nav-actions">
+          <a class="btn btn-secondary" href="portal.html">Exit</a>
+          <button class="btn btn-primary" id="submitExamTop" type="button">Submit</button>
+        </div>
+      </div>
+    </header>
+
+    <main class="exam-shell">
+      <div class="container exam-layout">
+        <section class="exam-panel">
+          <div class="exam-header">
+            <h1 id="examTitle">English Language Assessment</h1>
+            <div class="timer">⏱ 30:00</div>
+          </div>
+
+          <div id="questionCards" class="question-cards"></div>
+
+          <div class="exam-actions">
+            <button class="action-btn btn btn-primary" id="submitExam" type="button">Submit exam</button>
+            <p class="form-message" id="examMessage" role="status" aria-live="polite"></p>
+          </div>
+        </section>
+
+        <aside class="summary-card">
+          <h3>Exam Overview</h3>
+          <div class="progress-stack">
+            <div class="progress-line">
+              <div class="progress-label"><span>Progress</span><strong id="examProgress">0%</strong></div>
+              <div class="bar"><span id="examProgressBar" style="width: 0%"></span></div>
+            </div>
+          </div>
+
+          <div class="question-list" aria-label="Question navigation">
+            <span class="q-number active">1</span>
+          </div>
+
+          <div class="notice" id="saveNotice">Your responses are automatically saved every 15 seconds.</div>
+        </aside>
+      </div>
+    </main>
+    <script src="script.js"></script>
+  </body>
+</html>

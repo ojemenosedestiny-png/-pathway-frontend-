@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Student Portal | NewworldPathway</title>
+    <meta
+      name="description"
+      content="Student portal login and exam dashboard for NewworldPathway to University."
+    />
+    <link rel="stylesheet" href="portal.css" />
+    <meta name="theme-color" content="#133e35" />
+    <link rel="stylesheet" href="redesign.css" />
+  </head>
+  <body>
+    <div class="topbar">
+      <div class="container topbar-inner">
+        <div class="topbar-links">
+          <span>✉ info@newworldemeraldprivateschool.com</span>
+          <span>☎ 0813 603 7074</span>
+        </div>
+        <span class="topbar-note">Admission is ongoing...</span>
+      </div>
+    </div>
+
+    <header class="site-header">
+      <div class="container nav-wrap">
+        <a class="brand" href="index.html" aria-label="Return to homepage">
+          <img src="https://newworldemeraldprivateschool.com/wp-content/uploads/2024/05/logo.png" alt="New World Emerald logo" />
+          <span>
+            <strong>NewworldPathway</strong>
+            <small>to University</small>
+          </span>
+        </a>
+
+        <nav class="nav" aria-label="Portal navigation">
+          <a href="index.html">Home</a>
+          <a href="portal.html">Portal</a>
+          <a href="#dashboard">Dashboard</a>
+          <a href="#exams">My Exams</a>
+          <a href="#results">Results</a>
+          <a href="/student-dashboard">Student Services</a>
+        </nav>
+
+        <div class="nav-actions">
+          <a class="btn btn-secondary" href="index.html">Back to Site</a>
+          <a class="btn btn-primary" href="exam.html">Start Exam</a>
+        </div>
+      </div>
+    </header>
+
+    <main class="portal-page">
+      <div class="container portal-grid" id="portalGrid">
+        <section class="portal-panel" id="loginPanel" aria-label="Student login section">
+          <p class="eyebrow">Student portal</p>
+          <h1>Login to begin your exam session.</h1>
+          <p>
+            Access your student dashboard, view active assessments, and continue your learning journey with confidence.
+          </p>
+
+          <div class="login-card">
+            <form id="loginForm" class="form-row">
+              <label>
+                Student ID
+                <input id="studentId" name="studentId" type="text" autocomplete="username" required />
+              </label>
+              <label>
+                Password
+                <input id="studentPassword" name="password" type="password" autocomplete="current-password" required />
+              </label>
+
+              <div class="checkbox-row">
+                <span>Secure sign-in · session lasts 7 days</span>
+                <a href="https://wa.me/2348136037074?text=Hello%2C%20I%20need%20help%20resetting%20my%20student%20portal%20password." target="_blank" rel="noreferrer">Need a password reset?</a>
+              </div>
+
+              <button type="submit" class="btn login-btn">Login to Portal</button>
+              <p id="loginMessage" class="form-message" role="status" aria-live="polite"></p>
+            </form>
+
+            <p class="form-meta">
+              Need access? <a href="index.html#contact">Contact the admissions team</a>
+            </p>
+          </div>
+        </section>
+
+        <section class="dashboard-shell" id="dashboard" aria-label="Student dashboard overview" hidden>
+          <div class="top-row">
+            <h2>Welcome back, Ada</h2>
+            <div class="user-pill">
+              <span class="user-avatar">A</span>
+              <span id="studentIdentity">Student Portal</span>
+              <button class="logout-btn" id="logoutButton" type="button">Log out</button>
+            </div>
+          </div>
+
+          <div class="metric-grid">
+            <article class="metric-card">
+              <span class="value" data-metric="active">0</span>
+              <span class="label">Active Exams</span>
+            </article>
+            <article class="metric-card">
+              <span class="value" data-metric="average">—</span>
+              <span class="label">Average Score</span>
+            </article>
+            <article class="metric-card">
+              <span class="value" data-metric="completed">—</span>
+              <span class="label">Completed Assessments</span>
+            </article>
+          </div>
+
+          <div class="content-grid">
+            <div class="exam-list" id="exams" aria-live="polite"></div>
+
+            <aside class="sidebar-stack">
+              <div class="sidebar-card"><h3>Your preparation toolkit</h3><ul class="preparation-links"><li><a href="index.html#pathways">WAEC &amp; NECO programmes &rarr;</a><small>Explore preparation for your school examinations.</small></li><li><a href="index.html#international-exams">International exam directory &rarr;</a><small>Find exam options and official provider information.</small></li><li><a href="index.html#find-my-pathway">International study planner &rarr;</a><small>Plan your next academic step after your exams.</small></li></ul></div>
+              <div class="sidebar-card"><h3>Need a little guidance?</h3><p>Ask our team about your subjects, preparation options, or account access.</p><a class="btn btn-primary" href="https://wa.me/2348136037074" target="_blank" rel="noreferrer">Contact the school &rarr;</a></div>
+              <div class="sidebar-card" id="results">
+                <h3>Recent Activity</h3>
+                <ul class="activity-list" id="recentActivity"></ul>
+              </div>
+            </aside>
+          </div>
+        </section>
+      </div>
+    </main>
+    <script src="script.js"></script>
+    <script src="ui-enhancements.js"></script>
+  </body>
+</html>

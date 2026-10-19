@@ -1,0 +1,47 @@
+.services-page { background:#f6f7f3; color:#223a33; }
+.service-header { background:white; border-bottom:1px solid var(--line); }
+.service-header > div { display:flex; justify-content:space-between; align-items:center; gap:24px; padding:22px 0; flex-wrap:wrap; }
+.service-header nav { display:flex; flex-wrap:wrap; gap:20px; font-size:.86rem; font-weight:650; }
+.service-header nav a[aria-current=page] { color:#115832; border-bottom:2px solid #a6843e; }
+.demo-banner { padding:10px 24px; text-align:center; background:#f2e7cb; color:#493c20; font-size:.8rem; }
+.service-main { padding-top:52px; padding-bottom:60px; min-height:65vh; }
+.service-main h1 { font-size:clamp(2.1rem,4vw,3.4rem); margin:10px 0 14px; font-weight:700; }
+.service-main h2 { font-size:1.55rem; letter-spacing:-.02em; }
+.service-main .intro { max-width:660px; color:#53655b; margin-bottom:30px; }
+.service-layout { display:grid; grid-template-columns:minmax(0,1.8fr) minmax(250px,1fr); gap:28px; align-items:start; }
+.service-card { background:white; border:1px solid #dce4dd; border-radius:12px; padding:28px; box-shadow:0 8px 25px #103c3205; margin-bottom:24px; min-width:0; }
+.service-card h2, .service-card h3 { margin-top:0; }
+.receipt-text { white-space:pre-wrap; overflow-wrap:anywhere; font:inherit; }
+.service-card dd { margin:0; max-width:65%; overflow-wrap:anywhere; }
+.service-fields { display:grid; grid-template-columns:1fr 1fr; gap:20px; }
+.service-fields label { display:flex; flex-direction:column; gap:7px; font-size:.87rem; }
+.service-fields .wide { grid-column:1/-1; }
+.service-fields input,.service-fields select,.service-fields textarea { width:100%; min-width:0; font-size:.95rem; min-height:46px; color:#223a33; }
+.service-fields input:invalid:not(:placeholder-shown):focus { border-color:#a4382a; }
+.service-actions { display:flex; gap:12px; flex-wrap:wrap; margin-top:26px; }
+.services-page button { cursor:pointer; }
+.services-page .btn { display:inline-flex; align-items:center; justify-content:center; text-align:center; border:1px solid #b6c5bd; }
+.services-page .btn-primary { color:white; background:#115832; border-color:#115832; }
+.service-note { color:#53655b; font-size:.82rem; }
+.service-error { padding:14px; background:#fff0ed; color:#8c281c; border-left:3px solid #aa3927; margin-bottom:18px; }
+.badge { display:inline-block; padding:4px 10px; border-radius:30px; background:#e7f2e9; color:#14552e; font-size:.75rem; font-weight:700; }
+.badge.pending { background:#fff0cf; color:#654709; }.badge.failed { background:#ffe9e4; color:#8c281c; }
+.summary-line { display:flex; justify-content:space-between; gap:16px; padding:13px 0; border-bottom:1px solid #e4e9e3; }
+.summary-line.total { font-weight:750; font-size:1.15rem; }
+.table-wrap { overflow:auto; }table { width:100%; border-collapse:collapse; font-size:.85rem; }th,td { padding:14px 12px; text-align:left; border-bottom:1px solid #e4e9e3; }th { background:#f4f6f2; }
+.empty-state { padding:24px; background:#f5f7f3; border:1px dashed #c4d1c5; border-radius:8px; color:#53655b; }
+.stepper { display:flex; gap:8px; list-style:none; padding:0; margin:24px 0; flex-wrap:wrap; }.stepper li { padding:8px 12px; border-bottom:3px solid #dce4dd; font-size:.78rem; }.stepper [aria-current=step] { border-color:#115832; color:#115832; font-weight:750; }
+.success-mark { font-size:2rem; background:#e7f2e9; border-radius:50%; width:64px; height:64px; display:grid; place-items:center; color:#115832; margin-bottom:20px; }
+.room-grid,.dashboard-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:22px; }.room-grid .service-card { padding:0; overflow:hidden; }.room-body { padding:24px; }.room-image { width:100%; height:190px; object-fit:cover; }.service-card img { max-width:100%; }.room-gallery { position:relative; }.room-gallery button { position:absolute; bottom:12px; background:white; border:1px solid #cad5cb; border-radius:6px; padding:7px 12px; }.room-gallery .prev { left:12px; }.room-gallery .next { right:12px; }
+.timeline { list-style:none; padding-left:22px; border-left:2px solid #c8d8cb; }.timeline li { padding:0 0 24px 16px; }.timeline strong { display:block; }
+.dropzone { border:2px dashed #aebfaf; border-radius:8px; padding:20px; background:#f8faf6; }.dropzone.drag-over { border-color:#115832; background:#e7f2e9; }.file-preview img { height:90px; width:auto; margin-top:12px; }.file-preview { overflow-wrap:anywhere; }
+.slots { display:flex; flex-wrap:wrap; gap:10px; margin:18px 0; }.slot { border:1px solid #9eb29f; background:white; border-radius:5px; padding:10px 14px; }.slot[aria-pressed=true] { background:#115832; color:white; }
+dialog { max-width:480px; width:calc(100% - 32px); border:1px solid #cad5cb; border-radius:12px; padding:28px; color:#223a33; }dialog::backdrop { background:#0a241b88; }
+.skeleton { padding:40px; background:linear-gradient(90deg,#e8eee7,#f8faf6,#e8eee7); border-radius:12px; animation:service-load 1.3s ease-in-out infinite; }@keyframes service-load { 50% { opacity:.55; } }
+#toast { position:fixed; bottom:24px; left:50%; transform:translateX(-50%); background:#103e2e; color:white; padding:14px 22px; border-radius:8px; max-width:90vw; z-index:50; }#toast:empty { display:none; }
+.service-footer { padding-top:24px; padding-bottom:35px; border-top:1px solid #dce4dd; font-size:.83rem; }.service-footer details { margin-top:18px; }.service-footer a { text-decoration:underline; }
+.services-page :focus-visible { outline:3px solid #9e762b; outline-offset:3px; }
+@media(max-width:900px) { .service-layout { grid-template-columns:1fr; }.room-grid,.dashboard-grid { grid-template-columns:repeat(2,minmax(0,1fr)); } }
+@media(max-width:600px) { .service-main { padding-top:30px; }.service-fields,.room-grid,.dashboard-grid { grid-template-columns:1fr; }.service-card { padding:20px; }.service-header nav { gap:12px; }.stepper li { font-size:.72rem; }.service-actions .btn { flex-grow:1; } }
+@media(prefers-reduced-motion:reduce) { .skeleton { animation:none; } }
+@media print { .service-header,.demo-banner,.service-footer,.service-actions,#toast,.no-print { display:none!important; }.service-main { padding:0; }.service-card { box-shadow:none; border:0; }.service-layout { display:block; } }
