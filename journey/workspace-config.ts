@@ -21,7 +21,7 @@ export const editors:Record<string,EditorField[]>={
  slides:[f('title','Slide title'),f('caption','Caption','textarea'),f('image','Approved image URL','url'),f('order','Display order','number',{default:0}),f('visible','Show this slide','checkbox',{default:true})],
  slots:[f('advisorId','Adviser account ID'),f('advisor','Adviser name'),f('startsAt','Start time','datetime-local'),f('endsAt','End time','datetime-local'),f('mode','Appointment type','text',{options:['VIDEO','PHONE','IN_PERSON'],default:'VIDEO'}),active],
  content:[f('key','Content section, e.g. home.ctaTitle'),f('value','Text or content','textarea')],
- users:[f('name','Staff name'),f('email','Email','email'),f('phone','Phone','tel'),f('roleType','Staff role','text',{options:['ADMISSIONS','FINANCE','HOSTEL','CONTENT','SUPER_ADMIN'],default:'ADMISSIONS'})],
+ users:[f('name','Staff name'),f('email','Email','email'),f('phone','Phone','tel'),f('roleType','Staff role','text',{options:['ADMISSIONS','FINANCE','HOSTEL','EXAMS_OFFICER','CONTENT','SUPER_ADMIN'],default:'ADMISSIONS'})],
 };
 export const adminModules=[
  ['dashboard','Overview','layout-dashboard','Overview','A considered view of your school community.'],

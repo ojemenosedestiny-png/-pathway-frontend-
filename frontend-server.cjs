@@ -18,7 +18,8 @@ function createFrontend() {
  app.get('/login',(_req,res)=>res.redirect('/student/login'));
  app.get('/admin.html',(_req,res)=>res.redirect('/admin/login'));
  // Checkout is not enabled until real provider credentials and fees are configured.
- app.get(['/enrol','/signup'],(_req,res)=>res.redirect('/contact'));
+ app.get('/enrol',(_req,res)=>res.redirect('/contact'));
+ app.get(['/signup','/verify-email','/applicant'],send('journey/live.html'));
  app.get(['/','/index.html','/pathways','/university/:id','/exams','/exams/:id','/about','/faq','/contact','/news'],send('index.html'));
  for(const directory of ['assets','journey/dist'])app.use('/'+directory,express.static(path.join(__dirname,directory),{dotfiles:'deny',index:false,fallthrough:false}));
  app.get('/journey/theme.css',send('journey/theme.css'));

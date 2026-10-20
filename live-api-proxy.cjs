@@ -5,7 +5,7 @@ function liveApiProxy(origin = process.env.PATHWAY_BACKEND_ORIGIN || 'https://pa
   const upstream = new URL(origin);
   if (upstream.protocol !== 'https:' || upstream.username || upstream.password || upstream.pathname !== '/') throw Error('PATHWAY_BACKEND_ORIGIN must be an HTTPS origin.');
   return (req, res) => {
-    if (!/^\/(auth|portal|admin|public|payments|files|health)(\/|\?|$)/.test(req.url) || /\\|%5c|%2f|(?:^|\/)\.\.(?:\/|$)/i.test(req.url)) return res.status(404).json({error:{message:'API route not found.'}});
+    if (!/^\/(auth|applicant|portal|admin|public|payments|files|health)(\/|\?|$)/.test(req.url) || /\\|%5c|%2f|(?:^|\/)\.\.(?:\/|$)/i.test(req.url)) return res.status(404).json({error:{message:'API route not found.'}});
     const headers = {};
     for (const name of ['accept','content-type','cookie','origin','x-csrf-token','x-payment-token','idempotency-key']) if (req.headers[name]) headers[name] = req.headers[name];
     headers['x-forwarded-for'] = req.ip;

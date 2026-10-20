@@ -1,0 +1,21 @@
+const assert=require('node:assert/strict');
+const {chromium}=require('playwright');
+const {createFrontend}=require('./frontend-server.cjs');
+const fs=require('node:fs');
+(async()=>{const server=createFrontend().listen(0,'127.0.0.1');await new Promise(r=>server.once('listening',r));const browser=await chromium.launch({channel:'chrome',headless:true});
+try{const page=await browser.newPage();const origin='http://127.0.0.1:'+server.address().port;let created=false;const mutations=[];
+await page.route('**/backend-api/**',async route=>{const req=route.request(),path=new URL(req.url()).pathname.replace('/backend-api','');let data={};if(req.method()!=='GET')mutations.push({path,body:req.postDataJSON(),csrf:req.headers()['x-csrf-token']});
+if(path==='/auth/csrf')data={csrfToken:'fixture-csrf'};
+else if(path==='/auth/applicant/signup')data={message:'A verification link has been queued. Check your inbox.'};
+else if(path==='/auth/applicant/verify-email')data={verified:true};
+else if(path==='/applicant/profile')data={role:'APPLICANT',email:'applicant@example.test',phone:'',emailVerified:true,applicant:{applicantNumber:'APP-2026-0001',firstName:'',lastName:''}};
+else if(path==='/applicant/invoices/application')created=true;
+else if(path==='/applicant/invoices')data=created?[{id:'fixture-invoice',reference:'NWP-APPLICATION-TEST',amountMinor:'1500000',currency:'NGN',status:'OPEN'}]:[];
+await route.fulfill({contentType:'application/json',body:JSON.stringify(data)});});
+await page.goto(origin+'/signup');await page.getByLabel('Email address',{exact:true}).fill('applicant@example.test');await page.getByLabel('Create a password').fill('SyntheticApplicantPassword');await page.getByRole('checkbox').check();await page.getByRole('button',{name:'Create free account'}).click();await page.getByRole('heading',{name:'Check your email'}).waitFor();
+await page.goto(origin+'/verify-email#token='+'a'.repeat(64));await page.getByRole('button',{name:'Verify email address'}).click();await page.getByRole('heading',{name:'Your email is verified'}).waitFor();assert.ok(!page.url().includes('token='));
+await page.goto(origin+'/applicant');await page.getByLabel('First name').fill('Ada');await page.getByLabel('Last name').fill('Test');await page.getByLabel('Phone number').fill('+2348000000011');await page.getByRole('button',{name:'Save details and request invoice'}).click();await page.getByText('NWP-APPLICATION-TEST',{exact:true}).waitFor();
+fs.mkdirSync('docs/platform-phase-2/screenshots',{recursive:true});for(const width of[360,768,1440]){await page.setViewportSize({width,height:900});assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),`No overflow at ${width}`);await page.screenshot({path:`docs/platform-phase-2/screenshots/applicant-${width}.png`,fullPage:true});}
+assert.ok(mutations.every(row=>row.csrf==='fixture-csrf'));assert.ok(mutations.some(row=>row.path==='/applicant/invoices/application'&&Object.keys(row.body).length===0));
+console.log('PASS: applicant signup, explicit email confirmation, profile, server-priced invoice, CSRF and 360/768/1440 screenshots.');
+}finally{await browser.close();server.closeAllConnections();await new Promise(r=>server.close(r));}})().catch(error=>{console.error(error);process.exitCode=1;});
