@@ -24,6 +24,9 @@ export const editors:Record<string,EditorField[]>={
  users:[f('name','Staff name'),f('email','Email','email'),f('phone','Phone','tel'),f('roleType','Staff role','text',{options:['ADMISSIONS','FINANCE','HOSTEL','CONTENT','SUPER_ADMIN'],default:'ADMISSIONS'})],
 };
 export const adminModules=[
+ ['destination-guides','Destination guides','globe','Content','Draft and publish country guidance without inventing institution details.'],
+ ['exam-programmes','Exam programmes','book-open','Content','Manage preparation guides, sessions and confirmed fees.'],
+ ['hostel-slides','Hostel slides','image','Content','Manage accommodation guides and illustrative demo slides.'],
  ['dashboard','Overview','layout-dashboard','Overview','A considered view of your school community.'],
  ['students','Students','users','People','Profiles, access and the next step for every student.'],
  ['applicants','Applicants','file-check','People','Review applications submitted before a student account is created.'],
@@ -54,4 +57,4 @@ export const adminModules=[
 export const studentModules=[
  ['dashboard','Home','house','','View your next steps, payments and school updates.'],['journey','My journey','route','','Follow your progress and university applications.'],['exams','Your exams','graduation-cap','','Your registrations, candidate details and results.'],['payments','Payments','wallet','','View your fees, payment history and receipts.'],['hostel','Hostel','building-2','','Find a residence or manage your existing booking.'],['documents','Documents','folder-open','','Your documents, securely in one place.'],['messages','Messages','message-circle','','A direct conversation with your admissions team.'],
 ];
-export function modulePermission(key:string){return key==='applicants'?'applications':key==='slots'?'consultations':key;}
+export function modulePermission(key:string){return key==='destination-guides'?'countries':key==='exam-programmes'?'exams':key==='hostel-slides'?'slides':key==='applicants'?'applications':key==='slots'?'consultations':key;}
