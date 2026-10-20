@@ -21,7 +21,7 @@ export async function api<T=any>(path:string,method='GET',body?:unknown,retry=tr
    await refreshFlight;return api(path,method,body,false,extraHeaders);
   }
   if(data?.error?.code==='CSRF')csrf='';
-  throw new ApiError(data?.error?.message||'The request could not be completed.',response.status,data?.error?.code);
+  throw new ApiError(data?.error?.message||'The school service could not complete your request. Try again shortly. If it continues, contact the school.',response.status,data?.error?.code);
  }
  return data;
 }

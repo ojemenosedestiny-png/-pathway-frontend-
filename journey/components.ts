@@ -1,7 +1,7 @@
 export const esc=(value:any)=>String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]!));
-export function icon(name='route'){const names:Record<string,string>={route:'route',home:'house',book:'book-open',bell:'bell',user:'user-round',menu:'menu',search:'search',globe:'globe',card:'credit-card',file:'file-text',check:'check',mail:'mail',calendar:'calendar-days'};return `<img class="j-icon" src="/journey/icons/${names[name]||'route'}.svg" alt="" aria-hidden="true">`;}
-export const money=(amount:any,currency='NGN')=>new Intl.NumberFormat('en-NG',{style:'currency',currency,maximumFractionDigits:0}).format(Number(amount)||0);
-export const date=(value:any)=>value?new Date(value).toLocaleString('en-GB',{dateStyle:'medium',timeStyle:'short'}):'Not scheduled';
+export function icon(name='route'){const names:Record<string,string>={route:'route',home:'house',book:'book-open',bell:'bell',user:'user-round',menu:'menu',search:'search',globe:'globe',card:'credit-card',file:'file-text',check:'check',mail:'mail',calendar:'calendar-days'};return `<img class="j-icon" src="/journey/dist/icons/${names[name]||'route'}.svg" alt="" aria-hidden="true">`;}
+export const money=(amount:any,currency='NGN')=>new Intl.NumberFormat('en-NG',{style:'currency',currency,currencyDisplay:'code',maximumFractionDigits:0}).format(Number(amount)||0);
+export const date=(value:any)=>value?new Date(value).toLocaleString('en-GB',{day:'numeric',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit',hour12:false}):'Not scheduled';
 export const badge=(status:any)=>`<span class="j-badge ${/reject|fail|cancel/i.test(status)?'error':/pending|review|draft/i.test(status)?'warning':''}">${esc(status)}</span>`;
 export const empty=(message:string,action='')=>`<div class="j-empty">${esc(message)}${action?`<p>${action}</p>`:''}</div>`;
 export const button=(label:string,url:string,primary=false)=>`<a class="j-button ${primary?'primary':''}" href="${esc(url)}">${esc(label)}</a>`;

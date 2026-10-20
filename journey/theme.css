@@ -70,3 +70,36 @@
 @media(max-width:1100px) { .j-pass-list { grid-template-columns:repeat(2,minmax(0,1fr)); gap:1.75rem; }.j-pass-connector { top:45%; }.j-pass-step:nth-child(2) .j-pass-connector { display:none; }.j-boarding-pass h3 { max-width:18ch; }.j-pass-top { margin-bottom:1.75rem; } }
 @media(max-width:760px) { .j-pass-list { grid-template-columns:1fr; gap:1.1rem; }.j-pass-connector { display:none; }.j-boarding-pass { padding:1.4rem 1.35rem 1.1rem; }.j-pass-label { font-size:.6875rem; }.j-pass-footer { font-size:.6875rem; }.j-pass-watermark { font-size:6rem; top:1.8rem; }.j-pass-top { margin-bottom:1.5rem; } }
 @media(prefers-reduced-motion:reduce) { .j-pass-step,.j-boarding-pass,.j-pass-icon { opacity:1!important; transform:none!important; animation:none!important; transition:none!important; } }
+
+/* Typography only: grid, positioning, spacing, globe and motion rules are unchanged. */
+@font-face{font-family:Inter;src:url('/assets/fonts/Inter.ttf') format('truetype');font-weight:100 900;font-display:swap}
+@font-face{font-family:Fraunces;src:url('/assets/fonts/Fraunces.ttf') format('truetype');font-weight:100 900;font-display:swap}
+:root{--type-12:.75rem;--type-14:.875rem;--type-16:1rem;--type-18:1.125rem;--type-22:1.375rem;--type-28:1.75rem;--type-40:2.5rem;--type-56:3.5rem;--type-serif:Fraunces,Georgia,'Times New Roman',serif;--type-sans:Inter,'Segoe UI',Arial,sans-serif;--type-copy:68ch;--type-body-leading:1.6;--type-heading-leading:1.2}
+.journey-app:not(.pw-body){font-family:var(--type-sans);font-size:var(--type-16);line-height:var(--type-body-leading)}
+.journey-public :is(p,li,summary,input,select,textarea,button,.brand,.j-public-nav,.j-button){font-family:var(--type-sans)}
+.journey-public p,.journey-app:not(.pw-body) p{font-size:var(--type-16);line-height:var(--type-body-leading);max-inline-size:var(--type-copy)}
+.journey-public :is(h1,h2,h3),.journey-app:not(.pw-body) :is(h1,h2,h3){font-family:var(--type-serif);font-weight:500;line-height:var(--type-heading-leading);letter-spacing:-.025em;text-wrap:pretty}
+.journey-public .j-hero-title,.journey-app:not(.pw-body) .j-hero-title{font-size:clamp(var(--type-40),4.5vw,var(--type-56));line-height:1.15}
+.journey-public .j-heading,.journey-app:not(.pw-body) .j-heading{font-size:clamp(var(--type-28),3vw,var(--type-40))}
+.journey-public .j-card h2,.journey-app:not(.pw-body) .j-card h2{font-size:var(--type-28)}
+.journey-public .j-card h3,.journey-app:not(.pw-body) .j-card h3{font-size:var(--type-22)}
+.journey-public :is(.j-muted,.j-image-caption),.journey-app:not(.pw-body) .j-muted{font-size:var(--type-14);color:var(--j-muted);line-height:var(--type-body-leading)}
+.journey-public .j-kicker,.journey-app:not(.pw-body) .j-kicker{font-family:var(--type-sans);font-size:var(--type-12);line-height:1.6;letter-spacing:.14em;font-weight:650}
+.journey-public .j-pass-label{color:var(--j-ink);font-size:var(--type-12)}
+.journey-public .j-pass-footer{color:var(--j-muted);font-size:var(--type-12)}
+.journey-public .j-announcement{font-family:var(--type-sans);font-size:var(--type-14);line-height:1.6}
+.journey-public .j-journey-hero :is(.j-muted,.j-kicker){color:#d1dbc9}
+.journey-public .j-public-footer :is(p,.j-muted){color:#c3d0bd}
+.journey-public .j-photo-break :is(p,.j-muted){color:var(--j-paper)}
+.journey-public .j-button,.journey-app:not(.pw-body) .j-button{font-family:var(--type-sans);font-size:var(--type-14);font-weight:600;min-block-size:44px}
+.journey-public .j-public-nav a{font-size:var(--type-14);line-height:1.6;min-block-size:44px;align-content:center}
+.journey-public :is(.j-rich-text,.j-rich-content),.journey-app:not(.pw-body) .j-rich-text{max-inline-size:var(--type-copy)}
+.journey-public :is(strong,b),.journey-app:not(.pw-body) :is(strong,b){font-weight:650}
+.journey-public .j-error,.journey-app .j-error,.journey-app .form-error:not(:empty){color:#963e49;background:#f9e9eb;font-size:var(--type-16);line-height:1.6}
+.journey-public :is(.j-stat,.j-badge),.journey-app input{font-variant-numeric:tabular-nums}
+.journey-public :focus-visible,.journey-app :focus-visible{outline-color:var(--j-ink)}
+.journey-public .catalogue-note,.journey-public .j-card .j-rich-text{color:var(--j-text);font-size:var(--type-16)}
+
+.journey-public .j-photo-break :is(.j-heading,.j-muted){background-color:var(--j-deep);color:var(--j-paper)}
+
+.journey-public p.j-muted{font-size:var(--type-16)}

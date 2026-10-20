@@ -51,6 +51,6 @@ export const adminModules=[
  ['settings','Settings','settings','System','Your school’s ID policy and notification preferences.'],
 ];
 export const studentModules=[
- ['dashboard','Home','house','','Your next step, clearly in view.'],['journey','My Journey','route','','Follow your progress and university applications.'],['exams','Exams and results','graduation-cap','','Your registrations, candidate details and results.'],['payments','Payments','wallet','','View your fees, payment history and receipts.'],['hostel','Hostel','building-2','','Find a residence or manage your existing booking.'],['documents','Documents','folder-open','','Your documents, securely in one place.'],['messages','Messages','message-circle','','A direct conversation with your admissions team.'],
+ ['dashboard','Home','house','','View your next steps, payments and school updates.'],['journey','My journey','route','','Follow your progress and university applications.'],['exams','Your exams','graduation-cap','','Your registrations, candidate details and results.'],['payments','Payments','wallet','','View your fees, payment history and receipts.'],['hostel','Hostel','building-2','','Find a residence or manage your existing booking.'],['documents','Documents','folder-open','','Your documents, securely in one place.'],['messages','Messages','message-circle','','A direct conversation with your admissions team.'],
 ];
 export function modulePermission(key:string){return key==='slots'?'consultations':key;}
