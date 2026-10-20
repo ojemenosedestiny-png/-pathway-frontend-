@@ -9,7 +9,7 @@ const text=(value:any):string=>typeof value==='string'?value:Array.isArray(value
 async function all(resource:string){const rows:any[]=[];for(let skip=0;skip<10000;skip+=100){const batch=await api<any[]>(`/public/${resource}?take=100&skip=${skip}`);if(!Array.isArray(batch))throw Error('The school catalogue returned an unexpected response. Please try again.');rows.push(...batch);if(batch.length<100)return rows;}return rows;}
 export const services={
  async getPreparation(){return api<any>('/public/preparation').catch(()=>({exams:[],programmes:[]}));},
- async getSite(){const [rows,legal]=await Promise.all([content(),api('/public/legal').catch(()=>({}))]);return {...defaults,...Object.fromEntries(rows.filter(row=>typeof row.value==='string').map(row=>[row.key,row.value])),...Object.fromEntries(Object.entries(legal).map(([k,v])=>['legal.'+k,String(v)]))};},
+ async getSite(){let unavailable=false;const [rows,legal]=await Promise.all([content().catch(()=>{unavailable=true;return [];}),api('/public/legal').catch(()=>({}))]);return {...defaults,...(unavailable?{banner:"",'service.unavailable':'true'}:{}),...Object.fromEntries(rows.filter(row=>typeof row.value==='string').map(row=>[row.key,row.value])),...Object.fromEntries(Object.entries(legal).map(([k,v])=>['legal.'+k,String(v)]))};},
  async list<K extends Collection>(key:K):Promise<Collections[K][]> {
   if(['testimonials','stats','faqs'].includes(key)){const rows=await content();const value=rows.find(row=>row.key===key)?.value;return (Array.isArray(value)?value:[]) as any;}
   if(key==='announcements')return []; // Live rich-text notices are rendered separately.
