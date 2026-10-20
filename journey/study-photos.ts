@@ -1,12 +1,12 @@
 export function studyPhotoGallery(){return `<section id="study-inspiration" class="j-section study-inspiration" aria-labelledby="study-inspiration-title">
         <div class="j-container">
-          <div class="section-head"><p class="eyebrow">Picture your next chapter</p><h2 id="study-inspiration-title">New places. New people.<br />Your next step.</h2><p>Explore what university life could look like, from a new community to a campus closer to home.</p></div>
+          <div class="section-head"><p class="eyebrow">School community</p><h2 id="study-inspiration-title">Learn, prepare and plan.</h2><p>Explore school life as you plan your studies.</p></div>
           <div class="study-photo-grid">
-            <figure class="study-photo-feature"><img src="assets/student-community.jpg" alt="Five students smiling together outdoors with books and bags" width="1200" height="858" loading="lazy" decoding="async" /><figcaption><span class="eyebrow">Community</span><h3>Find room to grow.</h3><p>Prepare for new friendships, ideas and experiences.</p></figcaption></figure>
-            <figure><img src="assets/university-campus.jpg" alt="A university building beside green lawns and campus paths" width="735" height="490" loading="lazy" decoding="async" /><figcaption><span class="eyebrow">Possibility</span><h3>Imagine your campus.</h3><p>Explore a study environment that suits your goals.</p></figcaption></figure>
-            <figure><img src="assets/nile-university.jpg" alt="Entrance to Nile University of Nigeria" width="678" height="452" loading="lazy" decoding="async" /><figcaption><span class="eyebrow">Study in Nigeria</span><h3>Look closer to home.</h3><p>Consider university options in Nigeria as part of your plans.</p></figcaption></figure>
+            <figure class="study-photo-feature"><img src="assets/school-2.jpg" alt="Student at New World Emerald Private School" width="1200" height="858" loading="lazy" decoding="async" /><figcaption><span class="eyebrow">Community</span><h3>Find room to grow.</h3><p>Prepare for new friendships, ideas and experiences.</p></figcaption></figure>
+            <figure><img src="assets/school-3.jpg" alt="School life at New World Emerald Private School" width="735" height="490" loading="lazy" decoding="async" /><figcaption><span class="eyebrow">Possibility</span><h3>Prepare with support.</h3><p>Ask about the subjects and teaching available at the school.</p></figcaption></figure>
+            <figure><img src="assets/school-4.jpg" alt="School activity at New World Emerald Private School" width="678" height="452" loading="lazy" decoding="async" /><figcaption><span class="eyebrow">Study in Nigeria</span><h3>Plan your studies.</h3><p>Discuss your qualifications and study options with the school.</p></figcaption></figure>
           </div>
-          <p class="study-photo-note">Images are for study inspiration. The university shown is not presented as a partner of NewworldPathway.</p>
+          <p class="study-photo-note">Photographs show school life at New World Emerald Private School.</p>
           <a class="j-button primary" href="/apply">Start your application &rarr;</a>
         </div>
       </section>`;}
