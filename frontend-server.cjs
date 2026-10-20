@@ -8,6 +8,13 @@ function createFrontend() {
  const mediaOrigins=approvedOrigin(process.env.PATHWAY_MEDIA_ORIGIN);
  const uploadOrigins=approvedOrigin(process.env.PATHWAY_UPLOAD_ORIGIN);
  const app=express();app.disable('x-powered-by');
+ // Keep browser Origin, session cookies and the backend's trusted origin aligned.
+ const production=process.env.NODE_ENV==='production';
+ app.use((req,res,next)=>{
+  if(production&&['www.newworldpathwayuniversity.com','pathway-frontend-hy8e.onrender.com'].includes(req.hostname)&&!req.path.startsWith('/health/'))
+   return res.redirect(308,'https://newworldpathwayuniversity.com'+req.originalUrl);
+  next();
+ });
  app.set('trust proxy',Number(process.env.TRUST_PROXY_HOPS||0));
  app.use(helmet({contentSecurityPolicy:{directives:{defaultSrc:["'self'"],scriptSrc:["'self'"],styleSrc:["'self'","'unsafe-inline'"],imgSrc:["'self'",'https://newworldemeraldprivateschool.com','data:','blob:',...mediaOrigins],mediaSrc:["'self'",'blob:',...mediaOrigins],connectSrc:["'self'",...uploadOrigins],objectSrc:["'none'"],upgradeInsecureRequests:process.env.NODE_ENV==='production'?[]:null}}}));
  app.get('/health/live',(_req,res)=>res.json({status:'ok'}));
