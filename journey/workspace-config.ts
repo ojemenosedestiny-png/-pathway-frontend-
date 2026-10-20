@@ -26,6 +26,7 @@ export const editors:Record<string,EditorField[]>={
 export const adminModules=[
  ['dashboard','Overview','layout-dashboard','Overview','A considered view of your school community.'],
  ['students','Students','users','People','Profiles, access and the next step for every student.'],
+ ['applicants','Applicants','file-check','People','Review applications submitted before a student account is created.'],
  ['applications','Applications','file-check','People','Move every application forward with clarity.'],
  ['documents','Document review','folder-open','People','Review student documents and keep decisions traceable.'],
  ['payments','Payments','wallet','Money','A clear record of verified payments and pending transactions.'],
@@ -53,4 +54,4 @@ export const adminModules=[
 export const studentModules=[
  ['dashboard','Home','house','','View your next steps, payments and school updates.'],['journey','My journey','route','','Follow your progress and university applications.'],['exams','Your exams','graduation-cap','','Your registrations, candidate details and results.'],['payments','Payments','wallet','','View your fees, payment history and receipts.'],['hostel','Hostel','building-2','','Find a residence or manage your existing booking.'],['documents','Documents','folder-open','','Your documents, securely in one place.'],['messages','Messages','message-circle','','A direct conversation with your admissions team.'],
 ];
-export function modulePermission(key:string){return key==='slots'?'consultations':key;}
+export function modulePermission(key:string){return key==='applicants'?'applications':key==='slots'?'consultations':key;}

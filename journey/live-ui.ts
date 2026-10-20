@@ -1,3 +1,4 @@
+import {renderPublicApplication} from './public-application.js';
 import {renderPaymentStatus} from './payment-status.js';
 import {renderPublicWorkspace} from './workspace-public.js';
 import {renderWorkspace} from './workspace-premium.js';
@@ -21,7 +22,7 @@ async function twoFactor(challenge:any){
 }
 async function workspace(){await renderWorkspace(root);}
 function showError(error:unknown,target:HTMLElement=root.querySelector('#live-content')||root){target.innerHTML=`<div class="j-error" role="alert">${esc(error instanceof Error?error.message:'Unable to load this page.')}</div><p>${button('Try again',location.pathname+location.search+location.hash)}</p>`;}
-async function start(){try{switch(location.pathname){case '/payment-status':await renderPaymentStatus(root);break;case '/student/login':studentLogin();break;case '/admin/login':adminLogin();break;case '/set-password':passwordSetup();break;case '/forgot-password':case '/recover-student-id':recover();break;case '/hostel':case '/pay-fees':case '/apply':case '/book-consultation':await renderPublicWorkspace(root);break;default:await workspace();}}catch(error){showError(error);}}
+async function start(){try{switch(location.pathname){case '/payment-status':await renderPaymentStatus(root);break;case '/student/login':studentLogin();break;case '/admin/login':adminLogin();break;case '/set-password':passwordSetup();break;case '/forgot-password':case '/recover-student-id':recover();break;case '/apply':await renderPublicApplication(root);break;case '/hostel':case '/pay-fees':case '/book-consultation':await renderPublicWorkspace(root);break;default:await workspace();}}catch(error){showError(error);}}
 window.addEventListener('hashchange',()=>{if(['/admin','/portal'].includes(location.pathname))workspace().catch(error=>showError(error));});
 if(['/admin','/portal'].includes(location.pathname))setInterval(()=>{if(document.hidden)return;api('/auth/session').catch(error=>{if(error instanceof ApiError&&error.status===401)location.assign(location.pathname==='/admin'?'/admin/login':'/student/login');});},60000);
 start();
