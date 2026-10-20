@@ -18,6 +18,10 @@ The source register below uses official domains only, including their official s
 | Name / logo | No current public logo licence located in the sources checked. Text identification only, no affiliation claim. |
 | Confidence | HIGH for source-supported registration route and timetable; UNVERIFIED for fee, precise registration window and school approval. |
 
+### Additional official-source conflict: subject availability
+
+The WAEC FAQ says Digital Technologies and Citizenship/Heritage Studies will not be examined until 2028, but the linked 2026 Nigerian school timetable lists Digital Technologies on 14 May 2026. These official statements conflict. Keep the exact 2026/2027 compulsory subject selection unapproved until WAEC clarifies; the site must not derive an entry combination from these conflicting documents. [W1], [W3].
+
 ## 2. WAEC WASSCE ? private candidates
 
 | Item | Finding |
@@ -42,6 +46,10 @@ The source register below uses official domains only, including their official s
 | Payment | School portal ? NECO TSA via Remita; listed options include cards, bank branch, USSD, internet banking, wallet and eNaira. The guideline cautions against bank transfer. [N1]. |
 | Authority / logo | School participation requires activation; this school's status is unconfirmed. No current public logo-use licence found. |
 | Confidence | HIGH for 2026 guideline; missing 2027 circular and this school's authority. |
+
+### Additional official-source conflict: continuous assessment
+
+The general NECO exams page still describes CAS 3 submission and a late-upload charge. The dated 2026 Internal guideline says CAS 3 is no longer uploaded and describes termly SS1/SS2 assessment instead. Show both to the exams officer and obtain current confirmation; do not copy the undated page into a 2026 registration checklist. [N1], [N3].
 
 ## 4. NECO SSCE ? External
 
