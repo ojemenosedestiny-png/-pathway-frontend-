@@ -1,0 +1,70 @@
+{
+  "date": "2026-10-20",
+  "timezone": "Africa/Lagos",
+  "branch": "platform-phase-1",
+  "databaseDecision": "Keep MongoDB Atlas and Prisma",
+  "baselines": {
+    "frontend": "b60f4f8",
+    "backend": "f6c824d"
+  },
+  "builds": {
+    "frontend": "pass",
+    "backend": "pass"
+  },
+  "backend": {
+    "mongoIntegrationSuite": {
+      "passed": 23,
+      "failed": 0,
+      "environment": "temporary localhost replica set"
+    },
+    "isolatedSupplement": {
+      "passed": 13,
+      "failed": 0,
+      "note": "configuration and job-runner overlap integration command"
+    }
+  },
+  "frontend": {
+    "passed": [
+      "frontend-deploy-qa.cjs",
+      "workspace-auth-qa.cjs",
+      "workspace-qa.cjs",
+      "public-admissions-qa.cjs",
+      "typography-qa.cjs",
+      "typography-workspace-qa.cjs",
+      "live-reliability-qa.cjs",
+      "workspace-upload-qa.cjs"
+    ],
+    "failed": [
+      {
+        "script": "globe-qa.cjs",
+        "reason": "page overflow at 320px",
+        "sourceChanged": false
+      }
+    ],
+    "legacyEnvironmentNotRun": [
+      "access-edge-qa.cjs",
+      "access-qa.cjs",
+      "journey-passes-qa.cjs",
+      "journey-qa.cjs",
+      "live-connection-qa.cjs",
+      "services-qa.cjs",
+      "ui-qa.cjs"
+    ],
+    "contrast": {
+      "publicFailures": 0,
+      "workspaceFailures": 0,
+      "widths": [
+        360,
+        768,
+        1440
+      ]
+    }
+  },
+  "globeHashes": {
+    "journey/animated-globe.ts": "AC232DC23C068F0BD05DEAFB474292789094791A2EBF67EF48BC90C226D7F489",
+    "journey/globe-geometry.ts": "8B9AC1F56CBAF8458199C317E4F06040DAA9038D7C0F4400E9A5072A3996F10C"
+  },
+  "productionChanged": false,
+  "phase2Started": false,
+  "reviewRequired": true
+}

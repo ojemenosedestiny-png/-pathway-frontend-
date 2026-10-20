@@ -1,0 +1,114 @@
+[
+  {
+    "script": "access-edge-qa.cjs",
+    "createsFrontend": false,
+    "interceptsApi": false,
+    "dependsOnFixedServer": true,
+    "hasLegacyApi": false
+  },
+  {
+    "script": "access-qa.cjs",
+    "createsFrontend": false,
+    "interceptsApi": false,
+    "dependsOnFixedServer": true,
+    "hasLegacyApi": false
+  },
+  {
+    "script": "frontend-deploy-qa.cjs",
+    "createsFrontend": true,
+    "interceptsApi": false,
+    "dependsOnFixedServer": false,
+    "hasLegacyApi": true
+  },
+  {
+    "script": "globe-qa.cjs",
+    "createsFrontend": false,
+    "interceptsApi": false,
+    "dependsOnFixedServer": true,
+    "hasLegacyApi": false
+  },
+  {
+    "script": "journey-passes-qa.cjs",
+    "createsFrontend": false,
+    "interceptsApi": false,
+    "dependsOnFixedServer": true,
+    "hasLegacyApi": false
+  },
+  {
+    "script": "journey-qa.cjs",
+    "createsFrontend": false,
+    "interceptsApi": false,
+    "dependsOnFixedServer": true,
+    "hasLegacyApi": false
+  },
+  {
+    "script": "live-connection-qa.cjs",
+    "createsFrontend": false,
+    "interceptsApi": true,
+    "dependsOnFixedServer": true,
+    "hasLegacyApi": false
+  },
+  {
+    "script": "live-reliability-qa.cjs",
+    "createsFrontend": true,
+    "interceptsApi": true,
+    "dependsOnFixedServer": false,
+    "hasLegacyApi": false
+  },
+  {
+    "script": "public-admissions-qa.cjs",
+    "createsFrontend": true,
+    "interceptsApi": true,
+    "dependsOnFixedServer": false,
+    "hasLegacyApi": false
+  },
+  {
+    "script": "services-qa.cjs",
+    "createsFrontend": false,
+    "interceptsApi": false,
+    "dependsOnFixedServer": true,
+    "hasLegacyApi": false
+  },
+  {
+    "script": "typography-qa.cjs",
+    "createsFrontend": true,
+    "interceptsApi": true,
+    "dependsOnFixedServer": false,
+    "hasLegacyApi": false
+  },
+  {
+    "script": "typography-workspace-qa.cjs",
+    "createsFrontend": true,
+    "interceptsApi": true,
+    "dependsOnFixedServer": false,
+    "hasLegacyApi": false
+  },
+  {
+    "script": "ui-qa.cjs",
+    "createsFrontend": false,
+    "interceptsApi": false,
+    "dependsOnFixedServer": true,
+    "hasLegacyApi": false
+  },
+  {
+    "script": "workspace-auth-qa.cjs",
+    "createsFrontend": true,
+    "interceptsApi": true,
+    "dependsOnFixedServer": false,
+    "hasLegacyApi": false
+  },
+  {
+    "script": "workspace-qa.cjs",
+    "createsFrontend": true,
+    "interceptsApi": true,
+    "dependsOnFixedServer": false,
+    "hasLegacyApi": false
+  },
+  {
+    "script": "workspace-upload-qa.cjs",
+    "createsFrontend": true,
+    "interceptsApi": true,
+    "dependsOnFixedServer": false,
+    "hasLegacyApi": false
+  }
+]
