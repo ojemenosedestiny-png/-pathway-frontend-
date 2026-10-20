@@ -90,6 +90,8 @@
 .journey-public .j-announcement{font-family:var(--type-sans);font-size:var(--type-14);line-height:1.6}
 .journey-public .j-journey-hero :is(.j-muted,.j-kicker){color:#d1dbc9}
 .journey-public .j-public-footer :is(p,.j-muted){color:#c3d0bd}
+.journey-public .j-public-footer .j-grid>*{min-width:0;overflow-wrap:anywhere}
+@media(max-width:760px){.journey-public .j-public-footer .j-grid{grid-template-columns:minmax(0,1fr)}}
 .journey-public .j-photo-break :is(p,.j-muted){color:var(--j-paper)}
 .journey-public .j-button,.journey-app:not(.pw-body) .j-button{font-family:var(--type-sans);font-size:var(--type-14);font-weight:600;min-block-size:44px}
 .journey-public .j-public-nav a{font-size:var(--type-14);line-height:1.6;min-block-size:44px;align-content:center}

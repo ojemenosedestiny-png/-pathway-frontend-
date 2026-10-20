@@ -1,11 +1,18 @@
 const {chromium}=require('playwright');
 const assert=require('node:assert/strict');
+const {createFrontend}=require('./frontend-server.cjs');
 (async()=>{
+ const server=createFrontend().listen(0,'127.0.0.1');await new Promise(resolve=>server.once('listening',resolve));
+ const origin='http://127.0.0.1:'+server.address().port;
  const browser=await chromium.launch({channel:'chrome',headless:true});
  try{
   const errors=[];const context=await browser.newContext({viewport:{width:1440,height:1000},deviceScaleFactor:2});
   const page=await context.newPage();page.on('pageerror',e=>errors.push(e.message));
-  await page.goto('http://localhost:3000/');
+  await page.route('**/backend-api/**',route=>{const path=new URL(route.request().url()).pathname;let data=[];
+   if(path.endsWith('/countries'))data=[{id:'c-uk',name:'United Kingdom'}];
+   if(path.endsWith('/universities'))data=[{id:'u-uk',countryId:'c-uk',name:'UK study pathway',featured:true,active:true,entryRequirements:[],tuitionMinor:'0',currency:'NGN',image:'/assets/school-2.jpg'}];
+   return route.fulfill({json:data});});
+  await page.goto(origin+'/');
   const globe=page.locator('[data-animated-globe]');await globe.locator('canvas').waitFor();
   await page.waitForFunction(()=>document.querySelector('[data-animated-globe]').dataset.globeState==='running');
   assert.equal(await globe.getAttribute('aria-label'),'Animated globe showing study destinations');
@@ -47,12 +54,12 @@ const assert=require('node:assert/strict');
   await page.screenshot({path:'animated-globe-desktop.png',fullPage:false});
   await globe.getByRole('link',{name:'United Kingdom',exact:true}).click();await page.waitForURL('**/pathways?q=United%20Kingdom');await page.locator('#pathway-results article').first().waitFor();
   assert.ok((await page.locator('#pathway-results').innerText()).toLowerCase().includes('united kingdom'));
-  await page.goto('http://localhost:3000/');await globe.locator('canvas').waitFor();await page.setViewportSize({width:390,height:1000});await page.waitForTimeout(100);await globe.screenshot({path:'animated-globe-mobile.png'});
+  await page.goto(origin+'/');await globe.locator('canvas').waitFor();await page.setViewportSize({width:390,height:1000});await page.waitForTimeout(100);await globe.screenshot({path:'animated-globe-mobile.png'});
   await page.emulateMedia({reducedMotion:'no-preference'});await page.mouse.move(0,0);await page.evaluate(()=>document.activeElement?.blur());await page.waitForFunction(()=>document.querySelector('[data-animated-globe]').dataset.globeState==='running');
   await page.evaluate(()=>{Object.defineProperty(document,'hidden',{configurable:true,get:()=>true});document.dispatchEvent(new Event('visibilitychange'));});
   assert.equal(await globe.getAttribute('data-globe-state'),'paused');const hidden=await angle();await page.waitForTimeout(150);assert.equal(await angle(),hidden);
   await page.evaluate(()=>{delete document.hidden;document.dispatchEvent(new Event('visibilitychange'));});
   await page.waitForFunction(()=>document.querySelector('[data-animated-globe]').dataset.globeState==='running');
   assert.deepEqual(errors,[]);console.log('Globe QA passed: orthographic geometry, rotation, hover, drag, offscreen pause, reduced motion, DPR, mobile label bounds, no runtime errors.');
- }finally{await browser.close();}
+ }finally{await browser.close();server.closeAllConnections();await new Promise(resolve=>server.close(resolve));}
 })().catch(e=>{console.error(e);process.exitCode=1;});
