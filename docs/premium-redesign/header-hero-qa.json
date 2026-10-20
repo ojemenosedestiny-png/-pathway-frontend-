@@ -1,0 +1,104 @@
+[
+  {
+    "file": "access-edge-qa.cjs",
+    "passed": true,
+    "timedOut": false,
+    "output": "Offline verification uses the same idempotent provisioning path\nSeparate role visibility/edit permissions enforced by the service layer\nCohort targeting excludes other student groups\nExpired setup/reset links are rejected\nAll-device logout and 20-minute admin inactivity timeout passed\nAll edge checks passed.\n"
+  },
+  {
+    "file": "frontend-deploy-qa.cjs",
+    "passed": true,
+    "timedOut": false,
+    "output": "PASS: production frontend pages/assets, health, private-file exclusion, legacy-route redirects and CSP.\n"
+  },
+  {
+    "file": "globe-qa.cjs",
+    "passed": false,
+    "timedOut": false,
+    "output": "AssertionError [ERR_ASSERTION]: no overflow 320\n\ntrue !== false\n\n    at C:\\Users\\prosp\\OneDrive\\Documents\\new school emaerald pathway university\\globe-qa.cjs:39:11 {\n  generatedMessage: false,\n  code: 'ERR_ASSERTION',\n  actual: true,\n  expected: false,\n  operator: 'strictEqual',\n  diff: 'simple'\n}\n"
+  },
+  {
+    "file": "journey-passes-qa.cjs",
+    "passed": false,
+    "timedOut": false,
+    "output": "AssertionError [ERR_ASSERTION]: overflow 320\n\ntrue !== false\n\n    at C:\\Users\\prosp\\OneDrive\\Documents\\new school emaerald pathway university\\journey-passes-qa.cjs:16:342 {\n  generatedMessage: false,\n  code: 'ERR_ASSERTION',\n  actual: true,\n  expected: false,\n  operator: 'strictEqual',\n  diff: 'simple'\n}\n"
+  },
+  {
+    "file": "access-qa.cjs",
+    "passed": false,
+    "timedOut": false,
+    "output": "page.waitForURL: Timeout 30000ms exceeded.\n=========================== logs ===========================\nwaiting for navigation to \"**/student/login\" until \"load\"\n============================================================\n    at C:\\Users\\prosp\\OneDrive\\Documents\\new school emaerald pathway university\\access-qa.cjs:5:31 {\n  log: [],\n  name: 'TimeoutError'\n}\n"
+  },
+  {
+    "file": "live-connection-qa.cjs",
+    "passed": false,
+    "timedOut": false,
+    "output": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n+ actual - expected\n\n+ undefined\n- 'ready'\n\n    at C:\\Users\\prosp\\OneDrive\\Documents\\new school emaerald pathway university\\live-connection-qa.cjs:9:110 {\n  generatedMessage: true,\n  code: 'ERR_ASSERTION',\n  actual: undefined,\n  expected: 'ready',\n  operator: 'strictEqual',\n  diff: 'simple'\n}\n"
+  },
+  {
+    "file": "live-reliability-qa.cjs",
+    "passed": true,
+    "timedOut": false,
+    "output": "PASS: live CMS edits, catalogue mappings, notices/FAQs, no preview storage, server-only payment status, receipt token, failed/missing states, three widths, one GET recovery and no POST replay. All APIs synthetic.\n"
+  },
+  {
+    "file": "premium-header-qa.cjs",
+    "passed": true,
+    "timedOut": false,
+    "output": "PASS: responsive header/hero, accessible heading, drawer focus/Escape, reduced motion, no fabricated trust chip, contrast, photo not covering globe, unchanged rotation/hover/drag and hidden-tab pause.\n"
+  },
+  {
+    "file": "journey-qa.cjs",
+    "passed": false,
+    "timedOut": false,
+    "output": "locator.click: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('button', { name: 'Enter staff preview' })\u001b[22m\n\n    at C:\\Users\\prosp\\OneDrive\\Documents\\new school emaerald pathway university\\journey-qa.cjs:6:87 {\n  log: [\n    \"  - waiting for getByRole('button', { name: 'Enter staff preview' })\"\n  ],\n  name: 'TimeoutError'\n}\n"
+  },
+  {
+    "file": "services-qa.cjs",
+    "passed": false,
+    "timedOut": false,
+    "output": "locator.waitFor: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('h1') to be visible\u001b[22m\n\n    at go (C:\\Users\\prosp\\OneDrive\\Documents\\new school emaerald pathway university\\services-qa.cjs:8:78)\n    at async C:\\Users\\prosp\\OneDrive\\Documents\\new school emaerald pathway university\\services-qa.cjs:11:219 {\n  log: [ \"  - waiting for locator('h1') to be visible\" ],\n  name: 'TimeoutError'\n}\n"
+  },
+  {
+    "file": "typography-qa.cjs",
+    "passed": false,
+    "timedOut": true,
+    "output": ""
+  },
+  {
+    "file": "ui-qa.cjs",
+    "passed": false,
+    "timedOut": true,
+    "output": "1440 {\"overflow\":false,\"brokenImages\":[],\"missingAnchors\":[]}\n1024 {\"overflow\":false,\"brokenImages\":[],\"missingAnchors\":[]}\n768 {\"overflow\":false,\"brokenImages\":[],\"missingAnchors\":[]}\n390 {\"overflow\":false,\"brokenImages\":[],\"missingAnchors\":[]}\n360 {\"overflow\":false,\"brokenImages\":[],\"missingAnchors\":[]}\nlocator.click: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('.faq-question').first()\u001b[22m\n\n    at C:\\Users\\prosp\\OneDrive\\Documents\\new school emaerald pathway university\\ui-qa.cjs:32:47 {\n  log: [ \"  - waiting for locator('.faq-question').first()\" ],\n  name: 'TimeoutError'\n}\n"
+  },
+  {
+    "file": "workspace-audit.cjs",
+    "passed": true,
+    "timedOut": false,
+    "output": "[{\"requested\":\"/\",\"actual\":\"/\",\"title\":\"Your journey to university | NewworldPathway\",\"horizontalOverflow\":false},{\"requested\":\"/portal.html\",\"actual\":\"/admin\",\"title\":\"Your journey | NewworldPathway\",\"horizontalOverflow\":false},{\"requested\":\"/student-dashboard\",\"actual\":\"/admin\",\"title\":\"Your journey | NewworldPathway\",\"horizontalOverflow\":false},{\"requested\":\"/pay-fees\",\"actual\":\"/pay-fees\",\"title\":\"School fees | NewworldPathway\",\"horizontalOverflow\":false},{\"requested\":\"/hostel\",\"actual\":\"/hostel\",\"title\":\"Student accommodation | NewworldPathway\",\"horizontalOverflow\":false},{\"requested\":\"/apply\",\"actual\":\"/apply\",\"title\":\"Apply to university | NewworldPathway\",\"horizontalOverflow\":false},{\"requested\":\"/book-consultation\",\"actual\":\"/book-consultation\",\"title\":\"Book a consultation | NewworldPathway\",\"horizontalOverflow\":false},{\"requested\":\"/admin.html\",\"actual\":\"/admin/login\",\"title\":\"Sign in to your admin workspace | NewworldPathway\",\"horizontalOverflow\":false},{\"requested\":\"/admin#dashboard\",\"actual\":\"/admin#dashboard\",\"title\":\"Overview | NewworldPathway\",\"horizontalOverflow\":false},{\"requested\":\"/admin#students\",\"actual\":\"/admin#students\",\"title\":\"Students | NewworldPathway\",\"horizontalOverflow\":false},{\"requested\":\"/admin#payments\",\"actual\":\"/admin#payments\",\"title\":\"Payments | NewworldPathway\",\"horizontalOverflow\":false},{\"requested\":\"/admin#fees\",\"actual\":\"/admin#fees\",\"title\":\"Fees manager | NewworldPathway\",\"horizontalOverflow\":false},{\"requested\":\"/admin#users\",\"actual\":\"/admin#users\",\"title\":\"Staff accounts | NewworldPathway\",\"horizontalOverflow\":false},{\"requested\":\"/admin#announcements\",\"actual\":\"/admin#announcements\",\"title\":\"Post information | NewworldPathway\",\"horizontalOverflow\":false},{\"requested\":\"/admin#audit\",\"actual\":\"/admin#audit\",\"title\":\"Audit log | NewworldPathway\",\"horizontalOverflow\":false}]\n"
+  },
+  {
+    "file": "typography-workspace-qa.cjs",
+    "passed": true,
+    "timedOut": false,
+    "output": "PASS: all admin/student pages, 360px layout, role navigation, real fee payload mapping, student drawer, photo editor, public live catalog routes, reduced motion; screenshots use synthetic fixtures only.\n"
+  },
+  {
+    "file": "workspace-auth-qa.cjs",
+    "passed": true,
+    "timedOut": false,
+    "output": "PASS: unchanged admin password/MFA/recovery flow, CSRF forwarding, no secrets in storage, sidebar collapse and keyboard-search dialog.\n"
+  },
+  {
+    "file": "workspace-upload-qa.cjs",
+    "passed": true,
+    "timedOut": false,
+    "output": "PASS: device image bytes uploaded, scanning awaited, approved image saved to room, MP4 file upload, storage failure never published. Synthetic storage only.\n"
+  },
+  {
+    "file": "workspace-qa.cjs",
+    "passed": true,
+    "timedOut": false,
+    "output": "PASS: all admin/student pages, 360px layout, role navigation, real fee payload mapping, student drawer, photo editor, public live catalog routes, reduced motion; screenshots use synthetic fixtures only.\n"
+  }
+]
