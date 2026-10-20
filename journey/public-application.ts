@@ -2,6 +2,7 @@ import {api} from './live-api.js';
 import {esc,field,form,formSubmit,alert,link,button} from './workspace-components.js';
 
 export async function renderPublicApplication(root:HTMLElement){
+ if(await renderApplicationFlow(root))return;
  document.body.classList.add('pw','pw-body');document.title='Apply to NewworldPathway';
  root.innerHTML=`<main class="pw-content"><p class="pw-overline">NewworldPathway / Admissions</p><h1>Apply before you create a student account</h1><p class="pw-helper">Tell us about yourself and choose a programme. You do not need a Student ID, password or portal account to apply.</p><section class="pw-card pw-stack" id="public-application"><p role="status">Loading programmes…</p></section></main>`;
  const target=root.querySelector<HTMLElement>('#public-application')!;
@@ -19,3 +20,4 @@ export async function renderPublicApplication(root:HTMLElement){
  });
  }catch(error){target.innerHTML=alert('Application form unavailable',(error as Error).message,'warning')+link('Try again','/apply')+link('Contact the school','/contact');}
 }
+import {renderApplicationFlow} from './application-flow.js';
