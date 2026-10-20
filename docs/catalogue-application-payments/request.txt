@@ -1,0 +1,168 @@
+You are a senior product designer and full-stack engineer. Work on the
+NewworldPathway site. Do NOT break existing code, and DO NOT touch the
+rotating globe. Work on a new git branch, commit in small steps, and run
+the build and existing tests before and after each step. Keep all current
+routes, IDs, API calls, and auth. Reuse the existing design tokens (deep
+emerald, ivory, antique gold accent, serif headings, sans body).
+
+=====================================================
+PART 1: FILL THE BLANK SECTIONS WITH PREMIUM CONTENT
+=====================================================
+The homepage sections "Explore university destinations", "Prepare for
+your examinations", and "Explore student accommodation" currently show
+plain empty messages because no data exists. Fix both the content and the
+empty states.
+
+A. Seed data (marked "Draft - confirm before publishing" in the admin, and
+editable there). Do NOT invent tuition figures, visa rules, pass rates, or
+accreditation claims. Use general guidance only.
+
+DESTINATIONS (cards with image, flag, short summary, "Typical route",
+"Main intakes", "Explore pathway" button):
+- United Kingdom: foundation or A-level/IGCSE route into undergraduate
+  study. Main intake September, with some January/May intakes.
+- Canada: strong high-school record and English proficiency are key. Main
+  intakes September, January, and some May.
+- United States: SAT or equivalent, a broad application profile, and a
+  fall intake in August/September with a spring intake in January.
+- United Arab Emirates: international campuses and foundation programmes.
+  Main intakes September and January/February.
+Each card ends with "Intakes and requirements vary by university. An
+adviser will confirm the details for you."
+
+EXAM PROGRAMMES (cards with logo or icon, level, "Who it is for", "What
+we provide", fee and deadline pulled from admin, and an "Apply for this
+exam" button that opens the application form with the exam pre-selected):
+- WAEC (SSCE)
+- NECO (SSCE)
+- Cambridge International: Checkpoint, IGCSE, AS and A Level
+- BECE (junior secondary)
+- SAT
+- HMB (Pre-Degree)
+"What we provide": preparation classes, mock exams, registration support,
+and adviser guidance. Add the line: "Official registration is processed
+through the relevant exam body or approved centre." (the admin can edit
+this wording).
+
+HOSTEL SLIDES (carousel with large rounded photo cards): hostel name,
+gender, room type, fee per term, availability badge, and a "Book this
+hostel" button. Seed three clearly labelled DEMO slides using tasteful
+illustrated placeholder graphics (clean SVG), labelled "Illustrative
+image". Do not present fake photos as real.
+
+B. Premium layout for each section: section tag pill, serif title with one
+italic accent word, one-line intro, rounded 24px cards with soft shadows,
+hover lift, and scroll-reveal animation (respect prefers-reduced-motion).
+Destinations in a responsive grid, exams in a grid with filter chips
+(All / Cambridge / Nigerian / Pre-degree), hostel in a swipeable carousel
+with arrows and dots.
+
+C. Better empty states (only shown if the admin removes everything):
+a centred card with an icon, a friendly sentence, and a button, for
+example "Our destination guides are being updated. Speak to an adviser
+about where you want to study." with a "Speak to an adviser" button.
+
+D. Admin: make sure each of these sections has a manager (Destinations,
+Exam programmes, Hostel slides) with Add / Edit / Delete, image upload,
+drag-to-reorder, and a Draft/Published toggle. Add a "Quick add" button.
+
+=====================================================
+PART 2: PROPER APPLICATION FORM (/apply)
+=====================================================
+A multi-step form with a progress stepper, auto-save as a draft ("Save and
+continue later" via email link), inline validation, mobile-friendly
+fields, and a review step. Steps:
+
+1. Applicant details: first, middle, and last name, date of birth, gender,
+   nationality, state of origin and LGA (for Nigerians), country of
+   residence, home address, email, phone and WhatsApp number, passport
+   photograph upload.
+2. Parent or guardian: full name, relationship, phone, email, address,
+   occupation (optional), emergency contact. Required if the applicant is
+   under 18.
+3. Academic background: current or last school, class or level, previous
+   exam results (upload), any special needs or notes (optional).
+4. Programme choice: select one or more exams from the live exam catalog
+   (WAEC, NECO, Cambridge International, BECE, SAT, HMB), exam session or
+   year, subjects per exam, candidate type (school or private), whether a
+   hostel is needed, and optional intended study destination and a
+   consultation request.
+5. Documents: birth certificate, last report card or transcript, passport
+   data page (international applicants), passport photo. Drag-and-drop,
+   file type and size checks (JPG, PNG, PDF; 5 MB), and previews.
+6. Review and declaration: a summary with "Edit" links per section,
+   consent checkboxes (information is true, privacy policy and Nigeria
+   Data Protection Act consent, terms, refund policy), and the
+   parent/guardian consent for minors.
+7. Payment (see Part 3).
+
+On submit, create the Application with a unique ID and a unique payment
+reference such as NWP-EX-2026-000123, show a confirmation page, and send a
+confirmation email. Prevent duplicate submissions (same email and
+exam session). All form options (exams, sessions, fees, required
+documents) come from the admin.
+
+=====================================================
+PART 3: BANK-TRANSFER PAYMENT WITH PAYMENT PROOF
+=====================================================
+After the form, the student pays by bank transfer and uploads proof.
+
+Student side (step 7 and a "My payments" page):
+- Show the amount due (calculated on the SERVER from the admin fee table:
+  application fee plus exam fees plus hostel fee if selected), and the
+  CURRENT school account details set in the admin (bank name, account name,
+  account number, with copy buttons), plus the unique payment reference to
+  put in the transfer narration, and clear steps.
+- Proof upload: screenshot or PDF (JPG, PNG, PDF, max 5 MB) with fields for
+  payer name, amount paid, bank used, transfer date, and the transaction
+  reference. Show a preview and a "Submit payment proof" button.
+- Status page with badges: Awaiting proof, Proof submitted (under
+  review), Verified, Rejected (with the reason and a button to upload
+  again). Send emails for each status.
+- Proofs are stored in a PRIVATE bucket, served only through short-lived
+  signed URLs to admins and to the student who uploaded them. Never show
+  proofs or account details of other students.
+
+Admin side (Payments section):
+1. "Payment accounts" settings: add, edit, deactivate, and reorder school
+   accounts (bank name, account name, account number, currency, purpose:
+   Exams / Hostel / Fees / All, extra instruction text, active toggle).
+   The student side always shows the active account(s) for that purpose.
+2. HIGH-RISK PROTECTION: changing or adding an account requires
+   re-entering the admin password plus the 2FA code, writes to the audit
+   log (who, when, old and new values with the account number partly
+   masked), shows "Last changed by X on date", and sends an email alert to
+   the Super Admin. Only Super Admin and Finance roles can edit accounts.
+   Each payment stores a snapshot of the account that was shown to the
+   student.
+3. Verification queue: list of submitted proofs with filters (Pending,
+   Verified, Rejected), a side-by-side view: the proof image with zoom on
+   one side, and the application, payer details, expected amount versus
+   claimed amount, and reference on the other. Actions: Verify, Reject with
+   a reason, Request clarification. Add a clear reminder: "Confirm the
+   credit in the school bank account before verifying; screenshots can be
+   edited."
+4. Flag suspicious proofs automatically: reused image (hash match), wrong
+   amount, a reference already used, or an application with several
+   different proofs.
+5. On Verify: mark the payment and application as paid, generate a PDF
+   receipt, email it, update the student's portal tracker, and (for a new
+   applicant) create the Student ID and send the password-setup link, as in
+   the existing student-ID flow. Add CSV export of payments.
+6. Keep the architecture ready to add an online provider (Paystack or
+   Flutterwave) later as an extra payment method.
+
+=====================================================
+QUALITY AND DELIVERY
+=====================================================
+- Validate everything on the server (file type, size, amounts). Apply rate
+  limits to uploads and submissions, and scan or sanitise file names.
+- WCAG AA, keyboard accessible, responsive from 360px.
+- Minimal data collection, privacy notice on the form, and a way for the
+  admin to export or delete an applicant's data on request.
+- Deliver in this order and confirm the build and tests pass at each step:
+  1) plan and branch, 2) seed data and the three sections plus admin
+  managers, 3) application form UI and API, 4) payment instructions and
+  proof upload, 5) admin Payment accounts and verification queue,
+  6) emails, receipts, and the Student ID trigger, 7) final report with
+  changed files, screenshots, and the list of environment variables.
