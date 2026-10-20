@@ -12,13 +12,13 @@ function createFrontend() {
  app.get('/health/live',(_req,res)=>res.json({status:'ok'}));
  app.use('/backend-api',liveApiProxy());
  const send=file=>(_req,res)=>res.sendFile(path.join(__dirname,file));
- app.get(['/student/login','/admin/login','/portal','/admin','/set-password','/forgot-password','/recover-student-id','/hostel','/pay-fees','/apply','/book-consultation'],send('journey/live.html'));
+ app.get(['/student/login','/admin/login','/portal','/admin','/set-password','/forgot-password','/recover-student-id','/payment-status','/hostel','/pay-fees','/apply','/book-consultation'],send('journey/live.html'));
  app.get(['/portal.html','/student-dashboard','/application-status','/my-bookings'],(_req,res)=>res.redirect('/portal'));
  app.get('/exam.html',(_req,res)=>res.redirect('/portal#exams'));
  app.get('/login',(_req,res)=>res.redirect('/student/login'));
  app.get('/admin.html',(_req,res)=>res.redirect('/admin/login'));
  // Checkout is not enabled until real provider credentials and fees are configured.
- app.get(['/enrol','/signup','/payment-status'],(_req,res)=>res.redirect('/contact'));
+ app.get(['/enrol','/signup'],(_req,res)=>res.redirect('/contact'));
  app.get(['/','/index.html','/pathways','/university/:id','/exams','/exams/:id','/about','/faq','/contact','/news'],send('index.html'));
  for(const directory of ['assets','journey/dist'])app.use('/'+directory,express.static(path.join(__dirname,directory),{dotfiles:'deny',index:false,fallthrough:false}));
  app.get('/journey/theme.css',send('journey/theme.css'));

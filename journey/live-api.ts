@@ -5,11 +5,14 @@ async function csrfToken(){
  if(!csrfFlight)csrfFlight=fetch('/backend-api/auth/csrf',{credentials:'same-origin',cache:'no-store'}).then(async response=>{if(!response.ok)throw new ApiError('Unable to start a secure session. Please try again.',response.status);csrf=(await response.json()).csrfToken;return csrf;}).finally(()=>csrfFlight=undefined);
  return csrfFlight;
 }
-export async function api<T=any>(path:string,method='GET',body?:unknown,retry=true,extraHeaders:Record<string,string>={}):Promise<T>{
+export async function api<T=any>(path:string,method='GET',body?:unknown,retry=true,extraHeaders:Record<string,string>={},recoverGateway=true):Promise<T>{
  const headers:Record<string,string>={Accept:'application/json',...extraHeaders};
  if(method!=='GET'){headers['X-CSRF-Token']=await csrfToken();headers['Content-Type']='application/json';}
  let response:Response;
  try{response=await fetch('/backend-api'+path,{method,credentials:'same-origin',cache:'no-store',headers,body:body===undefined?undefined:JSON.stringify(body)});}catch{throw new ApiError('Unable to reach the school service. Check your connection and try again.',0);}
+ if(method==='GET'&&recoverGateway&&[502,503,504].includes(response.status)){
+  await response.body?.cancel();await new Promise(resolve=>setTimeout(resolve,1500));return api(path,method,body,retry,extraHeaders,false);
+ }
  const data=response.status===204?null:await response.json().catch(()=>null);
  if(!response.ok){
   if(response.status===401&&retry&&!path.startsWith('/auth/')&&['AUTH_REQUIRED','SESSION_EXPIRED'].includes(data?.error?.code)){
