@@ -1,0 +1,239 @@
+You are a senior product designer, full-stack engineer, and QA lead. Build
+and polish the complete NewworldPathway platform: public website, student
+portal, and admin workspace, as ONE system with ONE database where the
+admin controls everything.
+
+GROUND RULES
+1. Do NOT break existing code. Work on a branch, commit in small steps, run
+   the build and all existing tests before and after each phase, and stop
+   for my review at the end of each phase.
+2. DO NOT modify the rotating globe on the homepage (component, code,
+   speed, behaviour). Only its container may be restyled.
+3. Keep existing routes, IDs, API contracts, and auth unless a change is
+   listed here. Keep the "Curriculum & Academic Programmes" content.
+4. Never hardcode content, fees, bank details, photos, or dates. Everything
+   shown on the website and portal is edited from the admin.
+5. No fabricated claims (statistics, pass rates, accreditation, tuition).
+   Seed data is marked "Draft - confirm before publishing".
+
+=====================================================
+1. ARCHITECTURE
+=====================================================
+Admin panel writes to the API. The public website and student portal read
+from the same API and database (PostgreSQL + Prisma). Add: private object
+storage for documents and payment proofs (signed URLs), a background job
+queue for emails/SMS/notifications, and a real-time event channel (section
+8). Roles: Super Admin, Finance, Admissions, Hostel Manager, Exams Officer,
+Content Editor. Every content item has Draft / Published states and an
+audit log entry for each admin change.
+
+=====================================================
+2. USER JOURNEY AND ACCOUNT STATES
+=====================================================
+1. Visitor signs up for a FREE applicant account (email + password, email
+   verification, rate limiting). Applicant number: APP-2026-0001.
+2. Applicant completes the application form (section 4) and pays the
+   application fee (section 5). Until the application fee is VERIFIED:
+   no hostel booking, no exam payment, no consultation booking.
+3. When Finance verifies the application fee: account becomes a Student,
+   a Student ID is generated (PU-2026-000123 style, atomic, unique,
+   never reused) and the student is emailed. Login accepts email or
+   Student ID.
+4. Inside the portal the student chooses exams (WAEC, NECO, Cambridge
+   International, BECE, SAT, HMB, others from the catalog). Each exam
+   creates its own invoice from the admin fee table.
+5. Hostel is booked from the portal after the application fee is verified
+   (section 6).
+Parents or guardians can be the payer; record guardian consent for
+applicants under 18.
+
+=====================================================
+3. DATA MODEL ADDITIONS (Prisma, with migrations)
+=====================================================
+Applicant/Student, Application, ExamProgramme, ExamEnrolment, Invoice
+(+InvoiceItem), Payment, PaymentProof (private file key, image hash,
+claimed amount, payer name, bank, date, reference, status), PaymentAccount
+(bank name, account name, number, purpose, active, order), Hostel, Room,
+HostelBooking (hold expiry), TimetableEntry, TimetableChange, Result,
+Announcement, Notification, Message, Document, SiteContent, Setting,
+AuditLog, RealtimeEvent. Amounts are always calculated on the server from
+admin fee tables, never trusted from the client.
+
+=====================================================
+4. PUBLIC WEBSITE (premium, admin-driven)
+=====================================================
+Premium green, ivory, and antique-gold design, serif headings, italic
+accent words, pill nav, rounded cards, scroll-reveal motion with
+prefers-reduced-motion respected, and subtle animated hero headline text
+(word-by-word reveal plus a cycling accent word with a fixed-width slot).
+Sections (all from admin data): Header and Hero (existing globe),
+Our story, Why choose us, Curriculum & Academic Programmes (kept),
+Destinations, Exam programmes (filter chips, "Apply for this exam"),
+Campus & facilities, Hostel carousel ("Book this hostel" goes to portal
+login then straight to that hostel), Testimonials (real only), News,
+FAQ, CTA, Footer. Friendly empty states instead of bare messages. Seed
+draft content for destinations, exams, and hostels (general guidance only;
+demo hostel graphics labelled "Illustrative image").
+
+APPLICATION FORM (multi-step, auto-save draft, inline validation, review):
+1 Applicant details (names, DOB, gender, nationality, state/LGA, address,
+email, phone/WhatsApp, passport photo). 2 Parent/guardian (required if
+under 18). 3 Academic background and previous results upload. 4 Programme
+choice (exams from the live catalog, session, subjects, candidate type,
+hostel needed, intended destination). 5 Documents (birth certificate,
+report card, passport data page; JPG/PNG/PDF, 5 MB). 6 Review and
+declarations (accuracy, privacy/NDPA consent, terms, refund policy).
+7 Application fee payment. Prevent duplicate applications.
+
+=====================================================
+5. PAYMENTS (bank transfer + proof, invoice-based)
+=====================================================
+Student side: every charge is an invoice (application fee, each exam,
+hostel). Pay screen shows the amount due, the ACTIVE school account for
+that purpose (copy buttons), and a unique reference to use as the transfer
+narration. Student uploads proof (JPG/PNG/PDF, 5 MB) with payer name,
+amount, bank, date, transaction reference. Statuses: Awaiting proof, Under
+review, Verified, Rejected (with reason, re-upload allowed). Proofs are
+private, never public.
+
+Admin side (Finance): Payment accounts manager. Editing or adding an
+account requires password + 2FA re-confirmation, is audit-logged (masked
+old/new), shows "last changed by", emails the Super Admin, and snapshots
+the account on each payment. Verification queue: proof viewer with zoom,
+expected vs claimed amount, application details; actions Verify, Reject
+with reason, Request clarification. Reminder text: "Confirm the credit in
+the bank account before verifying." Auto-flag reused images (hash), wrong
+amounts, reused references. On Verify: invoice paid, PDF receipt emailed,
+tracker updated, Student ID created if first verified payment, live event
+sent to the student. CSV export. Keep an interface so Paystack/Flutterwave
+can be added later.
+
+=====================================================
+6. HOSTEL
+=====================================================
+Public pages show photos, amenities, rules, and fee per term. Booking
+happens only in the portal after the application fee is verified: choose
+hostel and room, term, review price (room + caution deposit), then pay via
+an invoice. Reserve the bed with a DB transaction and row lock so two
+students can never get the same bed. Hold it for a configurable period
+(default 48 hours) while the proof is reviewed, then auto-release if
+unpaid. Hostel Manager in admin: hostels, rooms, fees with effective dates,
+amenities, multi-photo upload with drag reorder, cover image, carousel
+control, availability, bookings queue.
+
+=====================================================
+7. STUDENT PORTAL (uniform, simple)
+=====================================================
+One portal, one shell, light sidebar, bottom tab bar on mobile. Menu:
+Home, My Journey, Exams and Timetable, Results, Payments, Hostel,
+Documents, Messages. Every page has a title, a one-line helper, and a
+primary action in the same place. Home shows "Your next step", progress
+tracker, next exam countdown, fees due, hostel status, unread messages.
+Status badges always use icon + text. Plain-language labels, friendly empty
+states, WhatsApp help link.
+
+EXAMS AND TIMETABLE (core feature)
+- Student sees only their enrolled exams. Views: calendar and list, with a
+  countdown to the next paper.
+- Each entry: exam body, subject/paper, date, start time, reporting time,
+  duration, venue or centre, candidate instructions, and status (Published,
+  Rescheduled, Cancelled).
+- Times stored in UTC and shown in Africa/Lagos (WAT) with a timezone label
+  and an option for the student's local time.
+- Changed entries show an "Updated" badge and a "What changed" panel (old
+  vs new, reason, who, when), from the TimetableChange log.
+- Add to calendar (.ics download and a private subscribe link), print or
+  PDF timetable, and an admission/exam slip generated only when the exam
+  invoice is verified and the Exams Officer approves.
+- Admin (Exams Officer): create and edit entries by exam and session, CSV
+  bulk import, draft/publish, preview as student, clash detection for
+  students enrolled in overlapping papers, and notify only affected
+  students when published or changed. Changes after publishing require a
+  reason, which students see.
+
+=====================================================
+8. LIVE UPDATES (REAL TIME)
+=====================================================
+Goal: when an admin changes something, the affected student's open portal
+updates within about 2 seconds with no page refresh.
+- Use Server-Sent Events (GET /api/events, authenticated, text/event-stream)
+  with a heartbeat every 25 seconds. Support Last-Event-ID so missed events
+  are replayed after a reconnect. Auto-reconnect with exponential backoff.
+  Fall back to polling every 30 seconds if SSE is unavailable.
+- Fan out across server instances with Redis pub/sub (or Postgres
+  LISTEN/NOTIFY), and write each event to RealtimeEvent for replay.
+- Each user receives only their own events and announcements targeted to
+  them. Admins receive admin events (new application, new proof, new
+  hostel booking). Never send another student's data.
+- Event types: timetable.published, timetable.changed, timetable.cancelled,
+  payment.status_changed, invoice.created, application.status_changed,
+  document.status_changed, hostel.booking_changed, result.published,
+  announcement.published, message.received, student.id_issued.
+- Client: a small store that applies events to the relevant screen, shows
+  a toast ("Your WAEC Mathematics paper has been rescheduled"), updates
+  the notification bell, adds "Updated" badges, and never loses unsaved
+  form input.
+- Build a Live indicator in the portal footer (Connected / Reconnecting)
+  and an admin "Realtime health" page.
+- Proxies and hosts must not buffer the stream: set Cache-Control:
+  no-cache, X-Accel-Buffering: no, and disable compression for the
+  event route.
+
+=====================================================
+9. ADMIN WORKSPACE
+=====================================================
+Fixed collapsible sidebar (fix any clipped logo, buttons, or icons), top bar
+with global search, notifications, and role badge. Modules: Overview (KPIs,
+needs attention), Students, Applications, Payments (accounts + queue),
+Fees Manager, Exams and Timetable, Results, Hostel Manager, Destinations,
+Site Content, Media Library, Announcements ("Post information" with
+audience, schedule, channels), Consultations, Staff and Roles, Audit log,
+Settings. Tables with search, filters, bulk actions, CSV export, drawers
+for create/edit, confirmation dialogs, specific error messages (for
+example "A student with this email already exists. Open their profile.").
+
+=====================================================
+10. SECURITY AND PRIVACY
+=====================================================
+argon2 hashing, rate limits, account lockout, mandatory 2FA for staff,
+RBAC on every endpoint, CSRF protection, sanitised rich text, strict CORS,
+private file storage, server-side validation of files and amounts, audit
+logs, minimal data collection, privacy notice, guardian consent for minors,
+and data export/delete on request (Nigeria Data Protection Act).
+
+=====================================================
+11. QUALITY: TESTS THAT MUST PASS
+=====================================================
+Automated E2E (Playwright) with two browser sessions:
+a) Signup, email verify, application, application-fee proof upload; admin
+   verifies; student receives a Student ID, and the portal unlocks live
+   without refresh.
+b) Admin publishes a timetable entry; the student's open Exams page shows
+   it within 2 seconds. Admin reschedules it; the student sees the
+   "Updated" badge, the change panel, and a toast. Admin cancels it; the
+   student sees "Cancelled".
+c) A student not enrolled in that exam receives NO event.
+d) Disconnect the network, make 3 admin changes, reconnect; all 3 appear
+   (Last-Event-ID replay).
+e) Two students racing for the last bed: exactly one succeeds.
+f) A reused payment-proof image is flagged. Changing a payment account
+   without re-entering password + 2FA is refused.
+g) Timetable times display correctly in WAT and in another timezone.
+Also: unit tests for ID generation and invoice calculation, accessibility
+checks (WCAG AA), responsive checks at 360/768/1440px, and a performance
+check (mobile Lighthouse 85+).
+
+=====================================================
+12. DELIVERY PHASES (stop for my review after each)
+=====================================================
+1 Audit, plan, branch, baseline tests.
+2 Data model, invoices, account states, Student ID flow.
+3 Payments: accounts, proof upload, verification queue.
+4 Application form.
+5 Exams and timetable (admin + portal).
+6 Live updates (SSE) and E2E tests.
+7 Hostel manager and booking.
+8 Public website sections and animated header text.
+9 Admin and portal polish, text and typography pass.
+10 Final report: changed files, test results, env variables, endpoints,
+   deployment steps, and screenshots. Confirm the globe code is unchanged.
