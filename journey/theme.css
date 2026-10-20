@@ -102,6 +102,12 @@
 .journey-public :focus-visible,.journey-app :focus-visible{outline-color:var(--j-ink)}
 .journey-public .catalogue-note,.journey-public .j-card .j-rich-text{color:var(--j-text);font-size:var(--type-16)}
 
-.journey-public .j-photo-break :is(.j-heading,.j-muted){background-color:var(--j-deep);color:var(--j-paper)}
+.j-school-photo{max-width:920px;margin-block:36px}
+.j-school-photo figure{margin:0;overflow:hidden;border:1px solid var(--j-line);border-radius:16px;background:var(--j-surface)}
+.j-school-photo figure>img{display:block;position:static;width:100%;height:auto;aspect-ratio:4/3;max-height:480px;object-fit:cover;object-position:50% 60%;filter:none;opacity:1}
+.j-school-photo figcaption{padding:24px 28px}
+.j-school-photo h2{margin:0 0 10px;font:500 clamp(1.5rem,3vw,2rem)/1.2 var(--j-serif);letter-spacing:-.025em;color:var(--j-text);background:transparent}
+.j-school-photo figcaption p{margin:0;font-size:1rem;line-height:1.6;color:var(--j-muted);background:transparent}
+@media(max-width:600px){.j-school-photo{margin-block:24px}.j-school-photo figcaption{padding:20px}.j-school-photo figure{border-radius:12px}}
 
 .journey-public p.j-muted{font-size:var(--type-16)}
