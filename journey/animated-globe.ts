@@ -41,6 +41,7 @@ export class AnimatedGlobe {
   private velocity=0;
   private hovered=false;
   private focused=false;
+  private touchInteraction=false;
   private inView=false;
   private destroyed=false;
   private drag:{id:number;x:number;y:number}|null=null;
@@ -79,9 +80,11 @@ export class AnimatedGlobe {
     const options={signal:this.events.signal};
     host.addEventListener('pointerenter',e=>{if(e.pointerType==='mouse'){this.hovered=true;this.sync();}},options);
     host.addEventListener('pointerleave',()=>{this.hovered=false;this.sync();},options);
-    host.addEventListener('focusin',()=>{this.focused=true;this.sync();},options);
-    host.addEventListener('focusout',()=>{queueMicrotask(()=>{if(!this.destroyed){this.focused=host.contains(document.activeElement);this.sync();}});},options);
+    host.addEventListener('focusin',()=>{this.focused=!this.touchInteraction;this.sync();},options);
+    host.addEventListener('focusout',()=>{queueMicrotask(()=>{if(!this.destroyed){this.focused=!this.touchInteraction&&host.contains(document.activeElement);this.sync();}});},options);
     host.addEventListener('pointerdown',e=>{
+      this.touchInteraction=e.pointerType==='touch';
+      if(this.touchInteraction){this.focused=false;this.hovered=false;this.sync();}
       if(e.button!==0||(e.target as HTMLElement).closest('.j-globe-label'))return;
       this.drag={id:e.pointerId,x:e.clientX,y:e.clientY};host.setPointerCapture(e.pointerId);host.classList.add('is-dragging');this.sync();
     },options);
@@ -94,6 +97,7 @@ export class AnimatedGlobe {
     const release=()=>{this.drag=null;host.classList.remove('is-dragging');this.sync();};
     host.addEventListener('pointerup',release,options);host.addEventListener('pointercancel',release,options);host.addEventListener('lostpointercapture',()=>{if(this.drag)release();},options);
     host.addEventListener('keydown',e=>{
+      this.touchInteraction=false;this.focused=true;this.sync();
       if(e.target!==host||!['ArrowLeft','ArrowRight','ArrowUp','ArrowDown'].includes(e.key))return;
       e.preventDefault();this.yaw+=e.key==='ArrowRight'?10:e.key==='ArrowLeft'?-10:0;
       this.pitch=clamp(this.pitch+(e.key==='ArrowUp'?10:e.key==='ArrowDown'?-10:0),-65,65);this.draw();

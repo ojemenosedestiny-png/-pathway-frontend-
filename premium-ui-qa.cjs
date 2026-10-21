@@ -8,6 +8,6 @@ const assert=require('node:assert/strict');const fs=require('node:fs');const cry
   await page.evaluate(()=>scrollTo(0,0));await page.screenshot({path:`docs/premium-redesign-2026-10-21/hero-${width}.png`});await page.screenshot({path:`docs/premium-redesign-2026-10-21/home-${width}.png`,fullPage:true});
  }
  await page.emulateMedia({reducedMotion:'reduce'});assert.equal(await page.locator('.premium-hero-title span').first().evaluate(e=>getComputedStyle(e).animationName),'none');
- assert.equal(crypto.createHash('sha256').update(fs.readFileSync('journey/animated-globe.ts')).digest('hex'),'ac232dc23c068f0bd05deafb474292789094791a2ebf67ef48bc90c226d7f489');
- assert.deepEqual(errors,[]);console.log('PASS: premium hero, photo placements, official logo assets, three responsive widths, reduced motion and no browser errors. Globe source preserved.');
+ assert.equal(crypto.createHash('sha256').update(fs.readFileSync('journey/animated-globe.ts')).digest('hex'),'f3c87236982156d35707184da22ccc5710d2afdd22e4042d2fe48d64a3ba606b');
+ assert.deepEqual(errors,[]);console.log('PASS: premium hero, photo placements, official logo assets, three responsive widths, reduced motion and no browser errors. Globe includes the mobile touch-focus fix.');
 }finally{await browser.close();server.closeAllConnections();await new Promise(r=>server.close(r));}})().catch(e=>{console.error(e);process.exitCode=1;});
