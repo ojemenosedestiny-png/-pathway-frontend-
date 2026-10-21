@@ -7,8 +7,9 @@ const assert=require('node:assert/strict');const{chromium}=require('playwright')
  assert.equal(await page.getByRole('heading',{level:1}).count(),1);assert.ok(await page.getByRole('link',{name:'Start your application',exact:true}).count()>=1);
  assert.equal(await page.locator('.j-error').count(),0);assert.equal(await page.locator('[data-service-notice]').count(),1);
  assert.equal(await page.locator('.j-exam-logo-card').count(),3);assert.ok(!(await page.locator('#home').innerText()).includes('NGN 50,000'));
- failed=false;await page.getByRole('button',{name:'Reload live information'}).click();
- await page.waitForFunction(()=>document.querySelector('#home')?.getAttribute('aria-busy')==='false'&&!document.querySelector('[data-service-notice]'));
+ assert.equal(await page.locator('.j-journey-hero').evaluate(el=>el.nextElementSibling?.hasAttribute('data-service-notice')),true);
+ failed=false;
+ await page.waitForFunction(()=>document.querySelector('#home')?.getAttribute('aria-busy')==='false'&&!document.querySelector('[data-service-notice]'),{},{timeout:20000});
  assert.equal(await page.locator('.j-error').count(),0);assert.deepEqual(errors,[]);
- console.log('PASS: total public API outage preserves homepage, globe, approved logos and application link; no invented fees; one notice; retry recovers without runtime errors.');
+ console.log('PASS: total public API outage preserves homepage, globe, approved logos and application link; no invented fees; one notice; bounded automatic retry recovers without runtime errors; compact notice stays below the hero.');
 }finally{await browser.close();server.closeAllConnections();await new Promise(r=>server.close(r));}})().catch(e=>{console.error(e);process.exitCode=1;});

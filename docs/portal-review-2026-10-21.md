@@ -66,3 +66,11 @@ All **72 module/viewport checks passed**: 27 admin modules and 9 student pages a
 ## Final regression result
 
 All 28 frontend regression checks passed, including the corrected individual module rerun and the new heading-motion check. The fresh backend build and 48 tests also passed. [Regression evidence](portal-regression-results-2026-10-21.json). The initial Settings assertion counted an empty form validation slot; the corrected assertion rejects non-empty error alerts and the full module rerun passed.
+
+## Subsequent live outage and heading follow-up
+
+A later live check returned HTTP 502 for readiness, public content and public legal requests. Earlier successful health checks therefore do not establish continuous uptime. Current Render process/error logs have been requested to diagnose the hosting failure; frontend retries cannot repair an unavailable backend process.
+
+The public page now retries recovery at bounded intervals and clears its notice after a successful refresh. Its compact notice sits below the hero. The shared first-heading animation has priority over the older public-page animation rule, while reduced-motion preferences still disable motion. Focused checks cover the exact computed heading animation, first paint, design stability, public outage recovery and existing live-content behavior.
+
+Follow-up verification: all five affected checks passed (shared heading animation on 16 pages, first paint, design stability, public outage recovery and live-content behavior). Supplied successful request logs end at 19:13 WAT; public readiness/content/legal requests still returned 502 around 19:45 WAT. No crash cause is established by those success logs.

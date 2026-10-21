@@ -9,8 +9,8 @@ const {createFrontend}=require('./frontend-server.cjs');
   const routes=['/','/about','/pathways','/exams','/faq','/contact','/news','/student/login','/admin/login','/forgot-password','/recover-student-id','/signup','/apply','/book-consultation','/hostel','/pay-fees'];
   for(const route of routes){
    await page.emulateMedia({reducedMotion:'no-preference'});await page.goto(origin+route);const h=page.locator('h1').first();await h.waitFor();
-   const animated=await h.evaluate(el=>{const style=getComputedStyle(el);return style.animationName!=='none'||[...el.querySelectorAll('span')].some(s=>getComputedStyle(s).animationName!=='none');});assert.ok(animated,route+' heading animation');
-   await page.waitForTimeout(800);assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth),false,route+' overflow');assert.equal(await h.evaluate(el=>getComputedStyle(el).opacity),'1',route+' visible after entrance');
+   const animated=await h.evaluate(el=>{const style=getComputedStyle(el);return style.animationName!=='none'||[...el.querySelectorAll('span')].some(s=>getComputedStyle(s).animationName!=='none');});assert.ok(animated,route+' heading animation');assert.equal(await h.evaluate(el=>getComputedStyle(el).animationName),'pathway-heading-enter',route+' shared heading animation');
+   await page.waitForTimeout(1200);assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth),false,route+' overflow');assert.equal(await h.evaluate(el=>getComputedStyle(el).opacity),'1',route+' visible after entrance');
    await page.emulateMedia({reducedMotion:'reduce'});assert.equal(await h.evaluate(el=>getComputedStyle(el).animationName),'none',route+' reduced motion');assert.equal(await h.evaluate(el=>getComputedStyle(el).opacity),'1',route+' reduced visibility');
   }
   assert.deepEqual(errors,[]);console.log('PASS: 16 public/access/service page headings animate on mobile, finish fully visible, fit the viewport and respect reduced motion. Portal headings are checked per module separately.');

@@ -7,7 +7,7 @@
   {
     "file": "heading-motion-qa.cjs",
     "pass": true,
-    "durationMs": 23277
+    "durationMs": 36118
   },
   {
     "file": "canonical-origin-qa.cjs",
@@ -17,22 +17,22 @@
   {
     "file": "first-paint-qa.cjs",
     "pass": true,
-    "durationMs": 16883
+    "durationMs": 13668
   },
   {
     "file": "design-stability-qa.cjs",
     "pass": true,
-    "durationMs": 19275
+    "durationMs": 25149
   },
   {
     "file": "public-outage-qa.cjs",
     "pass": true,
-    "durationMs": 11183
+    "durationMs": 15599
   },
   {
     "file": "live-reliability-qa.cjs",
     "pass": true,
-    "durationMs": 49783
+    "durationMs": 14295
   },
   {
     "file": "public-admissions-qa.cjs",
