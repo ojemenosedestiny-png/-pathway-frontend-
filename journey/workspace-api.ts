@@ -10,12 +10,12 @@ export const workspaceService={
  // UI-only demonstration catalog, never mixed with live records or used in bookings/payments.
  demoHostels:()=>['Emerald House','Sage Residence','The Courtyard'].map((name,index)=>({id:'demo-hostel-'+index,name,gender:['FEMALE','MALE','MIXED'][index],description:'A layout preview. Add your own residence details and photographs.',demo:true,active:false,rules:'',rooms:[]})),
  async upload(file:File,publicFile=false){
-  const video=file.type.startsWith('video/');const allowed=['image/jpeg','image/png','image/webp','application/pdf',...(publicFile?['video/mp4','video/webm']:[])];
-  if(!allowed.includes(file.type)||!file.size||file.size>(video?50:10)*1024*1024)throw Error('Choose JPG, PNG, WebP or PDF up to 10 MB, or a school MP4/WebM video up to 50 MB.');
+  const video=file.type.startsWith('video/');const allowed=publicFile?['image/jpeg','image/png','image/webp']:['image/jpeg','image/png','image/webp','application/pdf'];
+  if(!allowed.includes(file.type)||!file.size||file.size>(video?50:10)*1024*1024)throw Error('Choose JPG, PNG, WebP or PDF up to 10 MB, PDFs must be uploaded as private documents.');
   const filename=file.name.normalize('NFKD').replace(/[^\w .()-]/g,'_').slice(-150)||'upload';
   const result=await api('/files/upload-url','POST',{filename,mime:file.type,size:file.size,type:publicFile?'MEDIA':'OTHER',public:publicFile});
   const response=await fetch(result.uploadUrl,{method:'PUT',headers:result.headers,body:file});if(!response.ok)throw Error('The file could not be uploaded. Check storage CORS settings and try again.');
-  await api('/files/'+result.id+'/complete','POST',{});return {id:result.id,filename:file.name,status:'SCANNING'};
+  const completed=await api('/files/'+result.id+'/complete','POST',{});if(completed.status==='QUARANTINED')throw Error('File validation failed. Choose a valid photograph or an unencrypted PDF.');return {id:result.id,filename:file.name,status:completed.status};
  },
  fileStatus:(id:string)=>api('/files/'+encodeURIComponent(id)+'/status'),
  async download(id:string){const result=await api('/files/'+encodeURIComponent(id)+'/download-url');const url=new URL(result.url);if(!['http:','https:'].includes(url.protocol))throw Error('Invalid download address.');window.open(url.href,'_blank','noopener');},
