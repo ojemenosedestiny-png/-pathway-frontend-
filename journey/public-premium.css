@@ -51,6 +51,14 @@
 .premium-destination-card h3{font:500 clamp(1.4rem,2vw,1.8rem)/1.2 var(--j-serif);margin:12px 0}
 .premium-destination-card h3 span{float:right;font-family:var(--j-sans);font-size:20px}
 .premium-destination-card p{font-size:14px;color:#52665d;margin:0}
+.premium-institution-images{margin-top:28px}
+.premium-institution-images figure{margin:0}
+.premium-institution-images .premium-destination-card>img{object-position:center top}
+.premium-institution-images figcaption{padding:26px}
+.premium-institution-brand{display:flex;gap:14px;align-items:center;justify-content:space-between;margin-bottom:12px}
+.premium-institution-brand>img{width:82px;height:82px;object-fit:contain;flex-shrink:0}
+.premium-institution-brand h3{margin-bottom:0}
+@media(max-width:420px){.premium-institution-images figcaption{padding:22px}.premium-institution-brand{align-items:start}.premium-institution-brand>img{width:64px;height:64px}.premium-institution-brand h3{font-size:22px}}
 .premium-programmes{border-top:1px solid #e2ebe4!important}
 .premium-programmes>.j-grid{margin-top:30px}
 .premium-programme-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:22px;grid-column:1/-1}
