@@ -41,6 +41,9 @@ export class AnimatedGlobe {
   private velocity=0;
   private hovered=false;
   private focused=false;
+  private rotationControl=document.createElement('button');
+  private motionOverride=false;
+  private userPaused=false;
   private touchInteraction=false;
   private inView=false;
   private destroyed=false;
@@ -77,6 +80,8 @@ export class AnimatedGlobe {
       host.append(label);
       return {destination,point,path:Array.from({length:73},(_,j)=>greatCircle(this.originPoint,point,j/72)),label,width:0,height:0};
     });
+    const control=this.rotationControl;control.type='button';control.className='j-globe-rotation';control.style.cssText='position:absolute;bottom:0;left:50%;transform:translateX(-50%);z-index:3;min-height:44px;padding:8px 16px;border:1px solid #b6c9bf;border-radius:24px;background:#fff;color:#123c32;font:600 13px system-ui;white-space:nowrap;cursor:pointer';
+    control.addEventListener('click',()=>{if(this.userPaused||(this.media.matches&&!this.motionOverride)){this.userPaused=false;this.motionOverride=true;}else{this.userPaused=true;this.motionOverride=false;}this.hovered=false;this.focused=false;this.sync();},{signal:this.events.signal});host.append(control);
     const options={signal:this.events.signal};
     host.addEventListener('pointerenter',e=>{if(e.pointerType==='mouse'){this.hovered=true;this.sync();}},options);
     host.addEventListener('pointerleave',()=>{this.hovered=false;this.sync();},options);
@@ -85,7 +90,7 @@ export class AnimatedGlobe {
     host.addEventListener('pointerdown',e=>{
       this.touchInteraction=e.pointerType==='touch';
       if(this.touchInteraction){this.focused=false;this.hovered=false;this.sync();}
-      if(e.button!==0||(e.target as HTMLElement).closest('.j-globe-label'))return;
+      if(e.button!==0||(e.target as HTMLElement).closest('.j-globe-label,.j-globe-rotation'))return;
       this.drag={id:e.pointerId,x:e.clientX,y:e.clientY};host.setPointerCapture(e.pointerId);host.classList.add('is-dragging');this.sync();
     },options);
     host.addEventListener('pointermove',e=>{
@@ -110,7 +115,7 @@ export class AnimatedGlobe {
     document.fonts?.ready.then(()=>{if(!this.destroyed)this.resize();});
     this.resize();
   }
-  private motionChange=()=>{this.sync();this.draw();};
+  private motionChange=()=>{this.motionOverride=false;this.sync();this.draw();};
   private resize() {
     if(this.destroyed)return;
     const rect=this.host.getBoundingClientRect();this.width=rect.width;this.height=rect.height;
@@ -123,14 +128,16 @@ export class AnimatedGlobe {
   }
   private sync() {
     cancelAnimationFrame(this.frame);this.frame=0;this.lastTime=0;this.velocity=0;
-    const running=!this.destroyed&&this.inView&&!document.hidden&&!this.media.matches&&!this.hovered&&!this.focused&&!this.drag;
-    this.host.dataset.globeState=this.media.matches?'reduced-motion':running?'running':'paused';
+    const running=!this.destroyed&&this.inView&&!document.hidden&&(!this.media.matches||this.motionOverride)&&!this.userPaused&&(!this.hovered||this.motionOverride)&&(!this.focused||this.motionOverride)&&!this.drag;
+    this.host.dataset.globeState=this.media.matches&&!this.motionOverride?'reduced-motion':running?'running':'paused';
+    this.rotationControl.textContent=this.userPaused||(this.media.matches&&!this.motionOverride)?'Play globe rotation':'Pause globe rotation';
+    this.rotationControl.setAttribute('aria-label',this.rotationControl.textContent);
     if(running&&this.speed>0)this.frame=requestAnimationFrame(this.tick);
   }
   private tick=(now:number)=>{
     if(this.destroyed)return;
     // Also check in-frame: media/visibility changes can arrive between scheduled callbacks.
-    if(this.media.matches||document.hidden||!this.inView){this.sync();this.draw();return;}
+    if((this.media.matches&&!this.motionOverride)||document.hidden||!this.inView){this.sync();this.draw();return;}
     if(Math.max(1,window.devicePixelRatio||1)!==this.ratio)this.resize();
     const dt=this.lastTime?Math.min((now-this.lastTime)/1000,.05):0;this.lastTime=now;
     // Ease up to a constant angular velocity after interaction, without a jump on resume.
