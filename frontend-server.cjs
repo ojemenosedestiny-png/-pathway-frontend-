@@ -10,7 +10,7 @@ function createFrontend() {
  const mediaOrigins=approvedOrigin(process.env.PATHWAY_MEDIA_ORIGIN);
  const uploadOrigins=approvedOrigin(process.env.PATHWAY_UPLOAD_ORIGIN);
  const app=express();app.disable('x-powered-by');
- const release=crypto.createHash('sha256');for(const filename of ['index.html','styles.css','journey/theme.css','journey/public-premium.css',...fs.readdirSync(path.join(__dirname,'journey/dist')).filter(n=>n.endsWith('.js')).sort().map(n=>'journey/dist/'+n)])release.update(fs.readFileSync(path.join(__dirname,filename)));const releaseId=release.digest('hex').slice(0,12);
+ const release=crypto.createHash('sha256');for(const filename of ['index.html','styles.css','journey/theme.css','journey/public-premium.css','journey/workspace.css','journey/live.html',...fs.readdirSync(path.join(__dirname,'journey/dist')).filter(n=>n.endsWith('.js')).sort().map(n=>'journey/dist/'+n)])release.update(fs.readFileSync(path.join(__dirname,filename)));const releaseId=release.digest('hex').slice(0,12);
  app.use((req,res,next)=>{res.setHeader('X-Pathway-Release',releaseId);if(/\.(?:js|css)$/.test(req.path))res.setHeader('Cache-Control','no-cache, must-revalidate');next();});
  // Keep browser Origin, session cookies and the backend's trusted origin aligned.
  const production=process.env.NODE_ENV==='production';
