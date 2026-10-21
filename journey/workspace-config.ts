@@ -40,6 +40,7 @@ export const adminModules=[
  ['countries','Destinations','map-pin','Campus','Countries represented in your pathway catalogue.'],
  ['courses','Courses','compass','Campus','Course requirements, tuition and application dates.'],
  ['consultations','Consultations','calendar-days','Campus','Appointments that help students make their next decision.'],
+ ['consultation-requests','Visitor consultations','message-circle','Campus','Follow up consultation requests from website visitors.'],
  ['slots','Adviser availability','clock','Campus','Set clear, bookable appointment windows.'],
  ['announcements','Post information','bell','Content','The right message, for the right people, at the right time.'],
  ['content','Site content','file-text','Content','Keep your school’s voice clear and consistent.'],
@@ -54,4 +55,4 @@ export const adminModules=[
 export const studentModules=[
  ['dashboard','Home','house','','View your next steps, payments and school updates.'],['journey','My journey','route','','Follow your progress and university applications.'],['exams','Your exams','graduation-cap','','Your registrations, candidate details and results.'],['payments','Payments','wallet','','View your fees, payment history and receipts.'],['hostel','Hostel','building-2','','Find a residence or manage your existing booking.'],['documents','Documents','folder-open','','Your documents, securely in one place.'],['messages','Messages','message-circle','','A direct conversation with your admissions team.'],
 ];
-export function modulePermission(key:string){return key==='applicants'?'applications':key==='slots'?'consultations':key;}
+export function modulePermission(key:string){return key==='applicants'?'applications':['slots','consultation-requests'].includes(key)?'consultations':key;}
