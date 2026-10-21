@@ -1,0 +1,17 @@
+const assert=require('node:assert/strict');const{chromium}=require('playwright');const{createFrontend}=require('./frontend-server.cjs');const fs=require('node:fs');
+(async()=>{const server=createFrontend().listen(0,'127.0.0.1');await new Promise(r=>server.once('listening',r));const origin='http://127.0.0.1:'+server.address().port;const browser=await chromium.launch({channel:'chrome',headless:true});try{
+ const desktopResponse=await fetch(origin),mobileResponse=await fetch(origin,{headers:{'User-Agent':'Mozilla/5.0 iPhone Mobile'}});const html=await desktopResponse.text();assert.equal(await mobileResponse.text(),html);assert.equal(desktopResponse.headers.get('x-pathway-release'),mobileResponse.headers.get('x-pathway-release'));assert.match(desktopResponse.headers.get('cache-control'),/must-revalidate/);assert.match(html,/premium-hero-title/);assert.ok(!html.includes('hero-photograph'));assert.ok(!html.includes('src="script.js"'));
+ for(const asset of['/journey/dist/public.js','/journey/dist/public-template.js','/journey/public-premium.css'])assert.match((await fetch(origin+asset)).headers.get('cache-control'),/must-revalidate/,asset);
+ fs.mkdirSync('docs/design-stability',{recursive:true});
+ for(const width of[360,768,1440]){
+  const page=await browser.newPage({viewport:{width,height:1000},reducedMotion:'reduce'});const errors=[];page.on('pageerror',e=>errors.push(e.message));let release;const gate=new Promise(r=>release=r);
+  await page.route('**/backend-api/**',async route=>{await gate;await route.fulfill({json:[]});});
+  await page.goto(origin,{waitUntil:'domcontentloaded'});await page.locator('[data-animated-globe] canvas').waitFor();
+  assert.equal(await page.locator('.premium-hero-title').count(),1);assert.equal(await page.locator('.hero-photograph,.hero-inner,.j-skeleton').count(),0);
+  const colour=await page.locator('.j-journey-hero').evaluate(e=>getComputedStyle(e).backgroundColor);await page.screenshot({path:`docs/design-stability/initial-${width}.png`});
+  const search=page.getByRole('textbox',{name:'Search country, university or course'});await search.fill('Canada');await search.focus();release();
+  await page.waitForFunction(()=>document.querySelector('#home').getAttribute('aria-busy')==='false');assert.equal(await search.inputValue(),'Canada');assert.equal(await search.evaluate(e=>document.activeElement===e),true);assert.equal(await page.locator('.j-journey-hero').evaluate(e=>getComputedStyle(e).backgroundColor),colour);assert.equal(await page.locator('.premium-hero-title').count(),1);assert.equal(await page.locator('.hero-photograph,.hero-inner').count(),0);assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));assert.deepEqual(errors,[]);await page.screenshot({path:`docs/design-stability/ready-${width}.png`});await page.close();
+ }
+ const noJs=await browser.newPage({javaScriptEnabled:false});await noJs.goto(origin);assert.equal(await noJs.locator('.premium-hero-title').count(),1);assert.equal(await noJs.locator('.j-public-header').count(),1);await noJs.close();
+ console.log('PASS: identical server design/release for mobile and desktop; premium UI before API completion and without JavaScript; no legacy layout, stable styling, retained search focus/value, cache revalidation.');
+}finally{await browser.close();server.closeAllConnections();await new Promise(r=>server.close(r));}})().catch(e=>{console.error(e);process.exitCode=1;});

@@ -1,5 +1,7 @@
 /* Public site only. Authenticated workspaces and globe geometry are unchanged. */
 .journey-public{--j-paper:#fff;--j-surface:#fff;--j-ink:#07513d;--j-deep:#043c2d;--j-text:#123e32;--j-muted:#52665d;--j-line:#dce8e0;background:#fff}
+.journey-public>.skip-link{position:fixed;top:-100px;left:18px;z-index:300;padding:12px 18px;background:#fff;color:#07513d;border:2px solid #07513d}
+.journey-public>.skip-link:focus{top:12px}
 .journey-public .j-container{max-width:1240px}
 .journey-public .j-section{padding-block:88px}
 .journey-public .j-section+.j-section{border-top:0}
