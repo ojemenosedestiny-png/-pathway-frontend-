@@ -139,3 +139,8 @@
 .compact-footer-bottom nav{display:flex;flex-wrap:wrap;gap:4px 20px}
 .journey-public .compact-footer-bottom a{display:flex;align-items:center;min-height:36px;font-size:11px;text-decoration:none}
 @media(max-width:760px){.journey-public .j-public-footer{padding:28px 0 14px}.compact-footer-top{grid-template-columns:1fr 1fr;gap:22px 16px}.compact-footer-brand{grid-column:1/-1}.compact-footer-brand>a{font-size:21px}.journey-public .compact-footer-brand p{max-width:48ch}.compact-footer-contact{grid-column:1/-1}.compact-footer-nav{grid-column:1/-1;display:grid;grid-template-columns:1fr 1fr;column-gap:14px}.compact-footer-nav .compact-footer-label{grid-column:1/-1;margin-bottom:0}.journey-public .compact-footer-contact>a,.journey-public .compact-footer-nav>a{min-height:44px;font-size:13px}.compact-footer-notices{grid-template-columns:1fr;gap:10px;margin-top:16px;padding-top:14px}.compact-footer-bottom{display:block;margin-top:14px}.compact-footer-bottom nav{margin-top:8px;gap:0 20px}.journey-public .compact-footer-bottom a{min-height:44px}.journey-public .compact-footer-bottom p{font-size:11px}.compact-footer-label{margin-bottom:2px}}
+
+/* Keep the canvas visible between white cards, with solid reading surfaces. */
+body.journey-public{background-image:var(--pathway-backdrop);background-size:cover;background-position:center top;background-attachment:fixed}.journey-public .j-pass-journey{background-color:transparent}
+@media(max-width:760px){body.journey-public{background-attachment:scroll;background-image:linear-gradient(110deg,rgba(255,255,255,.96),rgba(255,255,255,.9)),url('/assets/emerald-background.svg')}}
+@media print{body.journey-public{background:#fff}}

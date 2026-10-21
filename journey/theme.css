@@ -111,3 +111,9 @@
 @media(max-width:600px){.j-school-photo{margin-block:24px}.j-school-photo figcaption{padding:20px}.j-school-photo figure{border-radius:12px}}
 
 .journey-public p.j-muted{font-size:var(--type-16)}
+
+/* Quiet emerald image backdrop; content surfaces remain opaque. */
+:root{--pathway-backdrop:linear-gradient(105deg,rgba(255,255,255,.97) 0%,rgba(255,255,255,.94) 48%,rgba(255,255,255,.83) 100%),url('/assets/emerald-background.svg')}
+body.journey-app,body.journey-public,body:has(>main.j-container){background-color:#f4f8f4;background-image:var(--pathway-backdrop);background-size:cover;background-position:center top;background-attachment:fixed}
+@media(max-width:760px){body.journey-app,body.journey-public,body:has(>main.j-container){background-attachment:scroll;background-image:linear-gradient(110deg,rgba(255,255,255,.96),rgba(255,255,255,.9)),url('/assets/emerald-background.svg')}}
+@media print{body.journey-app,body.journey-public,body:has(>main.j-container){background:#fff}}
