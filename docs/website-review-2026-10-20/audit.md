@@ -39,6 +39,8 @@ This branch inherits the pending Phase 2 code. Do not merge it directly to produ
 
 ## Owner instructions incorporated
 
+Follow-up portal verification on 21 October 2026: see the [individual admin/student module report](../portal-review-2026-10-21.md). All 72 module/viewport checks, 28 frontend regression checks and 48 backend tests passed. The report distinguishes local/synthetic coverage from live production checks.
+
 The owner subsequently supplied the draft availability list and explicitly withheld business registration details, logo/photo permissions and refund terms. The implementation now adds blank legal-details fields, per-exam Offered by us controls, separate official reference fee editors, a draft research import, media source/licence records and an unpublished refund editor. See docs/exam-research.md and docs/owner-confirmation-sheet.md. Existing contact email and WhatsApp remain unchanged. The official reference seed is a preview/apply operation; it is not a live-data write during this task.
 
 Validation: frontend and backend builds pass. The final isolated MongoDB suite passes 32 tests, including a real preparation invoice that ignores a deliberately different official reference amount. Four focused trust-content checks cover draft hiding, blank legal fields, role protection, source/date validation, freshness/session warnings and availability enforcement. Browser checks pass for public pages at 360/768/1440px, searchable references, admin legal/refund controls, existing guest admissions, frontend deployment and admin password/MFA flow. Globe and geometry SHA-256 values match the Phase 1 baseline. Curriculum labels remain untouched. Screenshots use synthetic API data.

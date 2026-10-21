@@ -45,7 +45,7 @@ export const adminModules=[
  ['announcements','Post information','bell','Content','The right message, for the right people, at the right time.'],
  ['content','Site content','file-text','Content','Keep your school’s voice clear and consistent.'],
  ['slides','Hostel carousel','image','Content','Select the images and captions in your published carousel feed.'],
- ['media','Media library','image','Content','Upload, scan and manage approved school assets.'],
+ ['media','Media library','image','Content','Upload photographs and manage approved school assets.'],
  ['messages','Admissions inbox','message-circle','People','Keep each student conversation together.'],
  ['users','Staff accounts','shield-check','System','Give your team the access they need.'],
  ['roles','Roles & permissions','shield-check','System','Define which modules each staff role can read or edit.'],

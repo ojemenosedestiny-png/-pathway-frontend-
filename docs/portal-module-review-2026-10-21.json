@@ -1,0 +1,434 @@
+[
+  {
+    "role": "ADMIN",
+    "module": "dashboard",
+    "width": 360,
+    "pass": true
+  },
+  {
+    "role": "ADMIN",
+    "module": "students",
+    "width": 360,
+    "pass": true
+  },
+  {
+    "role": "ADMIN",
+    "module": "applicants",
+    "width": 360,
+    "pass": true
+  },
+  {
+    "role": "ADMIN",
+    "module": "applications",
+    "width": 360,
+    "pass": true
+  },
+  {
+    "role": "ADMIN",
+    "module": "documents",
+    "width": 360,
+    "pass": true
+  },
+  {
+    "role": "ADMIN",
+    "module": "payments",
+    "width": 360,
+    "pass": true
+  },
+  {
+    "role": "ADMIN",
+    "module": "fees",
+    "width": 360,
+    "pass": true
+  },
+  {
+    "role": "ADMIN",
+    "module": "hostels",
+    "width": 360,
+    "pass": true
+  },
+  {
+    "role": "ADMIN",
+    "module": "rooms",
+    "width": 360,
+    "pass": true
+  },
+  {
+    "role": "ADMIN",
+    "module": "bookings",
+    "width": 360,
+    "pass": true
+  },
+  {
+    "role": "ADMIN",
+    "module": "exams",
+    "width": 360,
+    "pass": true
+  },
+  {
+    "role": "ADMIN",
+    "module": "enrolments",
+    "width": 360,
+    "pass": true
+  },
+  {
+    "role": "ADMIN",
+    "module": "universities",
+    "width": 360,
+    "pass": true
+  },
+  {
+    "role": "ADMIN",
+    "module": "countries",
+    "width": 360,
+    "pass": true
+  },
+  {
+    "role": "ADMIN",
+    "module": "courses",
+    "width": 360,
+    "pass": true
+  },
+  {
+    "role": "ADMIN",
+    "module": "consultations",
+    "width": 360,
+    "pass": true
+  },
+  {
+    "role": "ADMIN",
+    "module": "consultation-requests",
+    "width": 360,
+    "pass": true
+  },
+  {
+    "role": "ADMIN",
+    "module": "slots",
+    "width": 360,
+    "pass": true
+  },
+  {
+    "role": "ADMIN",
+    "module": "announcements",
+    "width": 360,
+    "pass": true
+  },
+  {
+    "role": "ADMIN",
+    "module": "content",
+    "width": 360,
+    "pass": true
+  },
+  {
+    "role": "ADMIN",
+    "module": "slides",
+    "width": 360,
+    "pass": true
+  },
+  {
+    "role": "ADMIN",
+    "module": "media",
+    "width": 360,
+    "pass": true
+  },
+  {
+    "role": "ADMIN",
+    "module": "messages",
+    "width": 360,
+    "pass": true
+  },
+  {
+    "role": "ADMIN",
+    "module": "users",
+    "width": 360,
+    "pass": true
+  },
+  {
+    "role": "ADMIN",
+    "module": "roles",
+    "width": 360,
+    "pass": true
+  },
+  {
+    "role": "ADMIN",
+    "module": "audit",
+    "width": 360,
+    "pass": true
+  },
+  {
+    "role": "ADMIN",
+    "module": "settings",
+    "width": 360,
+    "pass": true
+  },
+  {
+    "role": "ADMIN",
+    "module": "dashboard",
+    "width": 1440,
+    "pass": true
+  },
+  {
+    "role": "ADMIN",
+    "module": "students",
+    "width": 1440,
+    "pass": true
+  },
+  {
+    "role": "ADMIN",
+    "module": "applicants",
+    "width": 1440,
+    "pass": true
+  },
+  {
+    "role": "ADMIN",
+    "module": "applications",
+    "width": 1440,
+    "pass": true
+  },
+  {
+    "role": "ADMIN",
+    "module": "documents",
+    "width": 1440,
+    "pass": true
+  },
+  {
+    "role": "ADMIN",
+    "module": "payments",
+    "width": 1440,
+    "pass": true
+  },
+  {
+    "role": "ADMIN",
+    "module": "fees",
+    "width": 1440,
+    "pass": true
+  },
+  {
+    "role": "ADMIN",
+    "module": "hostels",
+    "width": 1440,
+    "pass": true
+  },
+  {
+    "role": "ADMIN",
+    "module": "rooms",
+    "width": 1440,
+    "pass": true
+  },
+  {
+    "role": "ADMIN",
+    "module": "bookings",
+    "width": 1440,
+    "pass": true
+  },
+  {
+    "role": "ADMIN",
+    "module": "exams",
+    "width": 1440,
+    "pass": true
+  },
+  {
+    "role": "ADMIN",
+    "module": "enrolments",
+    "width": 1440,
+    "pass": true
+  },
+  {
+    "role": "ADMIN",
+    "module": "universities",
+    "width": 1440,
+    "pass": true
+  },
+  {
+    "role": "ADMIN",
+    "module": "countries",
+    "width": 1440,
+    "pass": true
+  },
+  {
+    "role": "ADMIN",
+    "module": "courses",
+    "width": 1440,
+    "pass": true
+  },
+  {
+    "role": "ADMIN",
+    "module": "consultations",
+    "width": 1440,
+    "pass": true
+  },
+  {
+    "role": "ADMIN",
+    "module": "consultation-requests",
+    "width": 1440,
+    "pass": true
+  },
+  {
+    "role": "ADMIN",
+    "module": "slots",
+    "width": 1440,
+    "pass": true
+  },
+  {
+    "role": "ADMIN",
+    "module": "announcements",
+    "width": 1440,
+    "pass": true
+  },
+  {
+    "role": "ADMIN",
+    "module": "content",
+    "width": 1440,
+    "pass": true
+  },
+  {
+    "role": "ADMIN",
+    "module": "slides",
+    "width": 1440,
+    "pass": true
+  },
+  {
+    "role": "ADMIN",
+    "module": "media",
+    "width": 1440,
+    "pass": true
+  },
+  {
+    "role": "ADMIN",
+    "module": "messages",
+    "width": 1440,
+    "pass": true
+  },
+  {
+    "role": "ADMIN",
+    "module": "users",
+    "width": 1440,
+    "pass": true
+  },
+  {
+    "role": "ADMIN",
+    "module": "roles",
+    "width": 1440,
+    "pass": true
+  },
+  {
+    "role": "ADMIN",
+    "module": "audit",
+    "width": 1440,
+    "pass": true
+  },
+  {
+    "role": "ADMIN",
+    "module": "settings",
+    "width": 1440,
+    "pass": true
+  },
+  {
+    "role": "STUDENT",
+    "module": "dashboard",
+    "width": 360,
+    "pass": true
+  },
+  {
+    "role": "STUDENT",
+    "module": "journey",
+    "width": 360,
+    "pass": true
+  },
+  {
+    "role": "STUDENT",
+    "module": "exams",
+    "width": 360,
+    "pass": true
+  },
+  {
+    "role": "STUDENT",
+    "module": "payments",
+    "width": 360,
+    "pass": true
+  },
+  {
+    "role": "STUDENT",
+    "module": "hostel",
+    "width": 360,
+    "pass": true
+  },
+  {
+    "role": "STUDENT",
+    "module": "documents",
+    "width": 360,
+    "pass": true
+  },
+  {
+    "role": "STUDENT",
+    "module": "messages",
+    "width": 360,
+    "pass": true
+  },
+  {
+    "role": "STUDENT",
+    "module": "profile",
+    "width": 360,
+    "pass": true
+  },
+  {
+    "role": "STUDENT",
+    "module": "consultations",
+    "width": 360,
+    "pass": true
+  },
+  {
+    "role": "STUDENT",
+    "module": "dashboard",
+    "width": 1440,
+    "pass": true
+  },
+  {
+    "role": "STUDENT",
+    "module": "journey",
+    "width": 1440,
+    "pass": true
+  },
+  {
+    "role": "STUDENT",
+    "module": "exams",
+    "width": 1440,
+    "pass": true
+  },
+  {
+    "role": "STUDENT",
+    "module": "payments",
+    "width": 1440,
+    "pass": true
+  },
+  {
+    "role": "STUDENT",
+    "module": "hostel",
+    "width": 1440,
+    "pass": true
+  },
+  {
+    "role": "STUDENT",
+    "module": "documents",
+    "width": 1440,
+    "pass": true
+  },
+  {
+    "role": "STUDENT",
+    "module": "messages",
+    "width": 1440,
+    "pass": true
+  },
+  {
+    "role": "STUDENT",
+    "module": "profile",
+    "width": 1440,
+    "pass": true
+  },
+  {
+    "role": "STUDENT",
+    "module": "consultations",
+    "width": 1440,
+    "pass": true
+  }
+]

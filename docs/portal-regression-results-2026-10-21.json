@@ -1,0 +1,143 @@
+[
+  {
+    "file": "frontend-deploy-qa.cjs",
+    "pass": true,
+    "durationMs": 1924
+  },
+  {
+    "file": "heading-motion-qa.cjs",
+    "pass": true,
+    "durationMs": 23277
+  },
+  {
+    "file": "canonical-origin-qa.cjs",
+    "pass": true,
+    "durationMs": 872
+  },
+  {
+    "file": "first-paint-qa.cjs",
+    "pass": true,
+    "durationMs": 16883
+  },
+  {
+    "file": "design-stability-qa.cjs",
+    "pass": true,
+    "durationMs": 19275
+  },
+  {
+    "file": "public-outage-qa.cjs",
+    "pass": true,
+    "durationMs": 11183
+  },
+  {
+    "file": "live-reliability-qa.cjs",
+    "pass": true,
+    "durationMs": 49783
+  },
+  {
+    "file": "public-admissions-qa.cjs",
+    "pass": true,
+    "durationMs": 30968
+  },
+  {
+    "file": "applicant-account-qa.cjs",
+    "pass": true,
+    "durationMs": 18859
+  },
+  {
+    "file": "consultation-qa.cjs",
+    "pass": true,
+    "durationMs": 23340
+  },
+  {
+    "file": "admin-public-control-qa.cjs",
+    "pass": true,
+    "durationMs": 22786
+  },
+  {
+    "file": "student-exam-connection-qa.cjs",
+    "pass": true,
+    "durationMs": 39743
+  },
+  {
+    "file": "workspace-auth-qa.cjs",
+    "pass": true,
+    "durationMs": 38279
+  },
+  {
+    "file": "workspace-startup-qa.cjs",
+    "pass": true,
+    "durationMs": 25098
+  },
+  {
+    "file": "workspace-upload-qa.cjs",
+    "pass": true,
+    "durationMs": 12073
+  },
+  {
+    "file": "workspace-qa.cjs",
+    "pass": true,
+    "moduleViewportChecks": 72,
+    "rerunEvidence": "docs/portal-module-review-2026-10-21.json"
+  },
+  {
+    "file": "faq-qa.cjs",
+    "pass": true,
+    "durationMs": 7213
+  },
+  {
+    "file": "director-header-qa.cjs",
+    "pass": true,
+    "durationMs": 14262
+  },
+  {
+    "file": "services-entry-qa.cjs",
+    "pass": true,
+    "durationMs": 10659
+  },
+  {
+    "file": "background-design-qa.cjs",
+    "pass": true,
+    "durationMs": 12296
+  },
+  {
+    "file": "website-trust-qa.cjs",
+    "pass": true,
+    "durationMs": 11929
+  },
+  {
+    "file": "trust-admin-qa.cjs",
+    "pass": true,
+    "durationMs": 13583
+  },
+  {
+    "file": "exam-logos-qa.cjs",
+    "pass": true,
+    "durationMs": 16499
+  },
+  {
+    "file": "globe-qa.cjs",
+    "pass": true,
+    "durationMs": 23742
+  },
+  {
+    "file": "mobile-globe-qa.cjs",
+    "pass": true,
+    "durationMs": 9687
+  },
+  {
+    "file": "premium-ui-qa.cjs",
+    "pass": true,
+    "durationMs": 30797
+  },
+  {
+    "file": "typography-qa.cjs",
+    "pass": true,
+    "durationMs": 60816
+  },
+  {
+    "file": "typography-workspace-qa.cjs",
+    "pass": true,
+    "durationMs": 89830
+  }
+]

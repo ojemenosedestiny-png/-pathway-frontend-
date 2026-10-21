@@ -117,3 +117,13 @@
 body.journey-app,body.journey-public,body:has(>main.j-container){background-color:#f4f8f4;background-image:var(--pathway-backdrop);background-size:cover;background-position:center top;background-attachment:fixed}
 @media(max-width:760px){body.journey-app,body.journey-public,body:has(>main.j-container){background-attachment:scroll;background-image:linear-gradient(110deg,rgba(255,255,255,.96),rgba(255,255,255,.9)),url('/assets/emerald-background.svg')}}
 @media print{body.journey-app,body.journey-public,body:has(>main.j-container){background:#fff}}
+/* Shared page-heading entrance. Keep complete sentences accessible and readable. */
+@keyframes pathway-heading-enter {
+ from { opacity:.35; transform:translateY(10px); }
+ to { opacity:1; transform:translateY(0); }
+}
+@media (prefers-reduced-motion:no-preference) {
+ .journey-public h1:not(.premium-hero-title),
+ .journey-app h1,
+ .pw h1 { animation:pathway-heading-enter .65s cubic-bezier(.22,1,.36,1) both; }
+}
