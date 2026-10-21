@@ -20,7 +20,7 @@ async function render(){if(!root)return;if(rendering){pending=true;return;}rende
  else if(section==='university')await university(root,decodeURIComponent(path.split('/')[2]||''));
  else if(section==='exams')await exams(root,path.split('/')[2]);
  else if(section==='about')root.innerHTML=renderAboutMarkup(site);
- else if(section==='faq'){const faqs=await publicList('faqs');root.innerHTML=`<section class="j-section j-container"><p class="j-kicker">QUESTIONS, ANSWERED</p><h1 class="j-hero-title">${value('home.faqTitle')}</h1><p>Find answers about preparation, applications and your next steps.</p>${faqList(faqs)}</section>`;}
+ else if(section==='faq'){const faqs=await publicList('faqs').catch(()=>[]);root.innerHTML=`<section class="j-section j-container"><p class="j-kicker">QUESTIONS, ANSWERED</p><h1 class="j-hero-title">${value('home.faqTitle')}</h1><p>Find answers about preparation, applications and your next steps.</p>${faqList(faqs)}</section>`;}
  else if(section==='contact')root.innerHTML=renderContactMarkup(site);
  else if(section==='news')root.innerHTML='<section class="j-section j-container"><p class="j-kicker">School updates</p><h1 class="j-hero-title">News and notices</h1><p>Read the latest information published by your school.</p></section>';else if(section==='login'||section==='signup')location.replace(section==='login'?'/student/login':'/enrol');
  if(section==='home'||section==='news')await insertPosts(root,section==='news'?'News page':'Homepage banner').catch(()=>showServiceNotice(root));if(site['service.unavailable']==='true')showServiceNotice(root);observeMotion(root);
