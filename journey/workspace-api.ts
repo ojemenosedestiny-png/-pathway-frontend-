@@ -14,7 +14,7 @@ export const workspaceService={
   if(!allowed.includes(file.type)||!file.size||file.size>(video?50:10)*1024*1024)throw Error('Choose JPG, PNG, WebP or PDF up to 10 MB, PDFs must be uploaded as private documents.');
   const filename=file.name.normalize('NFKD').replace(/[^\w .()-]/g,'_').slice(-150)||'upload';
   const result=await api('/files/upload-url','POST',{filename,mime:file.type,size:file.size,type:publicFile?'MEDIA':'OTHER',public:publicFile});
-  const response=await fetch(result.uploadUrl,{method:'PUT',headers:result.headers,body:file});if(!response.ok)throw Error('The file could not be uploaded. Check storage CORS settings and try again.');
+  let response:Response;try{response=await fetch(result.uploadUrl,{method:'PUT',headers:result.headers,body:file});}catch{throw Error('The browser could not send the picture to Cloudflare. Check the bucket CORS policy and the frontend upload origin setting, then try again.');}if(!response.ok){const body=await response.text();const code=body.match(/<Code>([A-Za-z0-9_]+)<\/Code>/)?.[1];throw Error('Cloudflare rejected the upload (HTTP '+response.status+(code?', '+code:'')+'). '+(code==='SignatureDoesNotMatch'||code==='InvalidAccessKeyId'?'Check the backend R2 access key, secret and endpoint.':'Check the R2 token has object read/write access to this bucket.'));}
   const completed=await api('/files/'+result.id+'/complete','POST',{});if(completed.status==='QUARANTINED')throw Error('File validation failed. Choose a valid photograph or an unencrypted PDF.');return {id:result.id,filename:file.name,status:completed.status};
  },
  fileStatus:(id:string)=>api('/files/'+encodeURIComponent(id)+'/status'),
