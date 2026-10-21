@@ -34,7 +34,7 @@ export const adminModules=[
  ['hostels','Hostel manager','building-2','Campus','Thoughtful spaces. Carefully managed.'],
  ['rooms','Rooms & beds','bed-double','Campus','Manage room capacity, amenities and accommodation fees.'],
  ['bookings','Hostel bookings','calendar-days','Campus','Keep accommodation requests and allocations in view.'],
- ['exams','Exam preparation','graduation-cap','Campus','Preparation programmes, enrolment windows and school preparation fees.'],
+ ['exams','Exam preparation','graduation-cap','Campus','Active programmes appear in the student portal. Manage preparation details, enrolment windows and school fees.'],
  ['enrolments','Exam enrolments','book-open','Campus','Candidate records, confirmations and results.'],
  ['universities','University pathways','globe','Campus','Manage destinations and the opportunities ahead.'],
  ['countries','Destinations','map-pin','Campus','Countries represented in your pathway catalogue.'],
