@@ -14,6 +14,7 @@ COPY package*.json ./
 RUN npm ci --omit=dev --ignore-scripts && npm cache clean --force
 COPY --from=build /app/journey/dist ./journey/dist
 COPY journey/theme.css journey/workspace-tokens.css journey/workspace.css journey/live.html ./journey/
+COPY journey/public-premium.css ./journey/
 COPY assets ./assets
 COPY index.html styles.css redesign.css script.js ui-enhancements.js frontend-server.cjs live-api-proxy.cjs ./
 COPY exam-directory.html exam-directory.js service-information.html service-information.js application-information.html ./
