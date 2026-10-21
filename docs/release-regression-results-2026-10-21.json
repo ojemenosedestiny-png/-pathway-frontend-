@@ -1,0 +1,137 @@
+[
+  {
+    "file": "frontend-deploy-qa.cjs",
+    "pass": true,
+    "durationMs": 2502
+  },
+  {
+    "file": "canonical-origin-qa.cjs",
+    "pass": true,
+    "durationMs": 1191
+  },
+  {
+    "file": "first-paint-qa.cjs",
+    "pass": true,
+    "durationMs": 18634
+  },
+  {
+    "file": "design-stability-qa.cjs",
+    "pass": true,
+    "durationMs": 22602
+  },
+  {
+    "file": "public-outage-qa.cjs",
+    "pass": true,
+    "durationMs": 9208
+  },
+  {
+    "file": "live-reliability-qa.cjs",
+    "pass": true,
+    "durationMs": 16500
+  },
+  {
+    "file": "public-admissions-qa.cjs",
+    "pass": true,
+    "durationMs": 16692
+  },
+  {
+    "file": "applicant-account-qa.cjs",
+    "pass": true,
+    "durationMs": 18363
+  },
+  {
+    "file": "consultation-qa.cjs",
+    "pass": true,
+    "durationMs": 14524
+  },
+  {
+    "file": "admin-public-control-qa.cjs",
+    "pass": true,
+    "durationMs": 16272
+  },
+  {
+    "file": "student-exam-connection-qa.cjs",
+    "pass": true,
+    "durationMs": 25565
+  },
+  {
+    "file": "workspace-auth-qa.cjs",
+    "pass": true,
+    "durationMs": 6632
+  },
+  {
+    "file": "workspace-startup-qa.cjs",
+    "pass": true,
+    "durationMs": 20935
+  },
+  {
+    "file": "workspace-upload-qa.cjs",
+    "pass": true,
+    "durationMs": 10476
+  },
+  {
+    "file": "workspace-qa.cjs",
+    "pass": true,
+    "durationMs": 39992
+  },
+  {
+    "file": "faq-qa.cjs",
+    "pass": true,
+    "durationMs": 10444
+  },
+  {
+    "file": "director-header-qa.cjs",
+    "pass": true,
+    "durationMs": 10198
+  },
+  {
+    "file": "services-entry-qa.cjs",
+    "pass": true,
+    "durationMs": 16666
+  },
+  {
+    "file": "background-design-qa.cjs",
+    "pass": true,
+    "durationMs": 17207
+  },
+  {
+    "file": "website-trust-qa.cjs",
+    "pass": true,
+    "durationMs": 17719
+  },
+  {
+    "file": "trust-admin-qa.cjs",
+    "pass": true,
+    "durationMs": 9205
+  },
+  {
+    "file": "exam-logos-qa.cjs",
+    "pass": true,
+    "durationMs": 19178
+  },
+  {
+    "file": "globe-qa.cjs",
+    "pass": true,
+    "durationMs": 30279
+  },
+  {
+    "file": "mobile-globe-qa.cjs",
+    "pass": true,
+    "durationMs": 11977
+  },
+  {
+    "file": "premium-ui-qa.cjs",
+    "pass": true,
+    "durationMs": 31656
+  },
+  {
+    "file": "typography-qa.cjs",
+    "pass": true,
+    "durationMs": 80563
+  },
+  {
+    "file": "typography-workspace-qa.cjs",
+    "pass": true,
+    "durationMs": 110692
+  }
+]

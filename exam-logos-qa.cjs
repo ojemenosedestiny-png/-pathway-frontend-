@@ -11,6 +11,7 @@ const fs=require('node:fs');
   fs.mkdirSync('docs/exam-logos',{recursive:true});
   for(const width of [360,768,1440])for(const path of ['/','/exams']){
    await page.setViewportSize({width,height:900});await page.goto('http://127.0.0.1:'+server.address().port+path);
+   await page.waitForFunction(()=>document.getElementById('home')?.getAttribute('aria-busy')==='false');
    const wall=page.getByLabel('Examination bodies',{exact:true});await wall.scrollIntoViewIfNeeded();
    assert.equal(await wall.locator('a').count(),3);
    for(const img of await wall.locator('img').all()){await img.scrollIntoViewIfNeeded();await img.evaluate(image=>image.decode());assert.ok(await img.evaluate(image=>image.naturalWidth>0&&image.getBoundingClientRect().width<=innerWidth));}

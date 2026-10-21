@@ -10,7 +10,8 @@
     "build": "tsc -p journey/tsconfig.json && node journey/build-icons.cjs && node --check server.js",
     "start": "node server.js",
     "create-student": "node create-student.js",
-    "create-admin": "node create-admin.js"
+    "create-admin": "node create-admin.js",
+    "test": "npm run build && node frontend-regression.cjs"
   },
   "engines": {
     "node": ">=22"
