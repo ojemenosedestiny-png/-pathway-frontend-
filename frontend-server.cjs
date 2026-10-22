@@ -1,5 +1,6 @@
 const express = require('express');
 const helmet = require('helmet');
+const compression = require('compression');
 const path = require('node:path');
 const fs = require('node:fs');
 const crypto=require('node:crypto');
@@ -10,8 +11,24 @@ function createFrontend() {
  const mediaOrigins=approvedOrigin(process.env.PATHWAY_MEDIA_ORIGIN);
  const uploadOrigins=approvedOrigin(process.env.PATHWAY_UPLOAD_ORIGIN);
  const app=express();app.disable('x-powered-by');
- const release=crypto.createHash('sha256');for(const filename of ['index.html','styles.css','journey/theme.css','journey/public-premium.css','journey/workspace.css','journey/live.html',...fs.readdirSync(path.join(__dirname,'journey/dist')).filter(n=>n.endsWith('.js')).sort().map(n=>'journey/dist/'+n)])release.update(fs.readFileSync(path.join(__dirname,filename)));const releaseId=release.digest('hex').slice(0,12);
- app.use((req,res,next)=>{res.setHeader('X-Pathway-Release',releaseId);if(/\.(?:js|css)$/.test(req.path))res.setHeader('Cache-Control','no-cache, must-revalidate');next();});
+ const release=crypto.createHash('sha256');for(const filename of ['index.html','styles.css','redesign.css','journey/theme.css','journey/public-premium.css','journey/workspace-tokens.css','journey/workspace.css','journey/live.html',...fs.readdirSync(path.join(__dirname,'journey/dist')).filter(n=>n.endsWith('.js')).sort().map(n=>'journey/dist/'+n)])release.update(fs.readFileSync(path.join(__dirname,filename)));const releaseId=release.digest('hex').slice(0,12);
+ // Release-stamped CSS/JS URLs (/_v/<release>/...) are immutable; a new deploy changes the stamp.
+ // Module imports are relative, so a stamped entry script keeps its whole import graph stamped.
+ const stampPrefix='/_v/'+releaseId;
+ const stamp=html=>html.replace(/(src|href)="(\/(?:styles\.css|redesign\.css|journey\/[\w./-]+\.(?:css|js)))"/g,(_match,attr,url)=>attr+'="'+stampPrefix+url+'"');
+ const distDir=path.join(__dirname,'journey/dist');
+ const preloads=entry=>{const seen=new Set([entry]);const visit=name=>{let source='';try{source=fs.readFileSync(path.join(distDir,name),'utf8');}catch{return;}for(const match of source.matchAll(/(?:\bfrom\s*|\bimport\s*)['"]\.\/([\w.-]+\.js)['"]/g))if(!seen.has(match[1])){seen.add(match[1]);visit(match[1]);}};visit(entry);seen.delete(entry);return [...seen].map(name=>`<link rel="modulepreload" href="${stampPrefix}/journey/dist/${name}">`).join('');};
+ const publicPreloads=preloads('public.js');
+ const liveHtml=stamp(fs.readFileSync(path.join(__dirname,'journey/live.html'),'utf8')).replace('</head>',()=>preloads('live-ui.js')+'</head>');
+ const sendLive=(_req,res)=>{res.setHeader('Cache-Control','no-cache, must-revalidate');res.type('html').send(liveHtml);};
+ app.use((req,res,next)=>{res.setHeader('X-Pathway-Release',releaseId);
+  const stamped=/^\/_v\/([a-f0-9]{12})(\/(?:styles\.css|redesign\.css|journey\/[\w./-]+\.(?:css|js)))$/.exec(req.path);
+  if(stamped){req.url=stamped[2];res.setHeader('Cache-Control',stamped[1]===releaseId?'public, max-age=31536000, immutable':'no-cache, must-revalidate');}
+  else if(/\.(?:js|css)$/.test(req.path))res.setHeader('Cache-Control','no-cache, must-revalidate');
+  else if(req.path.startsWith('/assets/'))res.setHeader('Cache-Control','public, max-age=604800, stale-while-revalidate=86400');
+  next();});
+ // The API proxy streams private responses unchanged; only website files are compressed.
+ const compress=compression();app.use((req,res,next)=>req.path.startsWith('/backend-api/')?next():compress(req,res,next));
  // Keep browser Origin, session cookies and the backend's trusted origin aligned.
  const production=process.env.NODE_ENV==='production';
  app.use((req,res,next)=>{
@@ -25,20 +42,20 @@ function createFrontend() {
  app.use((req,res,next)=>{if(/^\/(?:admin|portal|applicant|student\/login|set-password|forgot-password|recover-student-id|payment-status|backend-api)(?:\/|$)/.test(req.path))res.setHeader('X-Robots-Tag','noindex, nofollow');next();});
  app.use('/backend-api',liveApiProxy());
  const send=file=>(_req,res)=>res.sendFile(path.join(__dirname,file));
- app.get(['/student/login','/admin/login','/portal','/admin','/set-password','/forgot-password','/recover-student-id','/payment-status','/hostel','/pay-fees','/apply','/book-consultation'],send('journey/live.html'));
+ app.get(['/student/login','/admin/login','/portal','/admin','/set-password','/forgot-password','/recover-student-id','/payment-status','/hostel','/pay-fees','/apply','/book-consultation'],sendLive);
  app.get(['/portal.html','/student-dashboard','/application-status','/my-bookings'],(_req,res)=>res.redirect('/portal'));
  app.get('/exam.html',(_req,res)=>res.redirect('/portal#exams'));
  app.get('/login',(_req,res)=>res.redirect('/student/login'));
  app.get('/admin.html',(_req,res)=>res.redirect('/admin/login'));
  // Checkout is not enabled until real provider credentials and fees are configured.
  app.get('/enrol',(_req,res)=>res.redirect('/contact'));
- app.get(['/signup','/verify-email','/applicant'],send('journey/live.html'));
+ app.get(['/signup','/verify-email','/applicant'],sendLive);
  app.get('/other-exams',send('exam-directory.html'));
  app.get('/service-information',send('service-information.html'));
  app.get('/privacy',send('application-information.html'));
  app.get('/robots.txt',(_req,res)=>res.type('text/plain').send('User-agent: *\nAllow: /\nDisallow: /admin\nDisallow: /portal\nDisallow: /applicant\nDisallow: /backend-api/\nSitemap: https://newworldpathwayuniversity.com/sitemap.xml\n'));
  app.get('/sitemap.xml',(_req,res)=>res.type('application/xml').send('<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">'+['/','/about','/pathways','/exams','/hostel','/contact','/faq','/news','/other-exams','/service-information'].map(route=>'<url><loc>https://newworldpathwayuniversity.com'+route+'</loc></url>').join('')+'</urlset>'));
- app.get(['/','/index.html','/pathways','/university/:id','/exams','/exams/:id','/about','/faq','/contact','/news'],async(req,res,next)=>{try{const {publicDefaults,renderPublicPage,renderPublicHeader,renderPublicFooter}=await publicTemplates();const site=publicDefaults();const escape=value=>value.replace(/[&<>"']/g,char=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));const route=req.path==='/index.html'?'/':req.path;const canonical='https://newworldpathwayuniversity.com'+route;const pageTitles={'/':'O Level exam preparation and study guidance in Abuja | NewworldPathway','/about':'Meet NewworldPathway | School preparation and guidance','/pathways':'Explore university destinations | NewworldPathway','/exams':'WAEC, NECO and Cambridge preparation | NewworldPathway','/faq':'Application and exam preparation FAQs | NewworldPathway','/contact':'Contact NewworldPathway | Kubwa, Abuja','/news':'School news and examination updates | NewworldPathway'};const title=pageTitles[route]||'Study guidance | NewworldPathway';res.setHeader('Cache-Control','no-cache, must-revalidate');res.type('html').send(fs.readFileSync(path.join(__dirname,'index.html'),'utf8').replace(/<title>[^<]*<\/title>/,'<title>'+escape(title)+'</title>').replace('<!-- PUBLIC_HEADER -->',()=>renderPublicHeader(site)).replace('<!-- PUBLIC_HOME -->',()=>renderPublicPage(route,site,String(req.query.q||''))).replace('<!-- PUBLIC_FOOTER -->',()=>renderPublicFooter(site)).replace(/(src|href)="(\/(?:styles\.css|journey\/(?:theme\.css|public-premium\.css|dist\/public\.js)))"/g,(_match,attr,url)=>attr+'="'+url+'?v='+releaseId+'"').replace('<!-- PUBLIC_PAGE_METADATA -->',`<link rel="canonical" href="${escape(canonical)}"><meta property="og:url" content="${escape(canonical)}"><meta property="og:title" content="${escape(title)}"><meta property="og:description" content="Exam preparation and study-abroad guidance by New World Emerald Private School, Kubwa, Abuja."><script type="application/ld+json">{"@context":"https://schema.org","@type":"EducationalOrganization","name":"New World Emerald Private School","url":"https://newworldpathwayuniversity.com","description":"Exam preparation and study-abroad guidance through NewworldPathway","address":{"@type":"PostalAddress","addressLocality":"Kubwa, Abuja","addressCountry":"NG"}}</script>`))}catch(error){next(error);}});
+ app.get(['/','/index.html','/pathways','/university/:id','/exams','/exams/:id','/about','/faq','/contact','/news'],async(req,res,next)=>{try{const {publicDefaults,renderPublicPage,renderPublicHeader,renderPublicFooter}=await publicTemplates();const site=publicDefaults();const escape=value=>value.replace(/[&<>"']/g,char=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));const route=req.path==='/index.html'?'/':req.path;const canonical='https://newworldpathwayuniversity.com'+route;const pageTitles={'/':'O Level exam preparation and study guidance in Abuja | NewworldPathway','/about':'Meet NewworldPathway | School preparation and guidance','/pathways':'Explore university destinations | NewworldPathway','/exams':'WAEC, NECO and Cambridge preparation | NewworldPathway','/faq':'Application and exam preparation FAQs | NewworldPathway','/contact':'Contact NewworldPathway | Kubwa, Abuja','/news':'School news and examination updates | NewworldPathway'};const title=pageTitles[route]||'Study guidance | NewworldPathway';res.setHeader('Cache-Control','no-cache, must-revalidate');res.type('html').send(fs.readFileSync(path.join(__dirname,'index.html'),'utf8').replace(/<title>[^<]*<\/title>/,'<title>'+escape(title)+'</title>').replace('<!-- PUBLIC_HEADER -->',()=>renderPublicHeader(site)).replace('<!-- PUBLIC_HOME -->',()=>renderPublicPage(route,site,String(req.query.q||''))).replace('<!-- PUBLIC_FOOTER -->',()=>renderPublicFooter(site)).replace(/(src|href)="(\/(?:styles\.css|journey\/(?:theme\.css|public-premium\.css|dist\/public\.js)))"/g,(_match,attr,url)=>attr+'="'+stampPrefix+url+'"').replace('<!-- PUBLIC_PAGE_METADATA -->',()=>publicPreloads+`<link rel="canonical" href="${escape(canonical)}"><meta property="og:url" content="${escape(canonical)}"><meta property="og:title" content="${escape(title)}"><meta property="og:description" content="Exam preparation and study-abroad guidance by New World Emerald Private School, Kubwa, Abuja."><script type="application/ld+json">{"@context":"https://schema.org","@type":"EducationalOrganization","name":"New World Emerald Private School","url":"https://newworldpathwayuniversity.com","description":"Exam preparation and study-abroad guidance through NewworldPathway","address":{"@type":"PostalAddress","addressLocality":"Kubwa, Abuja","addressCountry":"NG"}}</script>`))}catch(error){next(error);}});
  for(const directory of ['assets','journey/dist'])app.use('/'+directory,express.static(path.join(__dirname,directory),{dotfiles:'deny',index:false,fallthrough:false}));
  app.get('/journey/theme.css',send('journey/theme.css'));
  app.get('/journey/public-premium.css',send('journey/public-premium.css'));
