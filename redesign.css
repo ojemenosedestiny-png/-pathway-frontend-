@@ -109,7 +109,7 @@ h3 { font-size: 1.3rem; letter-spacing: -.025em; }
 @media (max-width: 480px) { .admin-metrics { grid-template-columns: 1fr; } }
 .exam-catalogue-section { background: #f4f0e5; }
 .exam-catalogue-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); align-items: start; gap: 24px; }
-.exam-category { background: white; border: 1px solid var(--line); border-radius: 8px; overflow: hidden; }
+.exam-category { background: white; border: 1px solid var(--line); border-radius: 8px; overflow: hidden; overflow: clip; }
 .exam-category summary { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 22px 24px; cursor: pointer; font-weight: 600; color: var(--navy); border-top: 3px solid var(--gold); list-style: none; }
 .exam-category summary::-webkit-details-marker { display: none; }
 .exam-category summary::after { content: '+'; font-size: 1.4rem; color: var(--emerald); }
