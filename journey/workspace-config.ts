@@ -50,9 +50,16 @@ export const adminModules=[
  ['users','Staff accounts','shield-check','System','Give your team the access they need.'],
  ['roles','Roles & permissions','shield-check','System','Define which modules each staff role can read or edit.'],
  ['audit','Audit log','file-text','System','A traceable record of actions across your school.'],
+ ['registrations','Continued registrations','file-check','People','School registration details saved and submitted by students.'],
+ ['mock-exams','Mock examinations','book-open','Campus','Set timed questions and control result release.'],
+ ['student-results','Student results','graduation-cap','Campus','Publish teacher assessments and view mock attempts.'],
+ ['study-materials','Study library','book-open','Content','Publish O Level reading materials and trusted learning links.'],
+ ['motivation','Student encouragement','message-circle','Content','Publish encouragement and credited quotations.'],
+ ['bank-details','Bank & transfer receipts','wallet','Money','Publish the school account and review transfer screenshots.'],
  ['settings','Settings','settings','System','Your school’s ID policy and notification preferences.'],
 ];
 export const studentModules=[
+ ['registration','Continue registration','file-check','','Complete your school registration and keep admissions updated.'],['mocks','Mock examinations','book-open','','Practise with timed school examinations.'],['results','My results','graduation-cap','','Published school assessments and mock results.'],['materials','Study library','book-open','','Read, revise and build your O Level foundation.'],
  ['dashboard','Home','house','','View your next steps, payments and school updates.'],['journey','My journey','route','','Follow your progress and university applications.'],['exams','Your exams','graduation-cap','','Your registrations, candidate details and results.'],['payments','Payments','wallet','','View your fees, payment history and receipts.'],['hostel','Hostel','building-2','','Find a residence or manage your existing booking.'],['documents','Documents','folder-open','','Your documents, securely in one place.'],['messages','Messages','message-circle','','A direct conversation with your admissions team.'],
 ];
-export function modulePermission(key:string){return key==='applicants'?'applications':['slots','consultation-requests'].includes(key)?'consultations':key;}
+export function modulePermission(key:string){const extra:Record<string,string>={'registrations':'applications','mock-exams':'exams','student-results':'exams','study-materials':'content','motivation':'content','bank-details':'payments'};if(extra[key])return extra[key];return key==='applicants'?'applications':['slots','consultation-requests'].includes(key)?'consultations':key;}

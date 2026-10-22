@@ -2,12 +2,17 @@
   {
     "file": "frontend-deploy-qa.cjs",
     "pass": true,
-    "durationMs": 1924
+    "durationMs": 2559
+  },
+  {
+    "file": "proxy-failure-qa.cjs",
+    "pass": true,
+    "durationMs": 833
   },
   {
     "file": "heading-motion-qa.cjs",
     "pass": true,
-    "durationMs": 36118
+    "durationMs": 49874
   },
   {
     "file": "canonical-origin-qa.cjs",
@@ -37,7 +42,7 @@
   {
     "file": "public-admissions-qa.cjs",
     "pass": true,
-    "durationMs": 30968
+    "durationMs": 28845
   },
   {
     "file": "applicant-account-qa.cjs",

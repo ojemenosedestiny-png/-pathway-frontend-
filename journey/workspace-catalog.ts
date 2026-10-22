@@ -70,20 +70,10 @@ export async function feeSchedule(feeId:string):Promise<FeeSchedule|undefined>{
  return meta.feeSchedules.find(row=>row.feeId===feeId);
 }
 export async function allFeeSchedules():Promise<Record<string,FeeSchedule>>{
- const meta=await loadMeta();
- return Object.fromEntries(meta.feeSchedules.map(row=>[row.feeId,row]));
+ const rows=await api<any[]>('/public/fee-schedules');return Object.fromEntries(rows.map(row=>[row.feeId,row]));
 }
 export async function saveFeeSchedule(feeId:string,patch:Partial<FeeSchedule>):Promise<'server'|'device'>{
- const meta=await loadMeta(true);
- const existing=meta.feeSchedules.find(row=>row.feeId===feeId);
- const history=(existing?.history||[]).slice() as HistoryEntry[];
- pushNote(history,'Class/programme',existing?.programme,patch.programme);
- pushNote(history,'Term',existing?.term,patch.term);
- pushNote(history,'Session',existing?.session,patch.session);
- pushNote(history,'Effective date',existing?.effectiveFrom,patch.effectiveFrom);
- const schedule:FeeSchedule={feeId,programme:String(patch.programme??existing?.programme??''),term:String(patch.term??existing?.term??''),session:String(patch.session??existing?.session??''),effectiveFrom:String(patch.effectiveFrom??existing?.effectiveFrom??''),active:patch.active===undefined?(existing?.active??true):Boolean(patch.active),history:history.slice(0,20)};
- meta.feeSchedules=[...meta.feeSchedules.filter(row=>row.feeId!==feeId),schedule];
- return saveMeta(meta);
+ await api('/admin/learning/fee-schedules/'+feeId,'PUT',{programme:patch.programme||'',term:patch.term||'',session:patch.session||'',effectiveFrom:patch.effectiveFrom||'',active:patch.active!==false});return 'server';
 }
 /** Residence location — the hostel model has no location column yet. */
 export async function hostelLocations():Promise<Record<string,string>>{
