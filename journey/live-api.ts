@@ -7,9 +7,11 @@ async function csrfToken(){
 }
 export async function api<T=any>(path:string,method='GET',body?:unknown,retry=true,extraHeaders:Record<string,string>={},recoverGateway=true):Promise<T>{
  const headers:Record<string,string>={Accept:'application/json',...extraHeaders};
- if(method!=='GET'){headers['X-CSRF-Token']=await csrfToken();headers['Content-Type']='application/json';}
+ // A Blob body (for example an uploaded PDF) is sent as-is with its own type; everything else is JSON.
+ const raw=body instanceof Blob;
+ if(method!=='GET'){headers['X-CSRF-Token']=await csrfToken();headers['Content-Type']=raw?(body.type||'application/octet-stream'):'application/json';}
  let response:Response;
- try{response=await fetch('/backend-api'+path,{method,credentials:'same-origin',cache:'no-store',headers,body:body===undefined?undefined:JSON.stringify(body)});}catch{throw new ApiError('Unable to reach the school service. Check your connection and try again.',0);}
+ try{response=await fetch('/backend-api'+path,{method,credentials:'same-origin',cache:'no-store',headers,body:body===undefined?undefined:raw?body:JSON.stringify(body)});}catch{throw new ApiError('Unable to reach the school service. Check your connection and try again.',0);}
  if(method==='GET'&&recoverGateway&&[502,503,504].includes(response.status)){
   await response.body?.cancel();await new Promise(resolve=>setTimeout(resolve,1500));return api(path,method,body,retry,extraHeaders,false);
  }

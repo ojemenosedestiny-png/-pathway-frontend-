@@ -25,6 +25,7 @@ export const editors:Record<string,EditorField[]>={
 };
 export const adminModules=[
  ['dashboard','Overview','layout-dashboard','Overview','A considered view of your school community.'],
+ ['assistant','AI assistant','sparkles','Overview','Activity summaries and health checks across your workspace.'],
  ['students','Students','users','People','Profiles, access and the next step for every student.'],
  ['applicants','Applicants','file-check','People','Review applications submitted before a student account is created.'],
  ['applications','Applications','file-check','People','Move every application forward with clarity.'],

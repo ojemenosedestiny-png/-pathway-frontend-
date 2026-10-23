@@ -25,7 +25,9 @@ function liveApiProxy(origin = process.env.PATHWAY_BACKEND_ORIGIN || 'https://pa
       response.on('error',()=>res.destroy());
       response.pipe(res);
     });
-    target.setTimeout(55000,()=>target.destroy(Error('Upstream timeout')));
+    // AI requests (PDF reading, briefings) legitimately take longer than ordinary API calls.
+    const slow=/^\/admin\/(?:learning\/mocks\/import|assistant\/briefing)(?:\?|$)/.test(req.url);
+    target.setTimeout(slow?125000:55000,()=>target.destroy(Error('Upstream timeout')));
     target.on('error',error=>{if(clientGone)return;failure(502,error.code||'UPSTREAM_CONNECTION');if(!res.headersSent)res.status(502).json({error:{message:'The school service is unavailable. Please try again shortly.'}});else res.destroy();});
     req.on('aborted',()=>{clientGone=true;target.destroy();});
     res.on('close',()=>{if(!res.writableEnded){clientGone=true;target.destroy();}});
