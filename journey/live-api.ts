@@ -30,5 +30,5 @@ export async function api<T=any>(path:string,method='GET',body?:unknown,retry=tr
  }
  return data;
 }
-export interface Identity {id:string;role:'ADMIN'|'STUDENT'|'APPLICANT';studentId?:string;adminRole?:string;permissions:{read:string[];write:string[]};}
+export interface Identity {id:string;role:'ADMIN'|'STUDENT'|'APPLICANT';studentId?:string;adminRole?:string;permissions:{read:string[];write:string[]};name?:string;}
 export function can(identity:Identity,module:string,write=false){return identity.adminRole==='SUPER_ADMIN'||identity.permissions[write?'write':'read'].includes('*')||identity.permissions[write?'write':'read'].includes(module);}

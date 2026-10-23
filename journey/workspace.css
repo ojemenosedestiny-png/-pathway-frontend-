@@ -186,3 +186,20 @@ fieldset.mock-question.needs-answer{border-color:#c79a45;background:#fdf7ea}
 .cbt-instructions ul{margin:0;padding-left:20px;display:grid;gap:6px}.cbt-instructions h3{margin:8px 0 0}
 .cbt-facts{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,140px),1fr));gap:12px;margin:0}.cbt-facts div{padding:14px;border:1px solid var(--pw-line);border-radius:12px;background:#f6f9f5}.cbt-facts dt{font-size:12px;color:var(--pw-muted)}.cbt-facts dd{margin:4px 0 0;font-weight:700;font-size:18px}
 @media(max-width:900px){.cbt-body{grid-template-columns:1fr;padding:16px}.cbt-nav{position:static}.cbt-bar{padding:12px 16px}.cbt-actions .pw-button{flex:1 1 auto}}
+
+/* Staff account page, school bank accounts and student transfer screenshots. */
+.account-layout{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,340px),1fr));gap:24px;align-items:start}
+.account-layout>.account-card:first-child{grid-column:1/-1}
+.account-facts{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,180px),1fr));gap:12px;margin:0}
+.account-facts div{padding:14px;border:1px solid var(--pw-line);border-radius:12px;background:#f6f9f5;min-width:0}
+.account-facts dt{font-size:12px;color:var(--pw-muted)}.account-facts dd{margin:6px 0 0;font-weight:600;overflow-wrap:anywhere}
+.bank-account-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,320px),1fr));gap:20px;margin:20px 0}
+.bank-account-grid .pw-card{margin:0}
+.bank-steps{margin:0;padding-left:20px;display:grid;gap:6px}
+.transfer-list{display:grid;gap:12px;margin-top:12px}
+.transfer-item{display:grid;grid-template-columns:minmax(0,1fr) auto auto;gap:16px;align-items:center;padding:16px;border:1px solid var(--pw-line);border-radius:12px;background:#fffefa}
+.transfer-item strong{font-size:18px}.transfer-item .pw-helper{margin:4px 0 0}.transfer-item .pw-button .pw-icon{width:16px;height:16px}
+@media(max-width:640px){.transfer-item{grid-template-columns:1fr}.transfer-item .pw-badge{justify-self:start}}
+.applicant-bank{margin:12px 0;padding:16px;border-radius:12px;background:#103f32;color:#fffdf6}
+.applicant-bank p{margin:6px 0;color:#fffdf6}.applicant-bank .j-eyebrow{color:#cfe0d4;letter-spacing:.08em;font-size:12px}
+.applicant-bank-number{font:700 24px/1.2 var(--pw-sans,system-ui);letter-spacing:.06em;font-variant-numeric:tabular-nums}
