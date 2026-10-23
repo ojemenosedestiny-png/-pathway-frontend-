@@ -4,6 +4,9 @@ const https = require('node:https');
 function liveApiProxy(origin = process.env.PATHWAY_BACKEND_ORIGIN || 'https://pathway-backend-892m.onrender.com', report = entry => console.error(JSON.stringify(entry))) {
   const upstream = new URL(origin);
   if (upstream.protocol !== 'https:' || upstream.username || upstream.password || upstream.pathname !== '/') throw Error('PATHWAY_BACKEND_ORIGIN must be an HTTPS origin.');
+  // Reuse TLS connections to the backend instead of a new handshake per request. Idle sockets
+  // close after 4s, well before typical upstream idle limits.
+  const agent = new https.Agent({keepAlive:true,maxSockets:64,maxFreeSockets:16,timeout:4000,scheduling:'lifo'});
   return (req, res) => {
     if (!/^\/(auth|applicant|portal|admin|public|payments|files|health)(\/|\?|$)/.test(req.url) || /\\|%5c|%2f|(?:^|\/)\.\.(?:\/|$)/i.test(req.url)) return res.status(404).json({error:{message:'API route not found.'}});
     const started=Date.now();let clientGone=false;
@@ -12,7 +15,11 @@ function liveApiProxy(origin = process.env.PATHWAY_BACKEND_ORIGIN || 'https://pa
     for (const name of ['accept','content-type','cookie','origin','x-csrf-token','x-payment-token','idempotency-key']) if (req.headers[name]) headers[name] = req.headers[name];
     headers['x-forwarded-for'] = req.ip;
     headers['x-forwarded-proto'] = req.protocol;
-    const target = https.request({hostname:upstream.hostname,port:upstream.port || 443,path:req.url,method:req.method,headers}, response => {
+    // A pooled socket can close just as it is reused; only bodiless, idempotent requests retry once.
+    const idempotent = ['GET','HEAD'].includes(req.method);
+    let target;
+    const send = retried => {
+    target = https.request({hostname:upstream.hostname,port:upstream.port || 443,path:req.url,method:req.method,headers,agent}, response => {
       if((response.statusCode||502)>=500)failure(response.statusCode||502,'UPSTREAM_HTTP');
       res.status(response.statusCode || 502);
       for (const name of ['content-type','content-disposition','retry-after','x-request-id']) if (response.headers[name]) res.setHeader(name,response.headers[name]);
@@ -27,11 +34,14 @@ function liveApiProxy(origin = process.env.PATHWAY_BACKEND_ORIGIN || 'https://pa
     });
     // AI requests (PDF reading, briefings) legitimately take longer than ordinary API calls.
     const slow=/^\/admin\/(?:learning\/mocks\/import|assistant\/briefing)(?:\?|$)/.test(req.url);
-    target.setTimeout(slow?125000:55000,()=>target.destroy(Error('Upstream timeout')));
-    target.on('error',error=>{if(clientGone)return;failure(502,error.code||'UPSTREAM_CONNECTION');if(!res.headersSent)res.status(502).json({error:{message:'The school service is unavailable. Please try again shortly.'}});else res.destroy();});
+    const request = target;
+    request.setTimeout(slow?125000:55000,()=>request.destroy(Error('Upstream timeout')));
+    request.on('error',error=>{if(clientGone)return;if(!retried&&idempotent&&request.reusedSocket&&['ECONNRESET','EPIPE'].includes(error.code)&&!res.headersSent){send(true).end();return;}failure(502,error.code||'UPSTREAM_CONNECTION');if(!res.headersSent)res.status(502).json({error:{message:'The school service is unavailable. Please try again shortly.'}});else res.destroy();});
+    return request;
+    };
     req.on('aborted',()=>{clientGone=true;target.destroy();});
     res.on('close',()=>{if(!res.writableEnded){clientGone=true;target.destroy();}});
-    req.pipe(target);
+    req.pipe(send(false));
   };
 }
 module.exports = {liveApiProxy};
