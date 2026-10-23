@@ -3,14 +3,15 @@ import {esc,dialog,toast} from './workspace-components.js';
 
 // Uploaded bytes go directly to permanent storage using a short-lived signed URL.
 // Only the server's validated, approved URL can be attached to published content.
-export function imageUploadControl(parent:HTMLElement,onReady:(url:string,filename:string)=>void){
+/** `purpose` names the picture (for example "university logo") so several upload controls in one form stay distinguishable. */
+export function imageUploadControl(parent:HTMLElement,onReady:(url:string,filename:string)=>void,purpose='picture'){
  const box=document.createElement('div');box.className='pw-stack';
- box.innerHTML='<label class="pw-upload"><strong>Upload picture from your device</strong><span class="pw-helper">JPG, PNG or WebP · up to 10 MB</span><input type="file" accept="image/jpeg,image/png,image/webp"></label><button type="button" class="pw-button" data-library>Choose an uploaded picture</button><p class="pw-helper" role="status" aria-live="polite"></p>';
+ box.innerHTML='<label class="pw-upload"><strong>Upload '+esc(purpose)+' from your device</strong><span class="pw-helper">JPG, PNG or WebP · up to 10 MB</span><input type="file" accept="image/jpeg,image/png,image/webp" aria-label="Upload '+esc(purpose)+'"></label><button type="button" class="pw-button" data-library aria-label="Choose an uploaded picture as the '+esc(purpose)+'">Choose an uploaded picture</button><p class="pw-helper" role="status" aria-live="polite"></p>';
  parent.append(box);const input=box.querySelector<HTMLInputElement>('input')!;const status=box.querySelector<HTMLElement>('[role=status]')!;
  const active=()=>box.isConnected;
  input.onchange=async()=>{const file=input.files?.[0];if(!file)return;input.disabled=true;const submits=Array.from(parent.closest('form')?.querySelectorAll<HTMLButtonElement>('button[type=submit]')||[]);const disabled=submits.map(button=>button.disabled);submits.forEach(button=>button.disabled=true);
   try{if(!['image/jpeg','image/png','image/webp'].includes(file.type))throw Error('Choose a JPG, PNG or WebP picture.');status.textContent='Uploading '+file.name+'…';const uploaded=await service.upload(file,true);status.textContent='Uploaded. Waiting for the file validation…';
-   const deadline=Date.now()+90000;while(active()&&Date.now()<deadline){const result=await service.fileStatus(uploaded.id);if(!active())return;if(result.status==='APPROVED'&&result.url){onReady(result.url,file.name);status.textContent='Picture ready. Save your changes to publish it.';toast('Picture uploaded and checked.');return;}if(['QUARANTINED','REJECTED','DELETION_REQUESTED'].includes(result.status))throw Error('This file was rejected. Please choose another picture.');await new Promise(resolve=>setTimeout(resolve,2000));}
+   const deadline=Date.now()+90000;while(active()&&Date.now()<deadline){const result=await service.fileStatus(uploaded.id);if(!active())return;if(result.status==='APPROVED'&&result.url){onReady(result.url,file.name);status.textContent=purpose.charAt(0).toUpperCase()+purpose.slice(1)+' ready. Save your changes to publish it.';toast('Picture uploaded and checked.');return;}if(['QUARANTINED','REJECTED','DELETION_REQUESTED'].includes(result.status))throw Error('This file was rejected. Please choose another picture.');await new Promise(resolve=>setTimeout(resolve,2000));}
    if(active())status.textContent='Upload saved. Validation is still pending. Use “Choose an uploaded picture” once it is approved.';
   }catch(error){if(active())status.textContent=errorMessage(error);}finally{input.disabled=false;input.value='';submits.forEach((button,index)=>button.disabled=disabled[index]);}
  };

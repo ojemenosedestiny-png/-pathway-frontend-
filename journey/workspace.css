@@ -203,3 +203,9 @@ fieldset.mock-question.needs-answer{border-color:#c79a45;background:#fdf7ea}
 .applicant-bank{margin:12px 0;padding:16px;border-radius:12px;background:#103f32;color:#fffdf6}
 .applicant-bank p{margin:6px 0;color:#fffdf6}.applicant-bank .j-eyebrow{color:#cfe0d4;letter-spacing:.08em;font-size:12px}
 .applicant-bank-number{font:700 24px/1.2 var(--pw-sans,system-ui);letter-spacing:.06em;font-variant-numeric:tabular-nums}
+
+/* Conversations with a reply the reader has not opened yet. */
+.pw-record-link.unread{border-left:4px solid var(--pw-gold);padding-left:12px}
+.thread-student{padding:12px;border-radius:12px;background:var(--pw-sage)}
+.pw-photo-missing{display:grid;place-items:center;min-height:180px;border-radius:12px;background:var(--pw-sage);color:var(--pw-muted);font-size:14px;margin-bottom:20px}
+.assistant-deliveries{grid-column:1/-1}

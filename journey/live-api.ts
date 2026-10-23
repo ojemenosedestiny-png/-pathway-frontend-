@@ -25,7 +25,8 @@ export async function api<T=any>(path:string,method='GET',body?:unknown,retry=tr
    if(!refreshFlight)refreshFlight=api('/auth/refresh','POST',{},false).finally(()=>refreshFlight=undefined);
    await refreshFlight;return api(path,method,body,false,extraHeaders);
   }
-  if(data?.error?.code==='CSRF')csrf='';
+  // A CSRF rejection happens before the server does anything, so one retry with a fresh token is safe for every method.
+  if(data?.error?.code==='CSRF'){csrf='';if(retry)return api(path,method,body,false,extraHeaders,recoverGateway);}
   throw new ApiError(data?.error?.message||'The school service could not complete your request. Try again shortly. If it continues, contact the school.',response.status,data?.error?.code);
  }
  return data;

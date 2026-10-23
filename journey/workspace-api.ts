@@ -18,7 +18,14 @@ export const workspaceService={
   const completed=await api('/files/'+result.id+'/complete','POST',{});if(completed.status==='QUARANTINED')throw Error('File validation failed. Choose a valid photograph or an unencrypted PDF.');return {id:result.id,filename:file.name,status:completed.status};
  },
  fileStatus:(id:string)=>api('/files/'+encodeURIComponent(id)+'/status'),
- async download(id:string){const result=await api('/files/'+encodeURIComponent(id)+'/download-url');const url=new URL(result.url);if(!['http:','https:'].includes(url.protocol))throw Error('Invalid download address.');window.open(url.href,'_blank','noopener');},
+ /** Starts the download in this tab (the signed link sends the file as an attachment) and, when given a status element, shows the outcome with a manual fallback link. Pop-ups opened after a network request are blocked silently by browsers, so window.open is not used. */
+ async download(id:string,status?:HTMLElement|null,filename=''){
+  if(status){status.setAttribute('role','status');status.textContent='Preparing your secure download…';}
+  try{const result=await api('/files/'+encodeURIComponent(id)+'/download-url');const url=new URL(result.url);if(url.protocol!=='https:'&&!(url.protocol==='http:'&&['localhost','127.0.0.1'].includes(url.hostname)))throw Error('Invalid download address.');
+   const anchor=document.createElement('a');anchor.href=url.href;anchor.rel='noopener';if(filename)anchor.download=filename;document.body.append(anchor);anchor.click();anchor.remove();
+   if(status){status.textContent='Download started. Check your browser downloads. If it did not start, ';const again=document.createElement('a');again.href=url.href;again.rel='noopener';again.textContent='download it here';status.append(again,' (this secure link works for '+(Number(result.expiresIn)||60)+' seconds).');}
+   return url.href;}
+  catch(error){if(status)status.textContent='The download could not start. '+errorMessage(error);throw error;}},
  async checkout(feeId:string,provider:string,target='feeId'){const result=await api('/payments/initialize','POST',{[target]:feeId,provider},true,{'Idempotency-Key':crypto.randomUUID()});if(result.statusToken)sessionStorage.setItem('pathway-payment-'+(result.payment?.reference||result.reference),result.statusToken);const url=result.checkoutUrl||result.authorizationUrl||result.url;if(!url)throw Error('Payment was initialized without a checkout link. Contact Finance with reference '+result.reference);const parsed=new URL(url);if(parsed.protocol!=='https:')throw Error('Checkout requires a secure provider link.');location.assign(parsed.href);},
 };
 export function money(value:unknown,currency='NGN'){const raw=String(value??'0');if(!/^-?\d+$/.test(raw))return '—';const n=BigInt(raw);const absolute=n<0n?-n:n;const major=absolute/100n;const decimals=String(absolute%100n).padStart(2,'0');return `${currency} ${n<0n?'-':''}${major.toLocaleString('en-GB')}${decimals==='00'?'':'.'+decimals}`;}

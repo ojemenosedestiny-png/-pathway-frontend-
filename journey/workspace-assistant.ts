@@ -18,6 +18,15 @@ function answerHtml(text:string){
  close();return html;
 }
 
+const channel:Record<string,string>={EMAIL:'Email',SMS:'SMS',WHATSAPP:'WhatsApp',ANNOUNCEMENT:'Notice fan-out',REFUND:'Refund',SCAN:'File scan'};
+const state:Record<string,string>={DEAD:'Stopped after 8 attempts',SKIPPED:'Not sent: channel not set up',PENDING:'Retrying automatically'};
+/** Each failing job with its recorded reason (recipients are never shown); a retry is offered only for recent permanent failures, one job at a time. */
+async function deliveries(box:HTMLElement,ctx:WorkspaceContext){
+ let rows:any[];try{rows=await api('/admin/assistant/deliveries');}catch(error){box.innerHTML=alert('Delivery details unavailable',errorMessage(error),'danger');return;}if(!ctx.current())return;
+ if(!rows.length){box.innerHTML='<p class="pw-helper">No email, SMS or WhatsApp delivery problems are recorded.</p>';return;}
+ box.innerHTML=`<p class="pw-helper">Read the reason before retrying. “Not set up” means credentials are missing on the backend service; retrying will not help until they are added. A provider rejection (for example an unverified sending domain) must be fixed with the provider first.</p><div class="pw-table-scroll"><table class="pw-table"><thead><tr><th scope="col">Channel</th><th scope="col">Status</th><th scope="col">Attempts</th><th scope="col">Reason recorded</th><th scope="col">Queued</th><th scope="col"><span class="pw-sr-only">Action</span></th></tr></thead><tbody>${rows.map(row=>`<tr><td>${esc(channel[row.kind]||row.kind)}</td><td>${esc(state[row.status]||row.status)}</td><td>${Number(row.attempts)||0}</td><td>${esc(row.lastError||'No reason recorded')}</td><td>${esc(new Date(row.createdAt).toLocaleString('en-GB',{dateStyle:'medium',timeStyle:'short'}))}</td><td>${row.retryable?`<button type="button" class="pw-button" data-retry-delivery="${esc(row.id)}">Retry this message</button>`:''}</td></tr>`).join('')}</tbody></table></div>`;
+ box.querySelectorAll<HTMLButtonElement>('[data-retry-delivery]').forEach(control=>control.onclick=async()=>{control.disabled=true;try{await api('/admin/assistant/deliveries/'+control.dataset.retryDelivery+'/retry','POST',{});control.replaceWith(Object.assign(document.createElement('span'),{className:'pw-badge',textContent:'Queued for one more attempt'}));toast('Message queued for one more attempt. Check this list again in a minute.');}catch(error){control.disabled=false;toast(errorMessage(error));}});
+}
 export async function adminAssistant(target:HTMLElement,ctx:WorkspaceContext){
  const data=await api('/admin/assistant');if(!ctx.current())return;
  // Tolerate partial data so a missing section shows 0 instead of breaking the page.
@@ -46,8 +55,10 @@ export async function adminAssistant(target:HTMLElement,ctx:WorkspaceContext){
   <ul class="assistant-check-list">${checks.length?'':'<li class="assistant-empty">No checks are available right now. Run the checks again shortly.</li>'}${checks.map((c:any)=>`<li class="assistant-check is-${esc(c.severity)}"><span class="assistant-severity">${esc(severityLabel[c.severity]||c.severity)}</span><div><h3>${esc(c.title)}</h3><p>${esc(c.detail)}</p>${c.module&&!['assistant','dashboard'].includes(c.module)?`<a class="assistant-open" href="/admin#${esc(c.module)}">Open page ${icon('arrow-right')}</a>`:''}</div></li>`).join('')}</ul>
  </section>
  <section class="assistant-figures" aria-label="Key figures">${figures.map(([label,value,note])=>`<article class="pw-card pw-stat"><div class="pw-stat-top"><span>${esc(label)}</span></div><strong>${esc(value)}</strong><small>${esc(note)}</small></article>`).join('')}</section>
+ <section class="pw-card assistant-deliveries" aria-labelledby="assistant-deliveries-title"><div class="pw-card-head"><div><p class="pw-overline">EMAIL, SMS AND WHATSAPP</p><h2 id="assistant-deliveries-title">Delivery problems</h2></div></div><div id="assistant-deliveries" aria-live="polite"><span class="pw-live-status" role="status">Checking message deliveries…</span></div></section>
  </div>`;
  ctx.primary('Run checks again',()=>ctx.refresh(),'check-check');
+ deliveries(target.querySelector<HTMLElement>('#assistant-deliveries')!,ctx);
  if(!data.aiConfigured)return;
  const log=target.querySelector<HTMLElement>('#assistant-log')!;const form=target.querySelector<HTMLFormElement>('#assistant-ask')!;const input=form.querySelector<HTMLTextAreaElement>('textarea')!;
  const render=(pending?:string)=>{log.innerHTML=(session.length||pending?'':`<p class="assistant-empty">Start with a briefing, or ask a question about your school's activity.</p>`)+session.map(turn=>`<div class="assistant-turn"><p class="assistant-question">${esc(turn.question)}</p><div class="assistant-answer">${answerHtml(turn.answer)}<small>${esc(new Date(turn.at).toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'}))}</small></div></div>`).join('')+(pending?`<div class="assistant-turn"><p class="assistant-question">${esc(pending)}</p><div class="assistant-answer assistant-thinking" role="status">Reading your school records…</div></div>`:'');log.scrollTop=log.scrollHeight;};
