@@ -185,3 +185,16 @@ body.journey-public{background-image:var(--pathway-backdrop);background-size:cov
 @media(max-width:860px){.a-level-card,.university-hero.has-photo{grid-template-columns:1fr}.a-level-card{padding:32px 22px;gap:28px}}
 @media(prefers-reduced-motion:reduce){.j-destination-photo img{transition:none}.j-destination.has-photo:hover .j-destination-photo img{transform:none}}
 .university-details a{color:var(--j-ink);text-decoration:underline;text-underline-offset:3px;font-weight:600}
+
+/* University-entry programme routes under the A Level band */
+.programme-routes{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px;margin-top:24px}
+.programme-route{display:flex;flex-direction:column;gap:12px;padding:28px;border:1px solid var(--j-line);border-top:4px solid var(--j-ink);border-radius:12px;background:var(--j-surface);min-width:0}
+.programme-route h3{margin:0;font:500 1.6rem/1.2 var(--j-serif);letter-spacing:-.02em;color:var(--j-ink)}
+.programme-route-best{margin:0;align-self:flex-start;padding:5px 10px;border-radius:6px;line-height:1.4;background:#f3ead6;color:#6b4c17;font-size:.78rem;font-weight:700;letter-spacing:.02em}
+.programme-route dl{display:grid;gap:10px;margin:4px 0 8px;padding:16px 0 0;border-top:1px solid var(--j-line)}
+.programme-route dt{font-size:.74rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--j-muted)}
+.programme-route dd{margin:2px 0 0;overflow-wrap:anywhere}
+.programme-route-actions{margin-top:auto;display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.programme-route-official{font-size:.9rem;font-weight:600;color:var(--j-ink);text-decoration:underline;text-underline-offset:3px}
+.programme-routes-note{margin:16px 0 0;font-size:.88rem;color:var(--j-muted)}
+@media(max-width:1020px){.programme-routes{grid-template-columns:1fr}}
