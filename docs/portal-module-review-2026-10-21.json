@@ -7,6 +7,12 @@
   },
   {
     "role": "ADMIN",
+    "module": "assistant",
+    "width": 360,
+    "pass": true
+  },
+  {
+    "role": "ADMIN",
     "module": "students",
     "width": 360,
     "pass": true
@@ -152,6 +158,42 @@
   {
     "role": "ADMIN",
     "module": "audit",
+    "width": 360,
+    "pass": true
+  },
+  {
+    "role": "ADMIN",
+    "module": "registrations",
+    "width": 360,
+    "pass": true
+  },
+  {
+    "role": "ADMIN",
+    "module": "mock-exams",
+    "width": 360,
+    "pass": true
+  },
+  {
+    "role": "ADMIN",
+    "module": "student-results",
+    "width": 360,
+    "pass": true
+  },
+  {
+    "role": "ADMIN",
+    "module": "study-materials",
+    "width": 360,
+    "pass": true
+  },
+  {
+    "role": "ADMIN",
+    "module": "motivation",
+    "width": 360,
+    "pass": true
+  },
+  {
+    "role": "ADMIN",
+    "module": "bank-details",
     "width": 360,
     "pass": true
   },
@@ -169,6 +211,12 @@
   },
   {
     "role": "ADMIN",
+    "module": "assistant",
+    "width": 1440,
+    "pass": true
+  },
+  {
+    "role": "ADMIN",
     "module": "students",
     "width": 1440,
     "pass": true
@@ -314,6 +362,42 @@
   {
     "role": "ADMIN",
     "module": "audit",
+    "width": 1440,
+    "pass": true
+  },
+  {
+    "role": "ADMIN",
+    "module": "registrations",
+    "width": 1440,
+    "pass": true
+  },
+  {
+    "role": "ADMIN",
+    "module": "mock-exams",
+    "width": 1440,
+    "pass": true
+  },
+  {
+    "role": "ADMIN",
+    "module": "student-results",
+    "width": 1440,
+    "pass": true
+  },
+  {
+    "role": "ADMIN",
+    "module": "study-materials",
+    "width": 1440,
+    "pass": true
+  },
+  {
+    "role": "ADMIN",
+    "module": "motivation",
+    "width": 1440,
+    "pass": true
+  },
+  {
+    "role": "ADMIN",
+    "module": "bank-details",
     "width": 1440,
     "pass": true
   },
@@ -337,7 +421,31 @@
   },
   {
     "role": "STUDENT",
+    "module": "registration",
+    "width": 360,
+    "pass": true
+  },
+  {
+    "role": "STUDENT",
     "module": "exams",
+    "width": 360,
+    "pass": true
+  },
+  {
+    "role": "STUDENT",
+    "module": "mocks",
+    "width": 360,
+    "pass": true
+  },
+  {
+    "role": "STUDENT",
+    "module": "results",
+    "width": 360,
+    "pass": true
+  },
+  {
+    "role": "STUDENT",
+    "module": "materials",
     "width": 360,
     "pass": true
   },
@@ -391,7 +499,31 @@
   },
   {
     "role": "STUDENT",
+    "module": "registration",
+    "width": 1440,
+    "pass": true
+  },
+  {
+    "role": "STUDENT",
     "module": "exams",
+    "width": 1440,
+    "pass": true
+  },
+  {
+    "role": "STUDENT",
+    "module": "mocks",
+    "width": 1440,
+    "pass": true
+  },
+  {
+    "role": "STUDENT",
+    "module": "results",
+    "width": 1440,
+    "pass": true
+  },
+  {
+    "role": "STUDENT",
+    "module": "materials",
     "width": 1440,
     "pass": true
   },
