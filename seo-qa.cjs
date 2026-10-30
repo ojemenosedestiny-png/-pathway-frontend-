@@ -1,7 +1,9 @@
 // SEO regression: unique titles/descriptions, canonical URLs, robots rules, JSON-LD identity and sitemap,
 // against a stubbed catalogue so the check needs no network.
-const assert=require('node:assert/strict');const http=require('node:http');
+const assert=require('node:assert/strict');const http=require('node:http');const fs=require('node:fs');
 (async()=>{
+ // The production image copies files one by one: every local module the server loads must be in the Dockerfile.
+ const dockerfile=fs.readFileSync(__dirname+'/Dockerfile','utf8');for(const [,file] of fs.readFileSync(__dirname+'/frontend-server.cjs','utf8').matchAll(/require\('\.\/([^']+)'\)/g))assert.ok(dockerfile.split(/\s+/).includes(file),file+' must be copied in the Dockerfile');
  const backend=http.createServer((req,res)=>{const path=req.url.split('?')[0];res.setHeader('Content-Type','application/json');res.end(JSON.stringify(path==='/public/exams'?[{id:'exam-1',name:'Cambridge International AS & A Level 2027',description:'Two-year Cambridge A Level preparation.'}]:path==='/public/universities'?[{id:'uni-1',name:'University of Stirling',description:'A public university in Stirling, Scotland.'}]:[]));}).listen(0,'127.0.0.1');
  await new Promise(r=>backend.once('listening',r));process.env.SEO_CATALOGUE_ORIGIN='http://127.0.0.1:'+backend.address().port;
  const {createFrontend}=require('./frontend-server.cjs');const server=createFrontend().listen(0,'127.0.0.1');await new Promise(r=>server.once('listening',r));const origin='http://127.0.0.1:'+server.address().port;
