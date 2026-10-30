@@ -2,146 +2,151 @@
   {
     "file": "frontend-deploy-qa.cjs",
     "pass": true,
-    "durationMs": 1974
+    "durationMs": 822
+  },
+  {
+    "file": "seo-qa.cjs",
+    "pass": true,
+    "durationMs": 1029
   },
   {
     "file": "proxy-failure-qa.cjs",
     "pass": true,
-    "durationMs": 481
+    "durationMs": 208
   },
   {
     "file": "heading-motion-qa.cjs",
     "pass": true,
-    "durationMs": 53245
+    "durationMs": 32507
   },
   {
     "file": "canonical-origin-qa.cjs",
     "pass": true,
-    "durationMs": 1464
+    "durationMs": 468
   },
   {
     "file": "first-paint-qa.cjs",
     "pass": true,
-    "durationMs": 27746
+    "durationMs": 5761
   },
   {
     "file": "design-stability-qa.cjs",
     "pass": true,
-    "durationMs": 20536
+    "durationMs": 10663
   },
   {
     "file": "public-outage-qa.cjs",
     "pass": true,
-    "durationMs": 20374
+    "durationMs": 11595
   },
   {
     "file": "live-reliability-qa.cjs",
     "pass": true,
-    "durationMs": 45620
+    "durationMs": 10260
   },
   {
     "file": "public-admissions-qa.cjs",
     "pass": true,
-    "durationMs": 24737
+    "durationMs": 13375
   },
   {
     "file": "applicant-account-qa.cjs",
     "pass": true,
-    "durationMs": 29454
+    "durationMs": 5505
   },
   {
     "file": "consultation-qa.cjs",
     "pass": true,
-    "durationMs": 20183
+    "durationMs": 7532
   },
   {
     "file": "admin-public-control-qa.cjs",
     "pass": true,
-    "durationMs": 24985
+    "durationMs": 8838
   },
   {
     "file": "student-exam-connection-qa.cjs",
     "pass": true,
-    "durationMs": 32157
+    "durationMs": 17697
   },
   {
     "file": "workspace-auth-qa.cjs",
     "pass": true,
-    "durationMs": 18810
+    "durationMs": 6522
   },
   {
     "file": "workspace-startup-qa.cjs",
     "pass": true,
-    "durationMs": 29650
+    "durationMs": 19931
   },
   {
     "file": "workspace-upload-qa.cjs",
     "pass": true,
-    "durationMs": 16765
+    "durationMs": 6806
   },
   {
     "file": "workspace-qa.cjs",
     "pass": true,
-    "durationMs": 144467
+    "durationMs": 113700
   },
   {
     "file": "faq-qa.cjs",
     "pass": true,
-    "durationMs": 10560
+    "durationMs": 5804
   },
   {
     "file": "director-header-qa.cjs",
     "pass": true,
-    "durationMs": 20540
+    "durationMs": 10255
   },
   {
     "file": "services-entry-qa.cjs",
     "pass": true,
-    "durationMs": 10174
+    "durationMs": 5985
   },
   {
     "file": "background-design-qa.cjs",
     "pass": true,
-    "durationMs": 13411
+    "durationMs": 9627
   },
   {
     "file": "website-trust-qa.cjs",
     "pass": true,
-    "durationMs": 10815
+    "durationMs": 9216
   },
   {
     "file": "trust-admin-qa.cjs",
     "pass": true,
-    "durationMs": 6793
+    "durationMs": 5578
   },
   {
     "file": "exam-logos-qa.cjs",
     "pass": true,
-    "durationMs": 13159
+    "durationMs": 11717
   },
   {
     "file": "globe-qa.cjs",
     "pass": true,
-    "durationMs": 22049
+    "durationMs": 17929
   },
   {
     "file": "mobile-globe-qa.cjs",
     "pass": true,
-    "durationMs": 9286
+    "durationMs": 6526
   },
   {
     "file": "premium-ui-qa.cjs",
     "pass": true,
-    "durationMs": 25817
+    "durationMs": 21117
   },
   {
     "file": "typography-qa.cjs",
     "pass": true,
-    "durationMs": 63400
+    "durationMs": 54007
   },
   {
     "file": "typography-workspace-qa.cjs",
     "pass": true,
-    "durationMs": 95560
+    "durationMs": 88296
   }
 ]
