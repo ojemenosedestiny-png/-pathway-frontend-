@@ -155,3 +155,6 @@ body.pw-body.pw-body{
 @media(prefers-reduced-motion:no-preference){.pw.pw .pw-section-body>*{animation:pw-rise .45s cubic-bezier(.2,.7,.2,1) both}.pw.pw .pw-section-body>*:nth-child(2){animation-delay:60ms}.pw.pw .pw-section-body>*:nth-child(3){animation-delay:120ms}}
 @keyframes pw-rise{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
 @media(prefers-reduced-motion:reduce){.pw-loading .pw-skeleton{animation:none}}
+/* Radio buttons keep their natural size (an older rule widened every non-checkbox input). */
+.pw.pw input[type=radio]{width:18px;height:18px;min-height:0;padding:0;margin:0;flex-shrink:0;border-radius:50%}
+.mock-import-panel a,.pw-dialog .pw-helper a{color:var(--pw-primary);text-decoration:underline;text-underline-offset:3px;font-weight:600}
