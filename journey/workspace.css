@@ -251,3 +251,18 @@ fieldset.mock-question.needs-answer{border-color:#c79a45;background:#fdf7ea}
 @media(prefers-reduced-motion:reduce){.doc-progress-bar span{transition:none}}
 /* Print only the registration form sheet */
 @media print{body.ssce-printing *{visibility:hidden!important}body.ssce-printing .ssce-print-target,body.ssce-printing .ssce-print-target *{visibility:visible!important}body.ssce-printing .ssce-print-target{position:absolute;left:0;top:0;width:100%;border:0;padding:0}body.ssce-printing dialog{position:static;max-height:none;overflow:visible;box-shadow:none;border:0}@page{margin:16mm}}
+
+/* Students page filters, CSV preview and temporary password sheet */
+.student-filters{display:flex;flex-wrap:wrap;gap:12px 16px;align-items:end}
+.student-filters .pw-field{min-width:min(100%,220px)}
+.student-filters .pw-button{margin-left:auto}
+.csv-preview-table{max-height:min(55vh,520px);overflow:auto}
+.csv-preview-table tr.row-error td{background:hsl(var(--red, 4 66% 46%) / .06)}
+.csv-preview-table .pw-badge{white-space:normal}
+.temp-password{font:700 1rem/1.4 ui-monospace,Consolas,monospace;letter-spacing:.04em;padding:2px 8px;border-radius:8px;background:var(--pw-sage);overflow-wrap:anywhere}
+@media(max-width:640px){.student-filters .pw-button{margin-left:0}}
+@media print{body.passwords-printing *{visibility:hidden!important}body.passwords-printing .password-sheet,body.passwords-printing .password-sheet *{visibility:visible!important}body.passwords-printing .password-sheet{position:absolute;left:0;top:0;width:100%}body.passwords-printing dialog{position:static;max-height:none;overflow:visible;border:0;box-shadow:none}}
+/* Wide drawers (CSV import, password lists) keep tables scrolling inside instead of widening the panel. */
+.pw-dialog.drawer.wide-drawer{width:min(960px,100%)}
+.pw-dialog .pw-stack>*{min-width:0}
+.pw-dialog .pw-table-scroll{max-width:100%}
