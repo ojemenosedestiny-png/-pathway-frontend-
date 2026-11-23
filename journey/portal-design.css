@@ -1,0 +1,157 @@
+/* Portal design system (student portal and staff workspace): warm ivory paper, deep ink, emerald and gold.
+   Every colour comes from the HSL tokens below; the older --pw-* tokens are mapped onto them, so all
+   existing pages pick up the design. Dark mode is a toggle (html[data-theme="dark"]), never automatic. */
+@font-face{font-family:'Playfair Display';font-style:normal;font-weight:600;font-display:swap;src:url('/assets/fonts/PlayfairDisplay-600-latin-ext.woff2') format('woff2');unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C4,U+2113,U+2C60-2C7F,U+A720-A7FF}
+@font-face{font-family:'Playfair Display';font-style:normal;font-weight:600;font-display:swap;src:url('/assets/fonts/PlayfairDisplay-600-latin.woff2') format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:'Plus Jakarta Sans';font-style:normal;font-weight:400 700;font-display:swap;src:url('/assets/fonts/PlusJakartaSans-latin-ext.woff2') format('woff2');unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C4,U+2113,U+2C60-2C7F,U+A720-A7FF}
+@font-face{font-family:'Plus Jakarta Sans';font-style:normal;font-weight:400 700;font-display:swap;src:url('/assets/fonts/PlusJakartaSans-latin.woff2') format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+
+:root{
+ --paper:42 45% 96%;--paper-2:40 38% 92%;--ink:200 45% 12%;--emerald:156 62% 24%;--emerald-soft:152 38% 88%;
+ --gold:41 72% 50%;--gold-soft:44 80% 90%;--gold-ink:36 70% 32%;--red:4 66% 46%;--line:40 22% 82%;--surface:0 0% 100%;--chrome:200 45% 12%;
+ --on-chrome:42 45% 96%;--emerald-deep:156 64% 18%;
+ --font-display:'Playfair Display',Georgia,'Times New Roman',serif;
+ --font-ui:'Plus Jakarta Sans','Segoe UI',system-ui,-apple-system,sans-serif;
+}
+:root[data-theme="dark"]{
+ --paper:205 32% 8%;--paper-2:205 24% 14%;--ink:42 30% 92%;--emerald:154 48% 50%;--emerald-soft:156 32% 17%;
+ --gold:41 75% 58%;--gold-soft:40 38% 17%;--gold-ink:41 75% 70%;--red:4 78% 64%;--line:205 18% 22%;--surface:205 30% 12%;--chrome:205 40% 6%;
+ --on-chrome:42 30% 92%;--emerald-deep:154 48% 42%;color-scheme:dark;
+}
+
+/* Map the workspace tokens onto the design system. */
+.pw.pw{
+ --pw-primary:hsl(var(--emerald));--pw-primary-hover:hsl(var(--emerald-deep));--pw-on-primary:hsl(var(--paper));
+ --pw-sidebar:hsl(var(--chrome));--pw-sidebar-active:hsl(0 0% 100% / .08);--pw-on-sidebar-muted:hsl(var(--on-chrome) / .7);
+ --pw-ivory:hsl(var(--paper));--pw-white:hsl(var(--surface));--pw-sage:hsl(var(--paper-2));--pw-sage-strong:hsl(var(--emerald-soft));
+ --pw-ink:hsl(var(--ink));--pw-muted:hsl(var(--ink) / .72);--pw-line:hsl(var(--line));
+ --pw-gold:hsl(var(--gold));--pw-gold-soft:hsl(var(--gold-soft));
+ --pw-success:hsl(var(--emerald));--pw-success-bg:hsl(var(--emerald-soft));--pw-warning:hsl(var(--gold-ink));--pw-warning-bg:hsl(var(--gold-soft));
+ --pw-danger:hsl(var(--red));--pw-danger-bg:hsl(var(--red) / .1);--pw-info:hsl(var(--ink) / .8);--pw-info-bg:hsl(var(--paper-2));
+ --pw-overlay:hsl(var(--chrome) / .45);--pw-chart:hsl(var(--emerald-soft));
+ --pw-shadow:0 1px 0 hsl(var(--line)),0 14px 30px -22px hsl(var(--ink) / .35);--pw-shadow-raised:0 1px 0 hsl(var(--line)),0 24px 48px -24px hsl(var(--ink) / .45);
+ --pw-radius:18px;--pw-radius-small:12px;--pw-side:268px;--pw-max:1200px;
+ --pw-serif:var(--font-display);--pw-sans:var(--font-ui);--pw-font-base:15.5px;
+ --pw-focus:0 0 0 3px hsl(var(--emerald) / .28);
+ color:hsl(var(--ink));
+}
+
+/* Page: ivory paper, a faint emerald glow top-left and ruled lines like exam paper. */
+body.pw-body.pw-body{
+ background-color:hsl(var(--paper));
+ background-image:radial-gradient(circle at 12% -10%,hsl(var(--emerald) / .08),transparent 42%),linear-gradient(hsl(var(--line) / .35) 1px,transparent 1px);
+ background-size:auto,100% 34px;background-attachment:fixed,scroll;
+ font-family:var(--font-ui);font-size:15.5px;
+}
+.pw.pw :is(h1,h2,h3,.pw-price,.pw-stat strong,.pw-empty h3){font-family:var(--font-display);font-weight:600;letter-spacing:-.01em}
+.pw.pw :is(.pw-overline,.pw-nav-label,.pw-label-sm){font:700 11px/1.5 var(--font-ui);text-transform:uppercase;letter-spacing:.14em;color:hsl(var(--ink) / .7)}
+
+/* Layout shell: a 268px dark sidebar and a dark top bar with a gold rule. */
+.pw.pw .pw-sidebar{background:hsl(var(--chrome));color:hsl(var(--on-chrome));border-right:0}
+.pw.pw .pw-sidebar .pw-icon{filter:brightness(0) invert(1);opacity:.82}
+:root[data-theme="dark"] .pw.pw .pw-sidebar .pw-icon{filter:brightness(0) invert(.92) sepia(.15)}
+.pw.pw .pw-sidebar :is(.pw-nav-label,.pw-brand small,.pw-sidebar-footer p){color:hsl(var(--on-chrome) / .68)}
+.pw.pw .pw-brand strong{font:600 1.05rem/1.25 var(--font-display);letter-spacing:0}
+.pw.pw .pw-nav-link{border-radius:12px;color:hsl(var(--on-chrome) / .9)}
+.pw.pw .pw-nav-link:hover{background:hsl(0 0% 100% / .06)}
+.pw.pw .pw-nav-link[aria-current=page]{background:hsl(0 0% 100% / .09);color:hsl(var(--on-chrome));font-weight:600}
+.pw.pw .pw-nav-link[aria-current=page]:before{width:3px;border-radius:3px;top:10px;bottom:10px;background:hsl(var(--gold))}
+.pw.pw .pw-sidebar-footer{border-color:hsl(0 0% 100% / .1)}
+.pw.pw .pw-topbar{background:hsl(var(--chrome));color:hsl(var(--on-chrome));border-bottom:3px solid hsl(var(--gold));backdrop-filter:none}
+.pw.pw .pw-topbar .pw-button{background:transparent;color:hsl(var(--on-chrome));border-color:hsl(0 0% 100% / .16)}
+.pw.pw .pw-topbar .pw-button:hover{background:hsl(0 0% 100% / .08);border-color:hsl(0 0% 100% / .28);transform:none}
+.pw.pw .pw-topbar .pw-button .pw-icon{filter:brightness(0) invert(1);opacity:.85}
+.pw.pw .pw-topbar .pw-search{color:hsl(var(--on-chrome) / .85);border-color:transparent}
+.pw.pw .pw-topbar kbd{border-color:hsl(0 0% 100% / .2);color:hsl(var(--on-chrome) / .75)}
+.pw.pw .pw-topbar .pw-badge{background:hsl(var(--gold) / .18);color:hsl(var(--gold))}
+.pw.pw .pw-topbar .pw-profile-name{color:hsl(var(--on-chrome))}
+.pw.pw .pw-topbar .pw-profile>summary .pw-icon{filter:brightness(0) invert(1)}
+.pw.pw .pw-topbar .pw-profile-popover{color:hsl(var(--ink))}
+.pw.pw .pw-topbar .pw-profile-popover .pw-button{color:hsl(var(--ink));border-color:hsl(var(--line))}
+.pw.pw .pw-topbar .pw-profile-popover .pw-button .pw-icon{filter:none}
+.pw.pw .pw-avatar{background:hsl(var(--gold));color:hsl(var(--chrome))}
+.pw.pw .pw-content{max-width:var(--pw-max)}
+
+/* Cards */
+.pw.pw .pw-card{background:hsl(var(--surface) / .82);border:1px solid hsl(var(--line));border-radius:18px;box-shadow:0 1px 0 hsl(var(--line)),0 14px 30px -22px hsl(var(--ink) / .35);backdrop-filter:blur(6px)}
+.pw.pw .pw-card:hover{border-color:hsl(var(--line))}
+
+/* Feature banners keep their deep background on top of the card style. */
+.pw.pw .pw-card:is(.pw-feature,.student-welcome,.student-exam-intro,.student-inspiration){background-color:hsl(var(--chrome));background-image:radial-gradient(circle at 92% -30%,hsl(var(--gold) / .18),transparent 45%),radial-gradient(circle at -5% 130%,hsl(var(--emerald) / .45),transparent 55%);color:hsl(var(--on-chrome));border-color:transparent}
+.pw.pw .pw-card:is(.pw-feature,.student-welcome,.student-exam-intro,.student-inspiration) :is(h2,h3,strong){color:hsl(var(--on-chrome))}
+.pw.pw .pw-card:is(.pw-feature,.student-welcome,.student-exam-intro,.student-inspiration) .pw-overline{color:hsl(var(--gold))}
+.pw.pw .pw-card:is(.pw-feature,.student-welcome,.student-exam-intro,.student-inspiration) .pw-helper{color:hsl(var(--on-chrome) / .8)}
+.pw.pw .pw-card:is(.pw-feature,.student-welcome,.student-exam-intro,.student-inspiration) .pw-button{color:hsl(var(--on-chrome));border-color:hsl(0 0% 100% / .25)}
+.pw.pw .pw-card:is(.pw-feature,.student-welcome,.student-exam-intro,.student-inspiration) .pw-button .pw-icon{filter:brightness(0) invert(1)}
+/* Numbers use full-height figures so a zero never reads as the letter o. */
+.pw.pw :is(.pw-stat strong,.pw-price,.pw-hero-tile strong,.pw-money,td){font-variant-numeric:lining-nums tabular-nums}
+
+/* Buttons: ghost by default, emerald primary, gold for the single most important action. */
+.pw.pw .pw-button{border:1px solid hsl(var(--line));border-radius:12px;background:transparent;color:hsl(var(--ink));padding:.7rem 1.2rem;font-weight:600;transition:background .2s,border-color .2s,transform .2s,box-shadow .2s}
+.pw.pw .pw-button:hover{border-color:hsl(var(--emerald) / .45);background:hsl(var(--emerald-soft) / .55)}
+.pw.pw .pw-button.primary{background:hsl(var(--emerald));border-color:hsl(var(--emerald));color:hsl(var(--paper));font-weight:700}
+.pw.pw .pw-button.primary:hover{background:hsl(var(--emerald-deep));border-color:hsl(var(--emerald-deep));transform:translateY(-1px)}
+.pw.pw .pw-button.gold{background:hsl(var(--gold));border-color:hsl(var(--gold));color:hsl(200 45% 12%);font-weight:700}
+.pw.pw .pw-button.gold:hover{background:hsl(41 72% 44%);transform:translateY(-1px)}
+.pw.pw .pw-button.gold .pw-icon{filter:none}
+.pw.pw .pw-button.danger{color:hsl(var(--red));border-color:hsl(var(--red) / .5)}
+.pw.pw .pw-button.quiet{border-color:transparent}
+.pw.pw .pw-icon-button{padding:.55rem}
+.pw.pw :focus-visible{outline:none;box-shadow:0 0 0 3px hsl(var(--emerald) / .35)}
+
+/* Inputs */
+.pw.pw :is(input:not([type=checkbox]):not([type=radio]),select,textarea){border:1.5px solid hsl(var(--line));border-radius:12px;background:hsl(var(--surface));color:hsl(var(--ink));transition:border-color .2s,box-shadow .2s}
+.pw.pw :is(input:not([type=checkbox]):not([type=radio]),select,textarea):focus{outline:none;border-color:hsl(var(--emerald));box-shadow:0 0 0 3px hsl(var(--emerald) / .15)}
+.pw.pw input[type=checkbox],.pw.pw input[type=radio]{accent-color:hsl(var(--emerald))}
+
+/* Pills */
+.pw.pw .pw-badge{border-radius:999px;font:700 11px/1.4 var(--font-ui);letter-spacing:.02em;padding:.25rem .65rem;background:hsl(var(--paper-2));color:hsl(var(--ink) / .78)}
+.pw.pw .pw-badge.success{background:hsl(var(--emerald-soft));color:hsl(var(--emerald))}
+.pw.pw .pw-badge.warning{background:hsl(var(--gold-soft));color:hsl(var(--gold-ink))}
+.pw.pw .pw-badge.danger{background:hsl(var(--red) / .12);color:hsl(var(--red))}
+.pw.pw .pw-badge.ink{background:hsl(var(--ink));color:hsl(var(--paper))}
+
+/* Tables, alerts and dialogs follow the tokens. */
+.pw.pw .pw-table th{background:hsl(var(--paper-2))}
+.pw.pw .pw-table tbody tr:hover{background:hsl(var(--emerald-soft) / .35)}
+.pw.pw .pw-alert{border-radius:12px;border-color:hsl(var(--line))}
+.pw.pw .pw-alert.warning{background:hsl(var(--gold-soft));color:hsl(var(--gold-ink))}
+.pw.pw .pw-alert.success{background:hsl(var(--emerald-soft));color:hsl(var(--emerald))}
+.pw.pw .pw-alert.danger{background:hsl(var(--red) / .1);color:hsl(var(--red))}
+.pw-dialog.pw-dialog{background:hsl(var(--surface));color:hsl(var(--ink));border-color:hsl(var(--line));border-radius:18px}
+.pw-dialog.drawer{border-radius:0}
+
+/* Empty states: dashed box with a tilted icon tile. */
+.pw.pw .pw-empty{border:1.5px dashed hsl(var(--line));border-radius:18px;background:hsl(var(--surface) / .5)}
+.pw.pw .pw-empty>.pw-stat-icon{background:hsl(var(--emerald-soft));border-radius:14px;transform:rotate(-4deg)}
+.pw.pw .pw-empty p{color:hsl(var(--ink) / .72)}
+
+/* Loading: shimmer skeletons. */
+.pw-loading{display:grid;gap:14px}
+.pw-loading .pw-skeleton{height:96px;border-radius:18px;background:linear-gradient(110deg,hsl(var(--paper-2)) 30%,hsl(var(--surface)) 50%,hsl(var(--paper-2)) 70%);background-size:220% 100%;animation:pw-shimmer 1.6s linear infinite}
+.pw-loading .pw-skeleton.short{height:56px;width:60%}
+@keyframes pw-shimmer{to{background-position:-220% 0}}
+
+/* Dashboard hero band: deep chrome, gold small caps, glassy stat tiles. */
+.pw.pw .pw-hero{background:hsl(var(--chrome));color:hsl(var(--on-chrome));border-radius:18px;padding:32px;display:grid;gap:22px;background-image:radial-gradient(circle at 90% -20%,hsl(var(--gold) / .16),transparent 45%),radial-gradient(circle at 0% 120%,hsl(var(--emerald) / .35),transparent 50%)}
+.pw.pw .pw-hero .pw-overline{color:hsl(var(--gold))}
+.pw.pw .pw-hero h2{font-size:clamp(1.6rem,3vw,2.3rem);color:hsl(var(--on-chrome));margin:0}
+.pw.pw .pw-hero p{color:hsl(var(--on-chrome) / .78)}
+.pw-hero-tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,170px),1fr));gap:12px}
+.pw-hero-tile{background:hsl(0 0% 100% / .07);border:1px solid hsl(0 0% 100% / .15);border-radius:14px;padding:16px;display:grid;gap:4px}
+.pw-hero-tile strong{font:600 2rem/1.1 var(--font-display);font-variant-numeric:lining-nums tabular-nums;color:hsl(var(--on-chrome))}
+.pw-hero-tile span{font:700 11px/1.4 var(--font-ui);text-transform:uppercase;letter-spacing:.14em;color:hsl(var(--on-chrome) / .72)}
+
+/* Theme toggle in the top bar. */
+.pw-theme-toggle[aria-pressed="true"] .pw-icon{filter:brightness(0) saturate(100%) invert(80%) sepia(40%) saturate(700%) hue-rotate(5deg)!important}
+
+/* Dark mode: recolour surfaces that older pages drew with fixed light colours. */
+:root[data-theme="dark"] .pw.pw :is(.doc-item,.study-resource,.transfer-item,.pw-hostel-cover,.applicant-invoice){background:hsl(var(--surface));color:hsl(var(--ink))}
+:root[data-theme="dark"] .pw.pw :is(.doc-number,.doc-progress-bar){background:hsl(var(--paper-2))}
+:root[data-theme="dark"] .pw.pw .pw-icon{filter:invert(.9)}
+:root[data-theme="dark"] .pw.pw :is(.pw-button.primary,.pw-button.gold) .pw-icon{filter:none}
+
+/* Motion: cards rise in gently. */
+@media(prefers-reduced-motion:no-preference){.pw.pw .pw-section-body>*{animation:pw-rise .45s cubic-bezier(.2,.7,.2,1) both}.pw.pw .pw-section-body>*:nth-child(2){animation-delay:60ms}.pw.pw .pw-section-body>*:nth-child(3){animation-delay:120ms}}
+@keyframes pw-rise{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+@media(prefers-reduced-motion:reduce){.pw-loading .pw-skeleton{animation:none}}

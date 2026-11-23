@@ -12,7 +12,7 @@ function createFrontend() {
  const mediaOrigins=approvedOrigin(process.env.PATHWAY_MEDIA_ORIGIN);
  const uploadOrigins=approvedOrigin(process.env.PATHWAY_UPLOAD_ORIGIN);
  const app=express();app.disable('x-powered-by');
- const release=crypto.createHash('sha256');for(const filename of ['index.html','styles.css','redesign.css','journey/theme.css','journey/public-premium.css','journey/workspace-tokens.css','journey/workspace.css','journey/live.html',...fs.readdirSync(path.join(__dirname,'journey/dist')).filter(n=>n.endsWith('.js')).sort().map(n=>'journey/dist/'+n)])release.update(fs.readFileSync(path.join(__dirname,filename)));const releaseId=release.digest('hex').slice(0,12);
+ const release=crypto.createHash('sha256');for(const filename of ['index.html','styles.css','redesign.css','journey/theme.css','journey/public-premium.css','journey/workspace-tokens.css','journey/workspace.css','journey/portal-design.css','journey/live.html',...fs.readdirSync(path.join(__dirname,'journey/dist')).filter(n=>n.endsWith('.js')).sort().map(n=>'journey/dist/'+n)])release.update(fs.readFileSync(path.join(__dirname,filename)));const releaseId=release.digest('hex').slice(0,12);
  // Release-stamped CSS/JS URLs (/_v/<release>/...) are immutable; a new deploy changes the stamp.
  // Module imports are relative, so a stamped entry script keeps its whole import graph stamped.
  const stampPrefix='/_v/'+releaseId;
@@ -65,6 +65,7 @@ function createFrontend() {
  app.get('/journey/public-premium.css',send('journey/public-premium.css'));
  app.get('/journey/workspace-tokens.css',send('journey/workspace-tokens.css'));
  app.get('/journey/workspace.css',send('journey/workspace.css'));
+ app.get('/journey/portal-design.css',send('journey/portal-design.css'));
  app.get(['/styles.css','/redesign.css','/script.js','/ui-enhancements.js','/exam-directory.js','/service-information.js'],express.static(__dirname,{dotfiles:'deny',index:false}));
  const notFoundPage='<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex"><title>Page not found | NewworldPathway</title><style>body{margin:0;font:16px/1.6 system-ui,sans-serif;background:#fbf8f1;color:#13261f;display:grid;min-height:100vh;place-items:center;padding:16px;box-sizing:border-box}main{max-width:520px;text-align:center}h1{font:500 32px/1.2 Georgia,serif;margin:0 0 12px}a{display:inline-block;margin:6px;padding:10px 18px;border-radius:8px;border:1px solid #0f3d2e;color:#0f3d2e;text-decoration:none;font-weight:600}a.primary{background:#0f3d2e;color:#fff}a:focus-visible{outline:3px solid #c9a24a;outline-offset:2px}</style></head><body><main><p>Error 404</p><h1>We could not find that page</h1><p>The link may be out of date or the page may have moved.</p><p><a class="primary" href="/">Go to the homepage</a><a href="/contact">Contact the school</a></p></main></body></html>';
  app.use((req,res)=>{res.status(404);if(req.accepts(['html','text'])==='html')res.type('html').send(notFoundPage);else res.type('text').send('Page not found.');});
