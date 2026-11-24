@@ -450,7 +450,7 @@ fieldset.mock-question.needs-answer{border-color:#c79a45;background:#fdf7ea}
 .fm-form,.fm-review,.fm-copy{display:grid;gap:18px;padding:24px;border:1px solid var(--pw-line);border-radius:18px;background:var(--pw-white);box-shadow:var(--pw-shadow);min-width:0}
 .fm-intro{margin:0;color:var(--pw-muted)}
 .fm-field{display:grid;gap:6px;min-width:0;margin:0;padding:0;border:0}
-.fm-field>label,.fm-field legend{display:grid;gap:2px;padding:0}
+.fm-field>label:not(.fm-choice),.fm-field legend{display:grid;gap:2px;padding:0}
 .fm-label{font-weight:600}.fm-optional{font-weight:400;color:var(--pw-muted)}
 .fm-field[aria-invalid="true"] .fm-choice,.fm-field [aria-invalid="true"]{border-color:hsl(var(--red))}
 .fm-error{margin:0;color:hsl(var(--red));font-weight:600;font-size:14px}

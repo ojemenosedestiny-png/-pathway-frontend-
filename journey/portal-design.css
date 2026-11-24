@@ -158,3 +158,5 @@ body.pw-body.pw-body{
 /* Radio buttons keep their natural size (an older rule widened every non-checkbox input). */
 .pw.pw input[type=radio]{width:18px;height:18px;min-height:0;padding:0;margin:0;flex-shrink:0;border-radius:50%}
 .mock-import-panel a,.pw-dialog .pw-helper a{color:var(--pw-primary);text-decoration:underline;text-underline-offset:3px;font-weight:600}
+/* The public stylesheet colours every label navy; inside the portal labels follow the theme. */
+.pw.pw label,.pw.pw legend{color:inherit}
