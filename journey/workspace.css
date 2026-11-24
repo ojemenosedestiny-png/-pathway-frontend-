@@ -379,3 +379,49 @@ fieldset.mock-question.needs-answer{border-color:#c79a45;background:#fdf7ea}
  .xr.sheet-open .xr-sheet-open{visibility:hidden}
 }
 @media(prefers-reduced-motion:reduce){.xr-palette{transition:none}}
+
+/* Results: staff overview and per-exam panel, student result cards and answer review */
+.results-overview{display:grid;gap:14px;margin-bottom:8px}
+.results-heading{margin:0;font-size:1.45rem}
+.results-subjects{display:grid;gap:16px;padding:14px 20px 18px;border-top:1px solid var(--pw-line)}
+.results-subject{display:grid;gap:8px}
+.results-exam{display:flex;justify-content:space-between;align-items:center;gap:12px;width:100%;text-align:left;padding:12px 14px;border:1px solid var(--pw-line);border-radius:12px;background:var(--pw-white);color:inherit;font:inherit;cursor:pointer}
+.results-exam:hover{border-color:hsl(var(--emerald) / .45);background:hsl(var(--emerald-soft) / .35)}
+.results-exam span:first-child{display:grid;gap:2px}.results-exam small{color:var(--pw-muted)}
+.results-head{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;align-items:flex-start}
+.results-head h3{margin:4px 0;font-size:1.45rem}
+.results-actions{display:flex;flex-wrap:wrap;gap:8px}
+.results-release{margin:14px 0;padding:10px 14px;border-radius:12px;background:hsl(var(--paper-2));font-weight:600}
+.results-release.is-released{background:hsl(var(--emerald-soft));color:hsl(var(--emerald))}
+.results-tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:10px;margin-bottom:16px}
+.results-tiles div{padding:12px 14px;border:1px solid var(--pw-line);border-radius:12px;background:var(--pw-white);display:grid;gap:2px}
+.results-tiles span{font:700 11px/1.4 var(--pw-sans);text-transform:uppercase;letter-spacing:.12em;color:hsl(var(--ink) / .7)}
+.results-tiles strong{font:600 1.6rem/1.15 var(--pw-serif);font-variant-numeric:lining-nums tabular-nums}
+.results-search{max-width:360px;margin-bottom:12px}
+.results-table td small{display:block}
+.extra-time{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}.extra-time .pw-button{padding:.3rem .6rem;min-height:32px;font-size:13px}
+.result-cards{display:grid;gap:14px}
+.result-card{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:18px;align-items:center;padding:20px;border:1px solid var(--pw-line);border-radius:18px;background:hsl(var(--surface) / .82);box-shadow:var(--pw-shadow)}
+.result-card h3{margin:2px 0 4px;font-size:1.2rem}
+.result-comment{margin:8px 0 0}
+.result-score{display:grid;justify-items:end;gap:6px;text-align:right}
+.result-score strong{font:600 2rem/1.1 var(--pw-serif);font-variant-numeric:lining-nums}
+.result-score strong span{font-size:1.1rem;color:var(--pw-muted)}
+.result-percent{font-weight:700}
+@media(max-width:600px){.result-card{grid-template-columns:1fr}.result-score{justify-items:start;text-align:left}}
+.review-title{margin:4px 0 14px}
+.review-list{margin:0;padding-left:22px;display:grid;gap:14px}
+.review-q{padding:14px 16px;border:1px solid var(--pw-line);border-left:4px solid hsl(var(--emerald));border-radius:12px;background:var(--pw-white)}
+.review-q.is-wrong{border-left-color:hsl(var(--red))}
+.review-mark{margin:0 0 6px;font:700 11px/1.4 var(--pw-sans);text-transform:uppercase;letter-spacing:.12em}
+.review-passage{margin:0 0 8px;padding:10px 12px;border-radius:10px;background:var(--pw-sage)}
+.review-image{max-width:min(100%,420px);border-radius:10px;margin-bottom:8px}
+.review-prompt{margin:0 0 8px;font-weight:600}
+.review-options{list-style:none;margin:0;padding:0;display:grid;gap:6px}
+.review-options li{display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:8px 10px;border-radius:10px;border:1px solid var(--pw-line)}
+.review-options li.is-correct{background:hsl(var(--emerald-soft));border-color:hsl(var(--emerald))}
+.review-options li.is-chosen-wrong{background:hsl(var(--red) / .08);border-color:hsl(var(--red) / .5)}
+.review-options em{font-style:normal;font-weight:700;color:hsl(var(--red))}
+.review-options li.is-correct em{color:hsl(var(--emerald))}
+.results-table td:last-child{min-width:270px}
+.result-score small{max-width:260px}

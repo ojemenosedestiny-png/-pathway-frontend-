@@ -4,6 +4,7 @@ import {can} from './live-api.js';
 import type {WorkspaceContext} from './workspace-special.js';
 import {staffMocksPage} from './workspace-mocks.js';
 import {studentMocksPage} from './exam-room.js';
+import {staffResultsOverview,openExamResults,studentResultsPage} from './mock-results.js';
 import {ssceSheet,printSheet,examBodyLabel,schoolSubjects} from './ssce-form.js';
 const card=(title:string,body:string)=>`<section class="pw-card learning-card"><div class="pw-card-head"><h2>${esc(title)}</h2></div>${body}</section>`;
 const bind=(root:ParentNode,id:string,task:()=>unknown)=>root.querySelector<HTMLButtonElement>('#'+id)?.addEventListener('click',()=>Promise.resolve().then(task).catch(e=>toast(errorMessage(e))));
@@ -57,9 +58,7 @@ export async function studentLearning(key:string,target:HTMLElement,ctx:Workspac
   const render=()=>{const q=target.querySelector<HTMLInputElement>('#material-search')!.value.toLowerCase();target.querySelector('#material-list')!.innerHTML=rows.filter(r=>(r.title+' '+r.subject+' '+r.description).toLowerCase().includes(q)).map(r=>`<article class="study-resource"><p class="pw-overline">${esc(r.subject)}</p><h3>${esc(r.title)}</h3><p>${esc(r.description)}</p><a class="pw-button" href="${esc(r.url)}" target="_blank" rel="noopener noreferrer">Read material ↗</a><small>External learning resource · opens a new tab</small></article>`).join('')||empty('No matching materials','Try another subject.');};target.querySelector<HTMLInputElement>('#material-search')!.oninput=render;render();return;
  }
  if(key==='mocks'){await studentMocksPage(target,ctx);return;}
- if(key==='results'){
-  const rows=await api<any[]>('/portal/learning/results');if(!ctx.current())return;target.innerHTML=card('Your published results',`<div class="learning-grid">${rows.map(r=>`<article class="study-resource"><p class="pw-overline">${esc(r.subject)}</p><h3>${esc(r.title)}</h3><p class="pw-price">${r.score} / ${r.maximum}</p><p>${esc(r.comment||'Keep practising and review your next steps with your teacher.')}</p>${r.expired?badge('Time expired'):badge('RELEASED')}</article>`).join('')||empty('No results released yet','Your teachers control when results are published.')}</div>`);return;
- }
+ if(key==='results'){await studentResultsPage(target,ctx);return;}
 }
 /** Staff view of WAEC/NECO registration forms and the school's required-documents list. */
 async function registrationFormsStaff(target:HTMLElement,ctx:WorkspaceContext){
@@ -97,9 +96,11 @@ export async function adminLearning(key:string,target:HTMLElement,ctx:WorkspaceC
    formSubmit(f,async data=>{await api('/admin/learning/bank/'+purpose,'PUT',{bankName:data[purpose+'-bankName'],accountName:data[purpose+'-accountName'],accountNumber:String(data[purpose+'-accountNumber']).replace(/\s+/g,''),instructions:data[purpose+'-instructions']||'',active:data[purpose+'-active']==='on'});toast('Bank account saved.');await ctx.refresh();});}
   proofs.forEach(r=>{bind(target,'proof-'+r.id,()=>service.download(r.data.documentId).then(()=>toast('Screenshot download started. Check your browser downloads.'),error=>toast(errorMessage(error))));bind(target,'verify-'+r.id,()=>editor('Verify bank transfer',alert('Check the bank statement first','A screenshot alone does not confirm payment. Verification credits the student and issues a receipt.','warning')+field('reason','Bank statement verification details','','textarea'),async data=>{await api('/admin/payments/'+r.data.reference+'/verify-offline','POST',{reason:data.reason});await ctx.refresh();}));});return;
  }
- if(endpoint==='mocks'){await staffMocksPage(target,ctx,writable);return;}
- const rows=await api<any[]>('/admin/learning/'+endpoint);if(!ctx.current())return;
- target.innerHTML=card(endpoint==='registrations'?'Continued school registrations':endpoint==='results'?'School and mock results':endpoint==='materials'?'Published study library':'Student encouragement',rows.map((r:any)=>{const d=r.data;return `<article class="study-resource"><p class="pw-overline">${esc(d.subject||d.programme||r.studentId||d.author||'')}</p><h3>${esc(d.title||d.text||d.currentSchool||'Student record')}</h3>${badge(endpoint==='registrations'?(d.submitted?'SUBMITTED':'DRAFT'):d.published?'PUBLISHED':'DRAFT')}<p>${esc(d.comment||d.description||'')}</p>${endpoint==='registrations'?`<dl>${Object.entries(d).map(([k,v])=>`<dt>${esc(k)}</dt><dd>${esc(String(v))}</dd>`).join('')}</dl>`:r.kind==='ATTEMPT'?`<p>Student: ${esc(r.studentId)} · ${d.submitted?`${d.score} / ${d.maximum}`:'In progress'}</p>`:writable?button('Edit','record-'+r.id):''}</article>`;}).join('')||'<p>No records created yet.</p>');
+ if(endpoint==='mocks'){await staffMocksPage(target,ctx,writable,id=>openExamResults(id,can(ctx.identity,'exams',true),()=>ctx.refresh()));return;}
+ // Mock attempts have their own results screens; this list keeps the results teachers enter by hand.
+ const rows=(await api<any[]>('/admin/learning/'+endpoint)).filter(r=>endpoint!=='results'||r.kind!=='ATTEMPT');if(!ctx.current())return;
+ target.innerHTML=card(endpoint==='registrations'?'Continued school registrations':endpoint==='results'?'School results entered by teachers':endpoint==='materials'?'Published study library':'Student encouragement',rows.map((r:any)=>{const d=r.data;return `<article class="study-resource"><p class="pw-overline">${esc(d.subject||d.programme||r.studentId||d.author||'')}</p><h3>${esc(d.title||d.text||d.currentSchool||'Student record')}</h3>${badge(endpoint==='registrations'?(d.submitted?'SUBMITTED':'DRAFT'):d.published?'PUBLISHED':'DRAFT')}<p>${esc(d.comment||d.description||'')}</p>${endpoint==='registrations'?`<dl>${Object.entries(d).map(([k,v])=>`<dt>${esc(k)}</dt><dd>${esc(String(v))}</dd>`).join('')}</dl>`:r.kind==='ATTEMPT'?`<p>Student: ${esc(r.studentId)} · ${d.submitted?`${d.score} / ${d.maximum}`:'In progress'}</p>`:writable?button('Edit','record-'+r.id):''}</article>`;}).join('')||'<p>No records created yet.</p>');
+ if(endpoint==='results')await staffResultsOverview(target,ctx,writable);
  if(endpoint==='registrations'){await registrationFormsStaff(target,ctx);return;}
  if(!writable)return;
  const edit=async(row?:any)=>{
