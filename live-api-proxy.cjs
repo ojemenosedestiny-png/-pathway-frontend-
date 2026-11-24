@@ -22,8 +22,9 @@ function liveApiProxy(origin = process.env.PATHWAY_BACKEND_ORIGIN || 'https://pa
     target = https.request({hostname:upstream.hostname,port:upstream.port || 443,path:req.url,method:req.method,headers,agent}, response => {
       if((response.statusCode||502)>=500)failure(response.statusCode||502,'UPSTREAM_HTTP');
       res.status(response.statusCode || 502);
-      for (const name of ['content-type','content-disposition','retry-after','x-request-id']) if (response.headers[name]) res.setHeader(name,response.headers[name]);
-      res.setHeader('Cache-Control','no-store');
+      for (const name of ['content-type','content-disposition','retry-after','x-request-id','x-content-type-options']) if (response.headers[name]) res.setHeader(name,response.headers[name]);
+      // Public school pictures may be cached; everything else from the backend is private.
+      res.setHeader('Cache-Control',req.url.startsWith('/media/public/')&&response.statusCode===200&&response.headers['cache-control']?response.headers['cache-control']:'no-store');
       if (response.headers['set-cookie']) {
         // Local HTTP development only. HTTPS production keeps Secure cookies intact.
         const localHttp = process.env.NODE_ENV !== 'production' && req.protocol === 'http' && ['localhost','127.0.0.1','[::1]'].includes(req.hostname);
