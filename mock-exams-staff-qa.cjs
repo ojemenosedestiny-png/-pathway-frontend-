@@ -13,6 +13,7 @@ await page.route('**/backend-api/**',async r=>{const req=r.request();const u=new
  else if(u==='/admin/learning/mocks'&&req.method()==='GET')d=mocks;else if(u==='/admin/learning/mocks/students')d=students;
  else if(u.startsWith('/admin/learning/mocks/')&&u.endsWith('/makeups')&&req.method()==='GET')d=makeups;
  else if(/\/makeups\/[\w-]+$/.test(u)&&req.method()==='PUT'){const b=req.postDataJSON();makeups.push({studentId:u.split('/').pop(),...b});d=b;}
+ else if(u==='/admin/learning/mocks/import-sheet'&&req.postDataBuffer().subarray(0,5).toString()==='%PDF-'){d={kind:'pdf',ready:1,skipped:['MATHEMATICS - SECTION A'],rows:[{row:7,question:{prompt:'Find 15% of 240.',options:['24','36','48'],answer:null,marks:1,passage:''},problems:[],warnings:['No answer in the PDF: tick the correct answer in the editor.'],source:{question:'Find 15% of 240.',A:'24',B:'36',C:'48',answer:'',marks:''}}]};}
  else if(u==='/admin/learning/mocks/import-sheet'){d={ready:2,rows:[{row:2,question:{prompt:'Capital of Nigeria?',options:['Lagos','Abuja'],answer:1,marks:2,passage:''},problems:[],warnings:[],source:{question:'Capital of Nigeria?',A:'Lagos',B:'Abuja',answer:'B',marks:'2'}},{row:3,question:null,problems:['Answer "C" does not match a filled choice.'],warnings:[],source:{question:'Broken',A:'x',B:'y',answer:'C',marks:'1'}},{row:4,question:{prompt:'5 × 5?',options:['10','25','55'],answer:1,marks:1,passage:'Times tables'},problems:[],warnings:['No marks given: 1 mark.'],source:{question:'5 × 5?',A:'10',B:'25',C:'55',answer:'B',marks:''}}]};}
  else if(u.startsWith('/admin/learning/mocks/')&&req.method()==='PUT'){saved.push(req.postDataJSON());d={};}
  await r.fulfill({contentType:'application/json',body:JSON.stringify(d)});});
@@ -32,6 +33,15 @@ await d.locator('[data-q="1"] [aria-label="Move question 2 up"]').click();assert
 await d.locator('.mock-import-panel summary').first().click();await d.locator('#sheet-file').setInputFiles({name:'q.xlsx',mimeType:'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',buffer:Buffer.from('PK fake')});
 await d.getByText('2 questions ready, 1 need fixing').waitFor();assert.match(await d.locator('.sheet-preview').innerText(),/does not match a filled choice/);
 await page.screenshot({path:OUT+'mock-sheet-preview-1280.png'});await d.getByRole('button',{name:'Add 2 questions'}).click();assert.equal(await d.locator('.mock-q').count(),4);
+// PDF import (no AI): a student copy with no answers comes in, and saving is blocked until the answer is ticked
+assert.match(await d.locator('.mock-import-panel summary').first().innerText(),/PDF, Excel or CSV/);
+await d.locator('#sheet-file').setInputFiles({name:'paper.pdf',mimeType:'application/pdf',buffer:Buffer.from('%PDF-1.7 fake')});
+await d.getByText('1 question ready').waitFor();const pdfPreview=await d.locator('#sheet-preview').innerText();assert.match(pdfPreview,/No\.[\s\S]*7[\s\S]*tick the correct answer/);assert.match(pdfPreview,/Text not imported \(1\)/);
+await page.screenshot({path:OUT+'mock-pdf-preview-1280.png'});await d.getByRole('button',{name:'Add 1 question'}).click();assert.equal(await d.locator('.mock-q').count(),5);
+assert.equal(await d.locator('[data-q="4"] input[type=radio]:checked').count(),0);
+await d.getByRole('button',{name:'Save mock exam'}).click();await d.getByText('Question 5: choose the correct answer.').waitFor();
+await d.locator('[data-q="4"] [data-act="delete"]').click();const sure=page.locator('dialog button[value="confirm"]');if(await sure.count())await sure.click();assert.equal(await d.locator('.mock-q').count(),4);
+step('PDF import without AI: preview by question number, unanswered questions come in and must be ticked before saving');
 // Particular students
 await d.locator('[name=audience][value=students]').check();await d.locator('#mock-student-search').fill('ada');await d.locator('.mock-student input').first().check();
 await d.getByRole('button',{name:'Save mock exam'}).click();await page.waitForTimeout(500);

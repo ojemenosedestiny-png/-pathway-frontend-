@@ -425,3 +425,4 @@ fieldset.mock-question.needs-answer{border-color:#c79a45;background:#fdf7ea}
 .review-options li.is-correct em{color:hsl(var(--emerald))}
 .results-table td:last-child{min-width:270px}
 .result-score small{max-width:260px}
+.sheet-skipped{margin:10px 0;font-size:14px}.sheet-skipped summary{cursor:pointer;font-weight:600}.sheet-skipped ul{margin:6px 0 0;padding-left:20px;color:var(--pw-muted)}
