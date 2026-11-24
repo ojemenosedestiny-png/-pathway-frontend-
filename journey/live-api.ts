@@ -1,4 +1,4 @@
-export class ApiError extends Error {constructor(message:string,public status:number,public code=''){super(message);}}
+export class ApiError extends Error {constructor(message:string,public status:number,public code='',public fields:Record<string,string>={}){super(message);}}
 let csrf='';let csrfFlight:Promise<string>|undefined;let refreshFlight:Promise<unknown>|undefined;
 async function csrfToken(){
  if(csrf)return csrf;
@@ -27,7 +27,7 @@ export async function api<T=any>(path:string,method='GET',body?:unknown,retry=tr
   }
   // A CSRF rejection happens before the server does anything, so one retry with a fresh token is safe for every method.
   if(data?.error?.code==='CSRF'){csrf='';if(retry)return api(path,method,body,false,extraHeaders,recoverGateway);}
-  throw new ApiError(data?.error?.message||'The school service could not complete your request. Try again shortly. If it continues, contact the school.',response.status,data?.error?.code);
+  throw new ApiError(data?.error?.message||'The school service could not complete your request. Try again shortly. If it continues, contact the school.',response.status,data?.error?.code,data?.error?.fields||{});
  }
  return data;
 }

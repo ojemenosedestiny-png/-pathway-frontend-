@@ -5,6 +5,8 @@ import type {WorkspaceContext} from './workspace-special.js';
 import {staffMocksPage} from './workspace-mocks.js';
 import {studentMocksPage} from './exam-room.js';
 import {staffResultsOverview,openExamResults,studentResultsPage} from './mock-results.js';
+import {studentFormsPage} from './forms-student.js';
+import {staffFormsPage} from './forms-staff.js';
 import {ssceSheet,printSheet,examBodyLabel,schoolSubjects} from './ssce-form.js';
 const card=(title:string,body:string)=>`<section class="pw-card learning-card"><div class="pw-card-head"><h2>${esc(title)}</h2></div>${body}</section>`;
 const bind=(root:ParentNode,id:string,task:()=>unknown)=>root.querySelector<HTMLButtonElement>('#'+id)?.addEventListener('click',()=>Promise.resolve().then(task).catch(e=>toast(errorMessage(e))));
@@ -37,21 +39,7 @@ export function uploadTransferProof(payment:any,onDone?:()=>void){
 }
 /** 0 open, 1 not yet open, 2 closed: the list says which before anyone clicks Start. */
 export async function studentLearning(key:string,target:HTMLElement,ctx:WorkspaceContext){
- if(key==='registration'){
-  const saved=await api('/portal/learning/registration')||{};if(!ctx.current())return;
-  const names=['address','currentSchool','currentLevel','programme','guardianName','guardianPhone','subjects','notes'],labels=['Home address','Current or most recent school','Current class or qualification','Preparation programme','Parent or guardian name','Parent or guardian phone','Subjects you are preparing for','Additional information'],required=names.slice(0,6);
-  const status=saved.submitted?`${badge('SUBMITTED')}<p class="pw-helper">Submitted to admissions${saved.submittedAt?' on '+esc(new Date(saved.submittedAt).toLocaleDateString('en-GB',{day:'numeric',month:'long',year:'numeric'})):''}. You can still correct details; admissions sees your latest saved version.</p>`:`${badge('DRAFT')}<p class="pw-helper">${saved.savedAt?'Draft last saved '+esc(new Date(saved.savedAt).toLocaleString('en-GB',{dateStyle:'medium',timeStyle:'short'}))+'. ':''}Admissions cannot act on a draft until you submit it.</p>`;
-  target.innerHTML=card('Continue your school registration',`<p class="pw-helper">Fill in what you have now and select Save registration; you can come back later. Fields marked * are needed only when you submit the completed registration to admissions. This continues your school registration; university applications remain in My journey.</p><div data-registration-status>${status}</div>${form(names.map((name,i)=>field(name,labels[i]+(i<6?' *':''),saved[name]||'',name==='notes'?'textarea':name==='guardianPhone'?'tel':'text',undefined,false)).join('')+field('submitted','Submit completed registration to admissions',saved.submitted||false,'checkbox'),'Save registration')}`);
-  const f=target.querySelector<HTMLFormElement>('form')!;f.querySelector('[data-cancel]')!.remove();
-  const box=f.querySelector<HTMLInputElement>('[name=submitted]')!,submit=f.querySelector<HTMLButtonElement>('[type=submit]')!;
-  if(saved.submitted){box.disabled=true;box.closest('label')!.append(Object.assign(document.createElement('small'),{className:'pw-helper',textContent:'Already submitted. Saving now updates your submitted registration.'}));}
-  const phone=f.querySelector<HTMLInputElement>('[name=guardianPhone]')!;phone.pattern=String.raw`\+?[\d\s\(\)\-]{7,30}`;phone.title='Use digits only, for example 08031234567.';
-  // Required fields apply only to a final submission, so a partial draft can always be saved.
-  const sync=()=>{const final=box.checked;required.forEach(name=>{const input=f.querySelector<HTMLInputElement>(`[name=${name}]`)!;input.required=final;input.setAttribute('aria-required',String(final));});submit.textContent=final&&!saved.submitted?'Submit registration':'Save registration';};box.onchange=sync;sync();
-  const wasSubmitted=Boolean(saved.submitted);
-  formSubmit(f,async data=>{const final=box.checked;const result=await api('/portal/learning/registration','PUT',{...Object.fromEntries(names.map(name=>[name,data[name]||''])),submitted:final});Object.assign(saved,result);toast(final&&!wasSubmitted?'Registration submitted to admissions.':'Draft saved. You can continue later.');await ctx.refresh();});
-  ctx.primary('Save registration',()=>f.requestSubmit(),'check');return;
- }
+ if(key==='registration'||key==='forms'){await studentFormsPage(target,ctx);return;}
  if(key==='materials'){
   const rows=await api<any[]>('/portal/learning/materials');if(!ctx.current())return;
   target.innerHTML=card('Your O Level study library','<p class="pw-helper">Official guidance and supplementary learning. Match subjects to your current WAEC, NECO or Cambridge syllabus with your teacher.</p><label class="pw-field">Search subjects and materials<input type="search" id="material-search" placeholder="Mathematics, Biology, revision…"></label><div class="learning-grid" id="material-list"></div>');
@@ -83,6 +71,7 @@ async function registrationFormsStaff(target:HTMLElement,ctx:WorkspaceContext){
   await api('/admin/learning/document-requirements','PUT',{requirements:items});toast('Document list saved. Students see it straight away.');await ctx.refresh();});
 }
 export async function adminLearning(key:string,target:HTMLElement,ctx:WorkspaceContext){
+ if(key==='forms'){await staffFormsPage(target,ctx,can(ctx.identity,'applications',true));return;}
  const endpoint=key==='mock-exams'?'mocks':key==='study-materials'?'materials':key==='motivation'?'motivation':key==='student-results'?'results':key==='registrations'?'registrations':'bank';
  const permission=endpoint==='bank'?'payments':['mocks','results'].includes(endpoint)?'exams':endpoint==='registrations'?'applications':'content';const writable=can(ctx.identity,permission,true);
  if(endpoint==='bank'){
