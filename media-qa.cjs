@@ -9,6 +9,13 @@ const ID='81892d7d-e402-4541-aed9-6018b56ad2c2';
  assert.equal(mediaSrc(`https://anything.example/public/${ID.toUpperCase()}/file.JPG`),`/backend-api/media/public/${ID}/file.JPG`);
  for(const keep of ['/assets/school-3.jpg','https://cdn.example.org/pics/a.webp',`https://x.example/private/${ID}/file.webp`,`https://x.example/public/${ID}/file.svg`])assert.equal(mediaSrc(keep),keep);
  step('old media addresses are rewritten to the school server; other addresses are left alone');
+ {const express=require('express');const {liveApiProxy}=require('./live-api-proxy.cjs');const http=require('node:http');
+  const app=express().use('/backend-api',liveApiProxy('https://127.0.0.1:9',()=>{}));const s=app.listen(0,'127.0.0.1');await new Promise(r=>s.once('listening',r));
+  const get=path=>new Promise(resolve=>http.get({host:'127.0.0.1',port:s.address().port,path},res=>{let b='';res.on('data',c=>b+=c);res.on('end',()=>resolve({status:res.statusCode,body:b}));}));
+  const media=await get(`/backend-api/media/public/${ID}/file.webp`);assert.notEqual(media.status,404,'the website forwards /media to the school server');assert.doesNotMatch(media.body,/API route not found/);
+  const other=await get('/backend-api/nothing-here');assert.equal(other.status,404);assert.match(other.body,/API route not found/);
+  const sneaky=await get('/backend-api/media/..%2fadmin');assert.equal(sneaky.status,404);
+  s.close();step('the website passes picture requests through to the school server, and still refuses unknown paths');}
  const server=createFrontend().listen(0,'127.0.0.1');await new Promise(r=>server.once('listening',r));const origin='http://127.0.0.1:'+server.address().port;
  const browser=await chromium.launch({channel:'chrome'});const page=await browser.newPage({viewport:{width:1280,height:900}});const errors=[];page.on('pageerror',e=>errors.push(e.message));
  const picture=fs.readFileSync('docs/mock-results/review-1280.png');const media=[];

@@ -8,7 +8,7 @@ function liveApiProxy(origin = process.env.PATHWAY_BACKEND_ORIGIN || 'https://pa
   // close after 4s, well before typical upstream idle limits.
   const agent = new https.Agent({keepAlive:true,maxSockets:64,maxFreeSockets:16,timeout:4000,scheduling:'lifo'});
   return (req, res) => {
-    if (!/^\/(auth|applicant|portal|admin|public|payments|files|health)(\/|\?|$)/.test(req.url) || /\\|%5c|%2f|(?:^|\/)\.\.(?:\/|$)/i.test(req.url)) return res.status(404).json({error:{message:'API route not found.'}});
+    if (!/^\/(auth|applicant|portal|admin|public|payments|files|health|media)(\/|\?|$)/.test(req.url) || /\\|%5c|%2f|(?:^|\/)\.\.(?:\/|$)/i.test(req.url)) return res.status(404).json({error:{message:'API route not found.'}});
     const started=Date.now();let clientGone=false;
     const failure=(status,code)=>{if(!clientGone)report({event:'backend_proxy_failure',method:req.method,path:req.url.split('?')[0],upstream:upstream.hostname,status,code,durationMs:Date.now()-started});};
     const headers = {};
