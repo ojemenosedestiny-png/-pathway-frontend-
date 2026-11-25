@@ -19,8 +19,8 @@ function createFrontend() {
  const stamp=html=>html.replace(/(src|href)="(\/(?:styles\.css|redesign\.css|journey\/[\w./-]+\.(?:css|js)))"/g,(_match,attr,url)=>attr+'="'+stampPrefix+url+'"');
  const distDir=path.join(__dirname,'journey/dist');
  const preloads=entry=>{const seen=new Set([entry]);const visit=name=>{let source='';try{source=fs.readFileSync(path.join(distDir,name),'utf8');}catch{return;}for(const match of source.matchAll(/(?:\bfrom\s*|\bimport\s*)['"]\.\/([\w.-]+\.js)['"]/g))if(!seen.has(match[1])){seen.add(match[1]);visit(match[1]);}};visit(entry);seen.delete(entry);return [...seen].map(name=>`<link rel="modulepreload" href="${stampPrefix}/journey/dist/${name}">`).join('');};
- const publicPreloads=preloads('public.js');
- const liveHtml=stamp(fs.readFileSync(path.join(__dirname,'journey/live.html'),'utf8')).replace('</head>',()=>preloads('live-ui.js')+'</head>');
+ const publicPreloads=preloads('public.bundle.js');
+ const liveHtml=stamp(fs.readFileSync(path.join(__dirname,'journey/live.html'),'utf8')).replace('</head>',()=>preloads('live-ui.bundle.js')+'</head>');
  const sendLive=(req,res)=>{res.setHeader('Cache-Control','no-cache, must-revalidate');res.type('html').send(seo.applyMetadata(liveHtml,req.path));};
  app.use((req,res,next)=>{res.setHeader('X-Pathway-Release',releaseId);
   const stamped=/^\/_v\/([a-f0-9]{12})(\/(?:styles\.css|redesign\.css|journey\/[\w./-]+\.(?:css|js)))$/.exec(req.path);

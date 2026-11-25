@@ -1,14 +1,20 @@
 const https = require('node:https');
 
 // Fixed upstream: credentials and cookies are never forwarded to a browser-supplied URL.
-function liveApiProxy(origin = process.env.PATHWAY_BACKEND_ORIGIN || 'https://pathway-backend-892m.onrender.com', report = entry => console.error(JSON.stringify(entry))) {
+function liveApiProxy(origin = process.env.PATHWAY_BACKEND_ORIGIN || 'https://pathway-backend-892m.onrender.com', report = entry => console.error(JSON.stringify(entry)), cacheTtl = 60000) {
   const upstream = new URL(origin);
   if (upstream.protocol !== 'https:' || upstream.username || upstream.password || upstream.pathname !== '/') throw Error('PATHWAY_BACKEND_ORIGIN must be an HTTPS origin.');
   // Reuse TLS connections to the backend instead of a new handshake per request. Idle sockets
   // close after 4s, well before typical upstream idle limits.
   const agent = new https.Agent({keepAlive:true,maxSockets:64,maxFreeSockets:16,timeout:4000,scheduling:'lifo'});
+  // Public school lists (carousel, universities, FAQs, news) are the same for every visitor, so a
+  // 60-second copy saves the trip to the backend. Consultation times change as people book, so never cached.
+  const publicCache = new Map(); const PUBLIC_TTL = cacheTtl;
+  const cacheable = req => req.method === 'GET' && /^\/public\//.test(req.url) && !/^\/public\/consultation-slots/.test(req.url);
   return (req, res) => {
     if (!/^\/(auth|applicant|portal|admin|public|payments|files|health|media)(\/|\?|$)/.test(req.url) || /\\|%5c|%2f|(?:^|\/)\.\.(?:\/|$)/i.test(req.url)) return res.status(404).json({error:{message:'API route not found.'}});
+    const cacheKey = cacheable(req) ? req.url : null;
+    if (cacheKey) { const hit = publicCache.get(cacheKey); if (hit && hit.expires > Date.now()) { res.status(200).setHeader('Content-Type', hit.type); res.setHeader('Cache-Control', 'no-store'); res.setHeader('X-Pathway-Cache', 'hit'); return res.end(hit.body); } }
     const started=Date.now();let clientGone=false;
     const failure=(status,code)=>{if(!clientGone)report({event:'backend_proxy_failure',method:req.method,path:req.url.split('?')[0],upstream:upstream.hostname,status,code,durationMs:Date.now()-started});};
     const headers = {};
@@ -31,6 +37,11 @@ function liveApiProxy(origin = process.env.PATHWAY_BACKEND_ORIGIN || 'https://pa
         res.setHeader('Set-Cookie',response.headers['set-cookie'].map(value => localHttp ? value.replace(/;\s*Secure\b/gi,'') : value));
       }
       response.on('error',()=>res.destroy());
+      if (cacheKey && response.statusCode === 200 && !response.headers['set-cookie'] && /json/.test(response.headers['content-type'] || '')) {
+        const chunks = []; let size = 0;
+        response.on('data', chunk => { size += chunk.length; if (size <= 1024 * 1024) chunks.push(chunk); });
+        response.on('end', () => { if (size <= 1024 * 1024) { if (publicCache.size >= 300) publicCache.delete(publicCache.keys().next().value); publicCache.set(cacheKey, { body: Buffer.concat(chunks), type: response.headers['content-type'], expires: Date.now() + PUBLIC_TTL }); } });
+      }
       response.pipe(res);
     });
     // AI requests (PDF reading, briefings) legitimately take longer than ordinary API calls.

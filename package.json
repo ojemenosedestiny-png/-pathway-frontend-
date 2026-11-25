@@ -7,7 +7,7 @@
   "scripts": {
     "start:frontend": "node frontend-server.cjs",
     "seed-owner": "node seed-owner.cjs",
-    "build": "tsc -p journey/tsconfig.json && node journey/build-icons.cjs && node --check server.js",
+    "build": "tsc -p journey/tsconfig.json && node journey/bundle.cjs && node journey/build-icons.cjs && node --check server.js",
     "start": "node server.js",
     "create-student": "node create-student.js",
     "create-admin": "node create-admin.js",
@@ -28,6 +28,7 @@
   },
   "devDependencies": {
     "axe-core": "4.10.2",
+    "esbuild": "0.24.2",
     "lucide-static": "^1.59.0",
     "playwright": "^1.64.1",
     "typescript": "^7.0.2"
